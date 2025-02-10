@@ -187,29 +187,12 @@
           <a href="https://open.spotify.com/user/31g2eu3nus4xkvtie3y5wqzwvvru" class="social-icon" target="_blank">
             <i class="fab fa-spotify"></i>
           </a>
-          <div id="view-count">
-            <i class="fas fa-eye"></i>
-          </div>
         </div>
       </div>
     </section>
   </div>
 </main>
 
-<!-- Place the script just before the closing </body> tag -->
-<script>
-  // Check if the view count is already stored in localStorage
-  let viewCount = localStorage.getItem('viewCount') || 0;
-  
-  // Increment the view count
-  viewCount++;
-  
-  // Update localStorage with the new view count
-  localStorage.setItem('viewCount', viewCount);
-  
-  // Display the view count in the #view-count div
-  document.getElementById('view-count').innerHTML = `<i class="fas fa-eye"></i> ${viewCount}`;
-</script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-G21ST7CV9W"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
