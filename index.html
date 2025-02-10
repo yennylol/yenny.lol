@@ -6,7 +6,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
   <title>y-ye-yen-ye-y</title>
   
- <head>
   <!-- Initial favicon -->
   <link id="favicon" rel="icon" type="image/png" href="/frame1.png">
   <script>
@@ -53,11 +52,11 @@
     // Function to update favicon
     function updateFavicon() {
       currentFrame = (currentFrame + 1) % totalFrames;
-      document.getElementById('favicon').href = frames[currentFrame];
+      document.querySelector("link[rel*='icon']").href = frames[currentFrame];
     }
 
-    // Update favicon every 100 milliseconds (adjust as needed)
-    setInterval(updateFavicon, 100);
+    // Update favicon every 200 milliseconds (adjust as needed)
+    setInterval(updateFavicon, 200);
   </script>
 </head>
 
