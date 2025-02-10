@@ -3,7 +3,32 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Profile</title>
+  <title>y-ye-yen-ye-y</title>
+  
+  <!-- Add your animated GIF as the favicon -->
+  <link rel="icon" type="image/gif" href="/glock.gif">
+  
+  <script>
+    const titleText = "yen";
+    let i = 0;
+    let speed = 150; // Speed of typing in milliseconds
+    
+    function typeWriter() {
+      if (i < titleText.length) {
+        document.title = titleText.substring(0, i + 1); // Update the title
+        i++;
+        setTimeout(typeWriter, speed); // Call the function again after a delay
+      } else {
+        // Once finished, you can loop back if you want
+        setTimeout(() => {
+          i = 0; // Reset the index to start again
+          typeWriter(); // Restart the effect
+        }, 1000); // Wait a second before restarting
+      }
+    }
+    
+    typeWriter(); // Start the effect
+  </script>
   <link rel="stylesheet" href="style.css">
   <script src="script.js" defer></script>
   <script src="snow.js" defer></script>
