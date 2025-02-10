@@ -151,17 +151,16 @@
     const muteIcon = document.getElementById('muteIcon');
     const backgroundVideo = document.getElementById('background-video');
 
-muteButton.addEventListener('click', function () {
+    muteButton.addEventListener('click', function () {
   if (backgroundVideo.muted) {
     backgroundVideo.muted = false;
-    backgroundMusic.play().catch(error => console.log("Autoplay failed: ", error));
     muteIcon.src = "/images/Sound_white.png"; // Unmuted icon
   } else {
     backgroundVideo.muted = true;
-    backgroundMusic.pause();
     muteIcon.src = "/images/Sound_mute_white.png"; // Muted icon
   }
 });
+
 
   </script>
 
