@@ -1,3 +1,4 @@
+/* Base styles */
 body {
   font-family: 'HKRequisite-Medium', sans-serif;
   margin: 0;
@@ -7,13 +8,8 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden; 
-  background-color: rgba(0, 0, 0, 0.5); /* Dark background */
-}
-
-@font-face {
-  font-family: 'HKRequisite-Medium';
-  src: url('/HKRequisite-Medium.otf') format('opentype');
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 .background-video {
@@ -22,45 +18,44 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover; 
-  z-index: -1; 
+  object-fit: cover;
+  z-index: -1;
 }
 
 header {
-  display: none; 
+  display: none;
 }
 
 main {
   padding: 20px;
-  text-align: center; 
+  text-align: center;
 }
 
 section {
   margin-bottom: 30px;
   padding: 20px;
   border-radius: 8px;
-  box-shadow: none; 
+  box-shadow: none;
   background-color: transparent;
 }
 
 #profile {
-  display: block; 
+  display: block;
 }
 
 .avatar {
-  margin-right: 0; 
-  margin-bottom: 20px; 
+  margin-right: 0;
+  margin-bottom: 20px;
   display: flex;
-  justify-content: center; 
+  justify-content: center;
 }
 
 .avatar svg {
-  border-radius: 50%; 
+  border-radius: 50%;
 }
 
 .bio h2 {
   margin-top: 0;
-  /* Rainbow text effect */
   background: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -77,7 +72,6 @@ section {
   }
 }
 
-/* Style for the social icons */
 .social-icons {
   display: flex;
   justify-content: center;
@@ -86,8 +80,8 @@ section {
 }
 
 .social-icon {
-  width: 100px; 
-  height: 100px; 
+  width: 100px;
+  height: 100px;
   margin: 0 10px;
   display: flex;
   justify-content: center;
@@ -96,54 +90,47 @@ section {
   cursor: pointer;
   font-size: 3em;
   text-decoration: none;
-  border-radius: 0; 
+  border-radius: 0;
 }
 
 .social-icon:hover {
   transform: scale(1.2);
-  filter: drop-shadow(0 0 15px white); /* Added glowing effect */
+  filter: drop-shadow(0 0 15px white);
 }
 
-/* Style for the SVG icons */
 .social-icon svg {
-  width: 160%; 
-  height: 160%; 
-  fill: white; 
+  width: 160%;
+  height: 160%;
+  fill: white;
   transition: filter 0.3s ease;
 }
 
 .social-icon:hover svg {
-  filter: drop-shadow(0 0 15px white); /* Glow effect */
+  filter: drop-shadow(0 0 15px white);
 }
 
-/* Style for FontAwesome icons */
 .social-icon i {
   color: white;
   transition: filter 0.3s ease;
 }
 
 .social-icon:hover i {
-  filter: drop-shadow(0 0 15px white); /* Glow effect */
+  filter: drop-shadow(0 0 15px white);
 }
 
-/* Hide sections that are not needed */
 #skills, #projects, #contact, footer {
-  display: none; 
+  display: none;
 }
 
-/* Snow effect canvas */
 #snowCanvas {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;  /* Use viewport width */
-  height: 100vh; /* Use viewport height */
-  pointer-events: none; 
-  z-index: 9999; /* Ensure it’s always on top */
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9999;
 }
-
-
-
 
 .bio {
   display: flex;
@@ -157,23 +144,82 @@ section {
 
 .bio > div {
   margin-bottom: 0;
-  display: flex; 
-  justify-content: center; 
-  align-items: flex-end; 
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
 }
 
 .profile-container {
-  background-color: rgba(0, 0, 0, 0.3); /* Make it a bit more transparent */
+  background-color: rgba(0, 0, 0, 0.3);
   padding: 20px;
   border-radius: 15px;
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.2); /* Softer glow */
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
   display: inline-block;
-  
-  /* Increase blur effect */
-  backdrop-filter: blur(15px); /* Increased from 5px to 15px */
-  -webkit-backdrop-filter: blur(15px); /* Ensure support for Safari */
-
-  /* Removed white outline (border) */
-  border: none; /* Ensure no border */
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: none;
 }
 
+/* Mobile Styles (smaller screens) */
+@media screen and (max-width: 768px) {
+  .avatar img {
+    width: 150px;
+    height: 150px;
+  }
+
+  .bio h2 {
+    font-size: 1.5rem;
+  }
+
+  .social-icon {
+    width: 80px;
+    height: 80px;
+  }
+
+  .social-icon i, .social-icon svg {
+    width: 120%;
+    height: 120%;
+  }
+
+  .profile-container {
+    padding: 15px;
+  }
+
+  .mute-button {
+    top: 15px;
+    left: 15px;
+    padding: 8px 12px;
+  }
+}
+
+/* Extra small screens (phones) */
+@media screen and (max-width: 480px) {
+  .avatar img {
+    width: 120px;
+    height: 120px;
+  }
+
+  .bio h2 {
+    font-size: 1.2rem;
+  }
+
+  .social-icon {
+    width: 60px;
+    height: 60px;
+  }
+
+  .social-icon i, .social-icon svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .profile-container {
+    padding: 10px;
+  }
+
+  .mute-button {
+    top: 10px;
+    left: 10px;
+    padding: 6px 10px;
+  }
+}
