@@ -6,7 +6,27 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
   <title>y-ye-yen-ye-y</title>
   
-  <link rel="icon" type="image/png" href="/favicon.png">
+ <script>
+    // Array of frame URLs
+    const frames = [
+      '/frame1.png',
+      '/frame2.png',
+      '/frame3.png',
+      // Add more frames as needed
+    ];
+
+    let currentFrame = 0;
+    const totalFrames = frames.length;
+
+    // Function to update favicon
+    function updateFavicon() {
+      currentFrame = (currentFrame + 1) % totalFrames;
+      document.getElementById('favicon').href = frames[currentFrame];
+    }
+
+    // Update favicon every 100 milliseconds (adjust as needed)
+    setInterval(updateFavicon, 100);
+  </script>
   
   <script>
     const titleText = "yen";
