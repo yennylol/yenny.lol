@@ -73,7 +73,7 @@
 <body>
 
   <button id="muteButton" class="mute-button">
-    <img id="muteIcon" src="/Sound_white.png" alt="Sound Icon" width="30" height="30">
+    <img id="muteIcon" src="/images/Sound_white.png" alt="Sound Icon" width="30" height="30">
   </button>
 
   <canvas id="snowCanvas"></canvas>
@@ -161,11 +161,11 @@ muteButton.addEventListener('click', function () {
     if (backgroundVideo.muted) {
       // Unmute the video
       backgroundVideo.muted = false;
-      muteIcon.src = "/Sound_white.png"; // Show unmuted icon
+      muteIcon.src = "/images/Sound_white.png"; // Show unmuted icon
     } else {
       // Mute the video
       backgroundVideo.muted = true;
-      muteIcon.src = "/Sound_mute_white.png"; // Show muted icon
+      muteIcon.src = "/images/Sound_mute_white.png"; // Show muted icon
     }
     console.log("Muted:", backgroundVideo.muted); // Debugging log
   }
