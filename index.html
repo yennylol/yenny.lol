@@ -1,0 +1,220 @@
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Creator</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <div id="particles-js" class="particles"></div>
+    <div class="container">
+        <h1 class="title">Assets Uploader</h1>
+
+        <!-- Upload Section -->
+        <div class="upload-grid">
+            <div class="input-group">
+                <label>Username</label>
+                <input type="text" id="username" placeholder="Enter username">
+            </div>
+
+            <div class="input-group">
+                <label>Background</label>
+                <div class="file-input-container">
+                    <div class="file-input-button">
+                        <i class="fas fa-image"></i> Choose Background
+                    </div>
+                    <input type="file" id="background-video" accept="video/*" class="file-input">
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Audio</label>
+                <div class="file-input-container">
+                    <div class="file-input-button">
+                        <i class="fas fa-music"></i> Choose Audio
+                    </div>
+                    <input type="file" id="background-music" accept="audio/*" class="file-input">
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Profile Avatar</label>
+                <div class="file-input-container">
+                    <div class="file-input-button">
+                        <i class="fas fa-user"></i> Choose Avatar
+                    </div>
+                    <input type="file" id="profile-pic" accept="image/*" class="file-input">
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Custom Cursor</label>
+                <div class="file-input-container">
+                    <div class="file-input-button">
+                        <i class="fas fa-mouse-pointer"></i> Choose Cursor
+                    </div>
+                    <input type="file" id="cursor-image" accept="image/*" class="file-input">
+                </div>
+            </div>
+        </div>
+
+        <!-- Premium Banner -->
+        <div class="premium-banner">
+            Want exclusive features? Unlock more with ⭐ Premium
+        </div>
+
+        <!-- General Customization -->
+        <h2 class="section-heading">General Customization</h2>
+        <div class="input-group">
+            <label>Description</label>
+            <input type="text" id="description" placeholder="Bio bound / Recruitment / Anonymous..">
+        </div>
+
+        <div class="options-grid">
+            <div class="input-group">
+                <label>Profile Opacity: <span id="opacity-value">0.4</span></label>
+                <input type="range" id="opacity-slider" min="0" max="100" value="40" class="style-slider">
+            </div>
+
+            <div class="input-group">
+                <label>Profile Blur: <span id="blur-value">10px</span></label>
+                <input type="range" id="blur-slider" min="0" max="20" value="10" class="style-slider">
+            </div>
+        </div>
+
+        <div class="options-grid">
+            <div class="toggle-container">
+                <label>Profile Box Glow</label>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="box-glow">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+
+            <div class="toggle-container">
+                <label>Username Glow</label>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="username-glow">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+
+            <div class="toggle-container">
+                <label>Badges Glow</label>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="badges-glow">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Color Customization -->
+        <h2 class="section-heading">Color Customization</h2>
+        <div class="options-grid">
+            <div class="input-group">
+                <label>Accent Color</label>
+                <div class="color-input-wrapper">
+                    <input type="color" id="box-color" value="#000000">
+                    <span id="box-color-value">#000000</span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Text Color</label>
+                <div class="color-input-wrapper">
+                    <input type="color" id="text-color" value="#FFFFFF">
+                    <span>#FFFFFF</span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Background Color</label>
+                <div class="color-input-wrapper">
+                    <input type="color" id="bg-color" value="#1A1A1A">
+                    <span>#1A1A1A</span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Icon Color</label>
+                <div class="color-input-wrapper">
+                    <input type="color" id="icon-color" value="#FFFFFF">
+                    <span>#FFFFFF</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Other Customization -->
+        <h2 class="section-heading">Other Customization</h2>
+        <div class="options-grid">
+            <div class="toggle-container">
+                <label>Monochrome Icons</label>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="monochrome-icons">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+
+            <div class="toggle-container">
+                <label>Animated Title</label>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="animated-title">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+
+            <div class="toggle-container">
+                <label>Volume Control</label>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="volume-control">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+        </div>
+
+        <h2 class="section-heading">Social Links</h2>
+        <div class="social-links-container">
+            <div class="social-link-input">
+                <input type="text" id="social-link" placeholder="Enter link URL">
+                <div class="file-input-container">
+                    <div class="file-input-button">
+                        <i class="fas fa-image"></i> Choose Icon
+                    </div>
+                    <input type="file" id="social-icon-upload" accept="image/*" class="file-input">
+                </div>
+                <button id="add-social-link" class="small-button">Add Link</button>
+            </div>
+            <div id="social-links-preview" class="social-links-preview"></div>
+        </div>
+
+        <h2 class="section-heading">Username Effects</h2>
+        <div class="options-grid">
+            <div class="input-group">
+                <label>Username Effect</label>
+                <select id="username-effect" class="effect-select">
+                    <option value="none">None</option>
+                    <option value="particles">Particles</option>
+                    <option value="rainbow">Rainbow Colors</option>
+                    <option value="typewriter">Typewriter</option>
+                </select>
+            </div>
+            <div class="input-group effect-color-input" style="display: none;">
+                <label>Effect Color</label>
+                <div class="color-input-wrapper">
+                    <input type="color" id="effect-color" value="#00ff00">
+                    <span id="effect-color-value">#00ff00</span>
+                </div>
+            </div>
+        </div>
+
+        <button id="make-profile">Create Profile</button>
+        <div class="settings-button">
+            <i class="fas fa-cog"></i>
+        </div>
+    </div>
+</body>
+</html>
