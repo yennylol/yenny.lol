@@ -8,31 +8,6 @@
   
     <!-- Initial favicon -->
   <link id="favicon" rel="icon" type="image/png" href="/frame1.png">
-  <script>
-    // Array of frame URLs (33 frames)
-    const frames = [
-      '/frame1.png', '/frame2.png', '/frame3.png', '/frame4.png', '/frame5.png',
-      '/frame6.png', '/frame7.png', '/frame8.png', '/frame9.png', '/frame10.png',
-      '/frame11.png', '/frame12.png', '/frame13.png', '/frame14.png', '/frame15.png',
-      '/frame16.png', '/frame17.png', '/frame18.png', '/frame19.png', '/frame20.png',
-      '/frame21.png', '/frame22.png', '/frame23.png', '/frame24.png', '/frame25.png',
-      '/frame26.png', '/frame27.png', '/frame28.png', '/frame29.png', '/frame30.png',
-      '/frame31.png', '/frame32.png', '/frame33.png'
-    ];
-
-    let currentFrame = 0;
-    const totalFrames = frames.length;
-
-    // Function to update favicon
-    function updateFavicon() {
-      currentFrame = (currentFrame + 1) % totalFrames;
-      console.log("Updating favicon to: ", frames[currentFrame]);  // Debugging line
-      document.querySelector("link[rel*='icon']").href = frames[currentFrame];
-    }
-
-    // Update favicon every 200 milliseconds (adjust as needed)
-    setInterval(updateFavicon, 200);
-  </script>
 </head>
 
   
