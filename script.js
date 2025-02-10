@@ -65,4 +65,58 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   backgroundVideo.addEventListener('ended', setNextVideo);
+
+  // View Counter logic
+  async function updateViewCount() {
+    try {
+      // Attempt to extract project ID from the current URL
+      const pathSegments = window.location.pathname.split('/');
+      let projectId = null;
+
+      // Check if the last segment is a project ID
+      if (pathSegments.length > 0) {
+          projectId = pathSegments[pathSegments.length - 1];
+      }
+
+      // If that fails, look for a valid project ID
+      if (!projectId || projectId === '') {
+        console.warn('Project ID not found in URL, attempting to retrieve from websim.');
+
+        // Attempt to get project details from websim
+        const currentProject = await window.websim.getCurrentProject();
+        if (currentProject && currentProject.id) {
+            projectId = currentProject.id;
+            console.log('Project id is', projectId);
+        } else {
+            console.warn('Failed to retrieve project ID from websim either. Check if you are inside a project.');
+            return;
+        }
+      }
+      
+      const viewCountElement = document.getElementById('view-count');
+
+      // Check if projectId is valid
+      if (!projectId || projectId === '') {
+        console.warn('Project ID not found in URL.');
+        return;
+      }
+
+      // Fetch project details from the API
+      const projectResponse = await fetch(`/api/v1/projects/${projectId}`);
+      if (!projectResponse.ok) {
+        throw new Error(`Failed to fetch project details: ${projectResponse.status}`);
+      }
+      const projectData = await projectResponse.json();
+
+      // Update the view count element
+      viewCountElement.innerHTML = `<i class="fas fa-eye"></i> ${projectData.project.stats.views}`;
+
+    } catch (error) {
+      console.error('Error updating view count:', error);
+      document.getElementById('view-count').innerText = 'Error loading views';
+    }
+  }
+
+  // Call updateViewCount on page load
+  updateViewCount();
 });
