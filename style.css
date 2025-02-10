@@ -92,7 +92,7 @@ section {
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, filter 0.3s ease;
   cursor: pointer;
   font-size: 3em;
   text-decoration: none;
@@ -101,6 +101,7 @@ section {
 
 .social-icon:hover {
   transform: scale(1.2);
+  filter: drop-shadow(0 0 15px white); /* Added glowing effect */
 }
 
 /* Style for the SVG icons */
@@ -108,35 +109,39 @@ section {
   width: 160%; 
   height: 160%; 
   fill: white; 
-  transition: box-shadow 0.3s ease;
+  transition: filter 0.3s ease;
 }
 
 .social-icon:hover svg {
-  box-shadow: 0 0 15px white; 
+  filter: drop-shadow(0 0 15px white); /* Glow effect */
 }
 
+/* Style for FontAwesome icons */
+.social-icon i {
+  color: white;
+  transition: filter 0.3s ease;
+}
+
+.social-icon:hover i {
+  filter: drop-shadow(0 0 15px white); /* Glow effect */
+}
+
+/* Hide sections that are not needed */
 #skills, #projects, #contact, footer {
   display: none; 
 }
 
+/* Snow effect canvas */
 #snowCanvas {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;  /* Use viewport width */
+  height: 100vh; /* Use viewport height */
   pointer-events: none; 
-  z-index: 1; 
+  z-index: 9999; /* Ensure it’s always on top */
 }
 
-.social-icon i {
-  color: white;
-  transition: box-shadow 0.3s ease;
-}
-
-.social-icon:hover i {
-  box-shadow: 0 0 15px white; 
-}
 
 /* View Counter Styles */
 #view-count {
@@ -165,10 +170,16 @@ section {
 }
 
 .profile-container {
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.3); /* Make it a bit more transparent */
   padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.2); /* Softer glow */
   display: inline-block;
-  backdrop-filter: blur(5px);
+  
+  /* Increase blur effect */
+  backdrop-filter: blur(15px); /* Increased from 5px to 15px */
+  -webkit-backdrop-filter: blur(15px); /* Ensure support for Safari */
+
+  /* Shiny white outline */
+  border: 2px solid rgba(255, 255, 255, 0.5); /* Semi-transparent white */
 }
