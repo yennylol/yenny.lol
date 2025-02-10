@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -8,8 +9,14 @@
   <script src="snow.js" defer></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <style>
-  
-    /* Style for the mute/unmute button */
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+    }
+
     .mute-button {
       position: fixed;
       top: 20px;
@@ -20,7 +27,18 @@
       padding: 10px 15px;
       border-radius: 5px;
       cursor: pointer;
-      z-index: 1000; /* Ensure it's on top of everything */
+      z-index: 1000;
+    }
+
+    .background-video {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      transform: translate(-50%, -50%);
+      z-index: -1;
     }
   </style>
 </head>
@@ -31,85 +49,83 @@
   </button>
 
   <canvas id="snowCanvas"></canvas>
-  <video id="background-video" autoplay loop muted playsinline>
-  <source id="video-source" src="/che - Pizza Time.mp4" type="video/mp4">
-  Your browser does not support HTML5 video.
-</video>
+  <video id="background-video" autoplay loop muted playsinline class="background-video">
+    <source id="video-source" src="/che - Pizza Time.mp4" type="video/mp4">
+    Your browser does not support HTML5 video.
+  </video>
 
-<script>
-  const videos = [
-    "/che - Pizza Time.mp4",
-    "/prettifun - Light (Official Video).mp4",
-    "/poison.mp4",
-    "/hysteric.mp4",
-  "/junkie.mp4",
-  "/tellme.mp4"
-  ];
+  <audio id="backgroundMusic" loop>
+    <source src="your-music.mp3" type="audio/mp3">
+    Your browser does not support the audio element.
+  </audio>
 
-  function shuffleVideos() {
-  const randomIndex = Math.floor(Math.random() * videos.length);
-  const videoElement = document.getElementById('background-video');
+  <script>
+    const videos = [
+      "/che - Pizza Time.mp4",
+      "/prettifun - Light (Official Video).mp4",
+      "/poison.mp4",
+      "/hysteric.mp4",
+      "/junkie.mp4",
+      "/tellme.mp4"
+    ];
 
-  // Update the video source directly on the <video> element
-  videoElement.src = videos[randomIndex];
-
-  // Load and play the new video
-  videoElement.load();
-  videoElement.play();
-}
-
-
-  // Shuffle the video on page load
-  shuffleVideos();
-
-  // Mute/Unmute functionality
-  const muteButton = document.getElementById('muteButton');
-  const muteIcon = document.getElementById('muteIcon');
-  const backgroundVideo = document.getElementById('background-video');
-
-  muteButton.addEventListener('click', function() {
-    if (backgroundVideo.muted) {
-      backgroundVideo.muted = false;
-      muteIcon.classList.remove('fa-volume-mute');
-      muteIcon.classList.add('fa-volume-up');
-    } else {
-      backgroundVideo.muted = true;
-      muteIcon.classList.remove('fa-volume-up');
-      muteIcon.classList.add('fa-volume-mute');
+    function shuffleVideos() {
+      const randomIndex = Math.floor(Math.random() * videos.length);
+      const videoElement = document.getElementById('background-video');
+      videoElement.src = videos[randomIndex];
+      videoElement.load();
+      videoElement.play();
     }
-  });
-</script>
 
+    shuffleVideos();
+
+    const muteButton = document.getElementById('muteButton');
+    const muteIcon = document.getElementById('muteIcon');
+    const backgroundVideo = document.getElementById('background-video');
+    const backgroundMusic = document.getElementById('backgroundMusic');
+
+    muteButton.addEventListener('click', function() {
+      if (backgroundVideo.muted) {
+        backgroundVideo.muted = false;
+        backgroundMusic.play().catch(error => console.log("Autoplay failed: ", error));
+        muteIcon.classList.remove('fa-volume-mute');
+        muteIcon.classList.add('fa-volume-up');
+      } else {
+        backgroundVideo.muted = true;
+        backgroundMusic.pause();
+        muteIcon.classList.remove('fa-volume-up');
+        muteIcon.classList.add('fa-volume-mute');
+      }
+    });
+  </script>
 
   <main>
     <div class="profile-container">
-    <section id="profile">
-      <div class="avatar">
-        <img src="/scarface.jpg" alt="Profile Picture" style="width: 200px; height: 200px; border-radius: 50%;">
-      </div>
-      <div class="bio">
-        <h2>yen</h2>
-        <p>whitewashed algerian</p>
-
-          <!-- Social Icons -->
-        <div class="social-icons">
-          <a href="https://discord.gg/MUGv8B9G" class="social-icon" target="_blank">
-            <i class="fab fa-discord"></i>
-          </a>
-          <a href="https://www.roblox.com/users/4740463036/profile" class="social-icon" target="_blank">
-          <img src="/250841_after.png" alt="Roblox Icon" style="width: 70px; height: 70px;">
-          </a>
-          <a href="https://open.spotify.com/user/31g2eu3nus4xkvtie3y5wqzwvvru" class="social-icon" target="_blank">
-            <i class="fab fa-spotify"></i>
-          </a>
-            <div id="view-count">
-                <i class="fas fa-eye"></i>
-            </div>
+      <section id="profile">
+        <div class="avatar">
+          <img src="/scarface.jpg" alt="Profile Picture" style="width: 200px; height: 200px; border-radius: 50%;">
         </div>
-      </div>
-    </section>
+        <div class="bio">
+          <h2>yen</h2>
+          <p>whitewashed algerian</p>
+          <div class="social-icons">
+            <a href="https://discord.gg/MUGv8B9G" class="social-icon" target="_blank">
+              <i class="fab fa-discord"></i>
+            </a>
+            <a href="https://www.roblox.com/users/4740463036/profile" class="social-icon" target="_blank">
+              <img src="/250841_after.png" alt="Roblox Icon" style="width: 70px; height: 70px;">
+            </a>
+            <a href="https://open.spotify.com/user/31g2eu3nus4xkvtie3y5wqzwvvru" class="social-icon" target="_blank">
+              <i class="fab fa-spotify"></i>
+            </a>
+            <div id="view-count">
+              <i class="fas fa-eye"></i>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
-
+  </main>
 
 </body>
 </html>
