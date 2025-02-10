@@ -72,9 +72,9 @@
 </head>
 <body>
 
-  <button id="muteButton" class="mute-button">
-    <i id="muteIcon" class="fas fa-volume-up"></i>
-  </button>
+<button id="muteButton" class="mute-button">
+  <img id="muteIcon" src="/Sound_white.png" alt="Sound Icon" width="30" height="30">
+</button>
 
   <canvas id="snowCanvas"></canvas>
   <video id="background-video" autoplay loop muted playsinline class="background-video">
@@ -147,25 +147,22 @@
     }
 
     shuffleVideos();
-
-    const muteButton = document.getElementById('muteButton');
-    const muteIcon = document.getElementById('muteIcon');
+const muteButton = document.getElementById('muteButton');
+const muteIcon = document.getElementById('muteIcon');
     const backgroundVideo = document.getElementById('background-video');
     const backgroundMusic = document.getElementById('backgroundMusic');
 
-    muteButton.addEventListener('click', function() {
-      if (backgroundVideo.muted) {
-        backgroundVideo.muted = false;
-        backgroundMusic.play().catch(error => console.log("Autoplay failed: ", error));
-        muteIcon.classList.remove('fa-volume-mute');
-        muteIcon.classList.add('fa-volume-up');
-      } else {
-        backgroundVideo.muted = true;
-        backgroundMusic.pause();
-        muteIcon.classList.remove('fa-volume-up');
-        muteIcon.classList.add('fa-volume-mute');
-      }
-    });
+   muteButton.addEventListener('click', function () {
+  if (backgroundVideo.muted) {
+    backgroundVideo.muted = false;
+    backgroundMusic.play().catch(error => console.log("Autoplay failed: ", error));
+    muteIcon.src = "/Sound_white.png"; // Change to unmuted icon
+  } else {
+    backgroundVideo.muted = true;
+    backgroundMusic.pause();
+    muteIcon.src = "/Sound_mute_white.png"; // Change to muted icon
+  }
+});
   </script>
 
 <main>
