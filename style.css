@@ -173,6 +173,4 @@ section {
   backdrop-filter: blur(15px); /* Increased from 5px to 15px */
   -webkit-backdrop-filter: blur(15px); /* Ensure support for Safari */
 
-  /* Shiny white outline */
-  border: 2px solid rgba(255, 255, 255, 0.5); /* Semi-transparent white */
 }

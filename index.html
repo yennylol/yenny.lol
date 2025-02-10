@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
-  <title>y-ye-yen-ye-y</title>
+  <title>yenny</title>
   
   <!-- Favicon with .ico format -->
   <link rel="icon" type="image/x-icon" href="/images/frame1.ico">
@@ -12,25 +12,20 @@
 
   
   <script>
-    const titleText = "yen";
-    let i = 0;
-    let speed = 150; // Speed of typing in milliseconds
-    
-    function typeWriter() {
-      if (i < titleText.length) {
-        document.title = titleText.substring(0, i + 1); // Update the title
-        i++;
-        setTimeout(typeWriter, speed); // Call the function again after a delay
-      } else {
-        // Once finished, you can loop back if you want
-        setTimeout(() => {
-          i = 0; // Reset the index to start again
-          typeWriter(); // Restart the effect
-        }, 1000); // Wait a second before restarting
-      }
-    }
-    
-    typeWriter(); // Start the effect
+ // Typewriter effect on the tab title
+const titleText = "yenny";  // Set your desired title
+let currentIndex = 0;
+const speed = 150;  // Adjust speed of typing effect (milliseconds)
+
+function typeWriterEffect() {
+  if (currentIndex < titleText.length) {
+    document.title += titleText.charAt(currentIndex);
+    currentIndex++;
+    setTimeout(typeWriterEffect, speed); // Continue typing after delay
+  }
+}
+
+typeWriterEffect();  // Start the effect as soon as the script loads
   </script>
   <link rel="stylesheet" href="style.css">
   <script src="script.js" defer></script>
