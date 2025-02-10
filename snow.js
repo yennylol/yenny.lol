@@ -6,67 +6,70 @@ document.addEventListener('DOMContentLoaded', () => {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 
-  // Particle array
   let particlesArray = [];
   const numberOfParticles = 150;
 
-  // Create initial particles
-  for (let i = 0; i < numberOfParticles; i++) {
-    particlesArray.push(new Particle());
-  }
-
   // Particle class
-  function Particle() {
-    this.x = Math.random() * canvas.width;
-    this.y = Math.random() * canvas.height;
-    this.size = (Math.random() * 3) + 1;
-    this.speedX = (Math.random() * 3) - 1.5;
-    this.speedY = (Math.random() * 3) + 1.5;
+  class Particle {
+    constructor() {
+      this.reset();
+    }
+
+    reset() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+      this.size = Math.random() * 3 + 1;
+      this.speedX = Math.random() * 1.5 - 0.75; // Gentle drift
+      this.speedY = Math.random() * 3 + 1; // Falling speed
+    }
+
+    update() {
+      this.x += this.speedX;
+      this.y += this.speedY;
+
+      // Reset snowflake if it goes out of bounds
+      if (this.y > canvas.height) {
+        this.reset();
+        this.y = 0; // Restart from the top
+      }
+      if (this.x < 0 || this.x > canvas.width) {
+        this.x = Math.random() * canvas.width; // Reset horizontally
+      }
+    }
+
+    draw() {
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fill();
+    }
   }
 
-  Particle.prototype.update = function() {
-    this.x += this.speedX;
-    this.y += this.speedY;
-
-    if (this.size > 0.2) this.size -= 0.1;
-    if (this.size < 0.2) {
-      this.x = Math.random() * canvas.width;
-      this.y = 0;
-      this.size = (Math.random() * 3) + 1;
-      this.speedX = (Math.random() * 3) - 1.5;
-      this.speedY = (Math.random() * 3) + 1.5;
+  // Create initial particles
+  function initParticles() {
+    particlesArray = [];
+    for (let i = 0; i < numberOfParticles; i++) {
+      particlesArray.push(new Particle());
     }
-    if (this.x < 0 || this.x > canvas.width){
-      this.x = Math.random() * canvas.width;
-    }
-    if (this.y > canvas.height){
-      this.y = 0;
-      this.x = Math.random() * canvas.width;
-    }
-  };
+  }
 
-  Particle.prototype.draw = function() {
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-    ctx.closePath();
-    ctx.fill();
-  };
-
-  // Animation loop
   function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    for (let i = 0; i < particlesArray.length; i++) {
-      particlesArray[i].update();
-      particlesArray[i].draw();
-    }
+    particlesArray.forEach(particle => {
+      particle.update();
+      particle.draw();
+    });
     requestAnimationFrame(animate);
   }
 
-  animate();
-
-  window.addEventListener('resize', function() {
+  // Handle window resize
+  window.addEventListener('resize', () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
+    initParticles(); // Reinitialize particles
   });
+
+  // Start animation
+  initParticles();
+  animate();
 });
