@@ -46,19 +46,17 @@
   ];
 
   function shuffleVideos() {
-    const randomIndex = Math.floor(Math.random() * videos.length);
-    const videoElement = document.getElementById('background-video');
-    const sourceElement = document.getElementById('video-source');
-    
-    // Update the video source
-    sourceElement.src = videos[randomIndex];
-    
-    // Load the new video
-    videoElement.load();
-    
-    // Play the new video
-    videoElement.play();
-  }
+  const randomIndex = Math.floor(Math.random() * videos.length);
+  const videoElement = document.getElementById('background-video');
+
+  // Update the video source directly on the <video> element
+  videoElement.src = videos[randomIndex];
+
+  // Load and play the new video
+  videoElement.load();
+  videoElement.play();
+}
+
 
   // Shuffle the video on page load
   shuffleVideos();
