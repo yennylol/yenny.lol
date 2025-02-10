@@ -143,14 +143,7 @@ section {
 }
 
 
-/* View Counter Styles */
-#view-count {
-  padding: 5px 10px;
-  border-radius: 5px;
-  font-size: 0.8em;
-  z-index: 2; /* Ensure it's above the background video */
-  color: white; /* Set text color to white */
-}
+
 
 .bio {
   display: flex;
