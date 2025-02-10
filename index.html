@@ -7,7 +7,7 @@
   <title>y-ye-yen-ye-y</title>
   
   <!-- Favicon with .ico format -->
-  <link rel="icon" type="image/x-icon" href="/frame1.ico">
+  <link rel="icon" type="image/x-icon" href="/images/frame1.ico">
 </head>
 
   
@@ -73,12 +73,12 @@
 <body>
 
 <button id="muteButton" class="mute-button">
-  <img id="muteIcon" src="/Sound_white.png" alt="Sound Icon" width="30" height="30">
+  <img id="muteIcon" src="/images/Sound_white.png" alt="Sound Icon" width="30" height="30">
 </button>
 
   <canvas id="snowCanvas"></canvas>
   <video id="background-video" autoplay loop muted playsinline class="background-video">
-    <source id="video-source" src="/che - Pizza Time.mp4" type="video/mp4">
+    <source id="video-source" src="/videos/pizzatime.mp4" type="video/mp4">
     Your browser does not support HTML5 video.
   </video>
 <script>
@@ -127,15 +127,15 @@
 
   <script>
     const videos = [
-      "/che - Pizza Time.mp4",
-      "/prettifun - Light (Official Video).mp4",
-      "/poison.mp4",
-      "/freestyle.mp4",
-      "/junkie.mp4",
-      "/tellme.mp4",
-"/thewholeworldisfree.mp4",
-"/shitshow.mp4",
-"/patchmade.mp4"
+      "/videos/pizzatime.mp4",
+      "/videos/light.mp4",
+      "/videos/poison.mp4",
+      "/videos/freestyle.mp4",
+      "/videos/junkie.mp4",
+      "/videos/tellme.mp4",
+"/videos/thewholeworldisfree.mp4",
+"/videos/shitshow.mp4",
+"/videos/patchmade.mp4"
     ];
 
     function shuffleVideos() {
@@ -147,8 +147,8 @@
     }
 
     shuffleVideos();
-const muteButton = document.getElementById('muteButton');
-const muteIcon = document.getElementById('muteIcon');
+    const muteButton = document.getElementById('muteButton');
+    const muteIcon = document.getElementById('muteIcon');
     const backgroundVideo = document.getElementById('background-video');
     const backgroundMusic = document.getElementById('backgroundMusic');
 
@@ -156,11 +156,11 @@ muteButton.addEventListener('click', function () {
   if (backgroundVideo.muted) {
     backgroundVideo.muted = false;
     backgroundMusic.play().catch(error => console.log("Autoplay failed: ", error));
-    muteIcon.src = "/Sound_white.png"; // Unmuted icon
+    muteIcon.src = "/images/Sound_white.png"; // Unmuted icon
   } else {
     backgroundVideo.muted = true;
     backgroundMusic.pause();
-    muteIcon.src = "/Sound_mute_white.png"; // Muted icon
+    muteIcon.src = "/images/Sound_mute_white.png"; // Muted icon
   }
 });
 
@@ -170,7 +170,7 @@ muteButton.addEventListener('click', function () {
   <div class="profile-container">
     <section id="profile">
       <div class="avatar">
-        <img src="/scarface.jpg" alt="Profile Picture" style="width: 200px; height: 200px; border-radius: 50%;">
+        <img src="/images/scarface.jpg" alt="Profile Picture" style="width: 200px; height: 200px; border-radius: 50%;">
       </div>
       <div class="bio">
         <h2>yen</h2>
@@ -180,7 +180,7 @@ muteButton.addEventListener('click', function () {
             <i class="fab fa-discord"></i>
           </a>
           <a href="https://www.roblox.com/users/4740463036/profile" class="social-icon" target="_blank">
-            <img src="/250841_after.png" alt="Roblox Icon" style="width: 70px; height: 70px;">
+            <img src="/images/roblox.png" alt="Roblox Icon" style="width: 70px; height: 70px;">
           </a>
           <a href="https://open.spotify.com/user/31g2eu3nus4xkvtie3y5wqzwvvru" class="social-icon" target="_blank">
             <i class="fab fa-spotify"></i>
@@ -190,15 +190,6 @@ muteButton.addEventListener('click', function () {
     </section>
   </div>
 </main>
-
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-G21ST7CV9W"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-G21ST7CV9W');
-</script>
 </body>
 </html>
 
