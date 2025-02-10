@@ -72,9 +72,9 @@
 </head>
 <body>
 
-  <button id="muteButton" class="mute-button">
-    <img id="muteIcon" src="/images/Sound_white.png" alt="Sound Icon" width="30" height="30">
-  </button>
+<button id="muteButton" class="mute-button">
+  <img id="muteIcon" src="/images/Sound_white.png" alt="Sound Icon" width="30" height="30">
+</button>
 
   <canvas id="snowCanvas"></canvas>
   <video id="background-video" autoplay loop muted playsinline class="background-video">
@@ -148,29 +148,20 @@
 
     shuffleVideos();
     const muteButton = document.getElementById('muteButton');
-const muteIcon = document.getElementById('muteIcon');
-const backgroundVideo = document.getElementById('backgroundVideo');
-
-// Ensure the background video exists
-if (!backgroundVideo) {
-  console.error("Error: Background video not found.");
-}
+    const muteIcon = document.getElementById('muteIcon');
+    const backgroundVideo = document.getElementById('background-video');
 
 muteButton.addEventListener('click', function () {
-  if (backgroundVideo) {
-    if (backgroundVideo.muted) {
-      // Unmute the video
-      backgroundVideo.muted = false;
-      muteIcon.src = "/images/Sound_white.png"; // Show unmuted icon
-    } else {
-      // Mute the video
-      backgroundVideo.muted = true;
-      muteIcon.src = "/images/Sound_mute_white.png"; // Show muted icon
-    }
-    console.log("Muted:", backgroundVideo.muted); // Debugging log
+  if (backgroundVideo.muted) {
+    backgroundVideo.muted = false;
+    backgroundMusic.play().catch(error => console.log("Autoplay failed: ", error));
+    muteIcon.src = "/images/Sound_white.png"; // Unmuted icon
+  } else {
+    backgroundVideo.muted = true;
+    backgroundMusic.pause();
+    muteIcon.src = "/images/Sound_mute_white.png"; // Muted icon
   }
 });
-
 
   </script>
 
