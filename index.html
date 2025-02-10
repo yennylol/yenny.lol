@@ -4,33 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
-  <title>yenny</title>
+  <title id="tab-title">yenny</title>
   
   <!-- Favicon with .ico format -->
   <link rel="icon" type="image/x-icon" href="/images/frame1.ico">
-</head>
 
-  
-  <script>
- // Typewriter effect on the tab title
-const titleText = "yenny";  // Set your desired title
-let currentIndex = 0;
-const speed = 150;  // Adjust speed of typing effect (milliseconds)
-
-function typeWriterEffect() {
-  if (currentIndex < titleText.length) {
-    document.title += titleText.charAt(currentIndex);
-    currentIndex++;
-    setTimeout(typeWriterEffect, speed); // Continue typing after delay
-  }
-}
-
-typeWriterEffect();  // Start the effect as soon as the script loads
-  </script>
   <link rel="stylesheet" href="style.css">
   <script src="script.js" defer></script>
   <script src="snow.js" defer></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  
   <style>
     body, html {
       margin: 0;
@@ -64,9 +47,27 @@ typeWriterEffect();  // Start the effect as soon as the script loads
       z-index: -1;
     }
   </style>
+  
+  <script>
+    // Typewriter effect on the tab title
+    const titleText = "yenny";  // Set your desired title
+    let currentIndex = 0;
+    const speed = 150;  // Adjust speed of typing effect (milliseconds)
+
+    function typeWriterEffect() {
+      document.title = "";  // Clear previous title
+      if (currentIndex < titleText.length) {
+        document.title += titleText.charAt(currentIndex);
+        currentIndex++;
+        setTimeout(typeWriterEffect, speed); // Continue typing after delay
+      }
+    }
+
+    typeWriterEffect();  // Start the effect as soon as the script loads
+  </script>
+
 </head>
 <body>
-
 <button id="muteButton" class="mute-button">
   <img id="muteIcon" src="/images/Sound_white.png" alt="Sound Icon" width="30" height="30">
 </button>

@@ -173,4 +173,7 @@ section {
   backdrop-filter: blur(15px); /* Increased from 5px to 15px */
   -webkit-backdrop-filter: blur(15px); /* Ensure support for Safari */
 
+  /* Removed white outline (border) */
+  border: none; /* Ensure no border */
 }
+
