@@ -113,7 +113,7 @@ section {
   align-items: center;
   transition: transform 0.3s ease, filter 0.3s ease;
   cursor: pointer;
-  font-size: 3em;
+  font-size: 1.9em;
   text-decoration: none;
   border-radius: 0;
 }
