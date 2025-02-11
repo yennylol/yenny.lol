@@ -187,7 +187,7 @@ section {
   position: relative; /* Allow absolute positioning inside */
 }
 
-#view-count {
+#viewCounter {
   position: absolute;
   bottom: 10px; /* Adjust distance from the bottom */
   left: 10px;  /* Adjust distance from the left */
@@ -197,7 +197,7 @@ section {
   align-items: center; /* Align the icon and text properly */
 }
 
-#view-count i {
+#viewCounter i {
   margin-right: 5px; /* Space between the eye icon and the view count text */
   font-size: 12px; /* Adjust the size of the icon */
   vertical-align: middle; /* Ensure the icon is aligned with the text */
