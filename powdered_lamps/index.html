@@ -1,0 +1,325 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Powdered Lamps - Horror Game</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="creator-credit">
+    created by ruko
+  </div>
+  <div id="start-menu">
+    <div class="title-container">
+      <h1>Powdered Lamps</h1>
+      <div class="subtitle">A Journey into Darkness</div>
+    </div>
+    
+    <div class="content-warning">
+      CONTENT WARNING
+      <p>This game contains:</p>
+      <ul>
+        <li>Jump scares</li>
+        <li>Disturbing sounds</li>
+        <li>Unsettling imagery</li>
+        <li>Psychological horror elements</li>
+        <li>Flashing lights and visual effects</li>
+      </ul>
+      <p>Player discretion is advised.</p>
+    </div>
+    
+    <div class="menu-buttons">
+      <button id="play-button" onclick="startGame()">Play</button>
+      <button id="credits-button" onclick="showCredits()">Credits</button>
+    </div>
+
+    <div id="credits-overlay" class="hidden">
+      <div class="credits-content">
+        <h2>Credits</h2>
+        <div class="credits-text">
+          <p>Created by Ruko</p>
+          <p>Art & Design: Ruko</p>
+          <p>Programming: sonnet</p>
+          <p>Sound Effects: youtube</p>
+          <p>Special Thanks to the WebSim Community</p>
+        </div>
+        <button onclick="hideCredits()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="esc-menu">
+    <h2>Paused</h2>
+    <div class="menu-buttons">
+      <button onclick="resumeGame()">Resume</button>
+      <button onclick="quitGame()">Quit</button>
+    </div>
+  </div>
+
+  <div id="game-container" class="hidden">
+    <div id="sticky-note">
+      <div class="sticky-content">
+        <p>its kinda glitchy im sorry :( </p>
+        <p>press esc after you resume and then press it again cause the ai is dumb</p>
+        <p>- ruko</p>
+        <button class="close-sticky">&times;</button>
+      </div>
+    </div>
+    <div id="guiding-light"></div>
+    <div id="room">
+      <div id="darkness-overlay"></div>
+      <div id="stats">
+        <div id="lamp-counter" class="stat">Lamps: 0/9</div>
+        <div id="health-container">
+          <div id="health-bar"></div>
+        </div>
+      </div>
+      <div id="door"></div>
+    </div>
+    
+    <div class="controls-info">
+      Controls:
+      <span class="key">W</span>
+      <span class="key">A</span>
+      <span class="key">S</span>
+      <span class="key">D</span>
+      to move
+    </div>
+    
+    <div id="hotbar">
+      <div class="hotbar-slot" data-item="potion">
+        <svg viewBox="0 0 24 24" width="30" height="30">
+          <defs>
+            <radialGradient id="potionGlow" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+              <stop offset="0%" style="stop-color:#ff0000;stop-opacity:1" />
+              <stop offset="50%" style="stop-color:#800000;stop-opacity:0.8" />
+              <stop offset="100%" style="stop-color:#400000;stop-opacity:0" />
+            </radialGradient>
+            <filter id="potionBlur">
+              <feGaussianBlur in="SourceGraphic" stdDeviation="1.5" />
+              <feColorMatrix type="matrix" values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 18 -7"/>
+            </filter>
+            <filter id="bloodDrip">
+              <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="5" seed="1"/>
+              <feDisplacementMap in="SourceGraphic" scale="5"/>
+            </filter>
+          </defs>
+          <path fill="url(#potionGlow)" filter="url(#potionBlur)" d="M8,2 h8 v6 l4,10 h-16 l4,-10 z">
+            <animate attributeName="opacity" values="0.7;1;0.7" dur="1.5s" repeatCount="indefinite"/>
+          </path>
+          <path fill="none" stroke="#ff0000" stroke-width="0.5" d="M10,4 h4 M12,4 v3" filter="url(#bloodDrip)"/>
+          <circle cx="12" cy="14" r="3" fill="#ff0000" filter="url(#potionBlur)">
+            <animate attributeName="r" values="2;3.5;2" dur="2s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.8;1;0.8" dur="1s" repeatCount="indefinite"/>
+          </circle>
+          <path fill="none" stroke="#ff6666" stroke-width="0.3" d="M9,12 Q12,8 15,12" opacity="0.5">
+            <animate attributeName="d" values="M9,12 Q12,8 15,12;M9,13 Q12,9 15,13;M9,12 Q12,8 15,12" dur="3s" repeatCount="indefinite"/>
+          </path>
+        </svg>
+        <span class="item-count">0</span>
+      </div>
+      <div class="hotbar-slot" data-item="cross">
+        <svg viewBox="0 0 24 24" width="30" height="30">
+          <defs>
+            <linearGradient id="crossGold" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#ffd700"/>
+              <stop offset="25%" style="stop-color:#fff5a0"/>
+              <stop offset="50%" style="stop-color:#ffd700"/>
+              <stop offset="75%" style="stop-color:#fff5a0"/>
+              <stop offset="100%" style="stop-color:#ffd700"/>
+            </linearGradient>
+            <filter id="crossGlow">
+              <feGaussianBlur in="SourceGraphic" stdDeviation="0.8"/>
+              <feColorMatrix type="matrix" values="1 0 0 0 1   0 0 0 0 0.8   0 0 0 0 0  0 0 0 18 -7"/>
+            </filter>
+            <filter id="holyLight">
+              <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="5" seed="2"/>
+              <feDisplacementMap in="SourceGraphic" scale="3"/>
+            </filter>
+          </defs>
+          <path fill="url(#crossGold)" filter="url(#crossGlow)" d="M11,2 h2 v7 h7 v2 h-7 v7 h-2 v-7 h-7 v-2 h7 z">
+            <animate attributeName="filter" values="url(#crossGlow);url(#crossGlow) brightness(1.4);url(#crossGlow)" dur="2s" repeatCount="indefinite"/>
+          </path>
+          <path fill="none" stroke="#ffffff" stroke-width="0.3" d="M11,2 h2 v7 h7 v2 h-7 v7 h-2 v-7 h-7 v-2 h7 z" opacity="0.7" filter="url(#holyLight)">
+            <animate attributeName="opacity" values="0.4;0.9;0.4" dur="1.5s" repeatCount="indefinite"/>
+          </path>
+          <circle cx="12" cy="12" r="8" fill="none" stroke="#ffd700" stroke-width="0.2" opacity="0.3">
+            <animate attributeName="r" values="7;9;7" dur="3s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.2;0.4;0.2" dur="3s" repeatCount="indefinite"/>
+          </circle>
+        </svg>
+        <span class="item-count">0</span>
+      </div>
+      <div class="hotbar-slot" data-item="powder">
+        <svg viewBox="0 0 24 24" width="30" height="30">
+          <defs>
+            <radialGradient id="powderGlow" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+              <stop offset="0%" style="stop-color:#ff99ff"/>
+              <stop offset="40%" style="stop-color:#e091cf"/>
+              <stop offset="70%" style="stop-color:#c76daf"/>
+              <stop offset="100%" style="stop-color:#800080"/>
+            </radialGradient>
+            <filter id="powderSparkle">
+              <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" seed="3"/>
+              <feDisplacementMap in="SourceGraphic" scale="3"/>
+              <feGaussianBlur stdDeviation="0.5"/>
+            </filter>
+            <filter id="mysticalAura">
+              <feGaussianBlur in="SourceGraphic" stdDeviation="1"/>
+              <feColorMatrix type="matrix" values="1 0 0 0 1   0 0 1 0 0   1 0 1 0 1  0 0 0 15 -6"/>
+            </filter>
+          </defs>
+          <circle fill="url(#powderGlow)" cx="12" cy="12" r="8" filter="url(#mysticalAura)">
+            <animate attributeName="r" values="7;8.5;7" dur="2s" repeatCount="indefinite"/>
+          </circle>
+          <g filter="url(#powderSparkle)">
+            <circle cx="10" cy="10" r="1" fill="#ffffff" opacity="0.8">
+              <animate attributeName="opacity" values="0.4;1;0.4" dur="1.2s" repeatCount="indefinite"/>
+              <animate attributeName="r" values="0.8;1.2;0.8" dur="1.2s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="14" cy="14" r="1" fill="#ffffff" opacity="0.8">
+              <animate attributeName="opacity" values="1;0.4;1" dur="1.2s" repeatCount="indefinite"/>
+              <animate attributeName="r" values="1.2;0.8;1.2" dur="1.2s" repeatCount="indefinite"/>
+            </circle>
+          </g>
+          <path fill="none" stroke="#ff99ff" stroke-width="0.3" d="M8,12 Q12,6 16,12" opacity="0.5" filter="url(#mysticalAura)">
+            <animate attributeName="d" values="M8,12 Q12,6 16,12;M8,13 Q12,7 16,13;M8,12 Q12,6 16,12" dur="3s" repeatCount="indefinite"/>
+          </path>
+        </svg>
+        <span class="item-count">0</span>
+      </div>
+      <div class="hotbar-slot" data-item="cheese">
+        <svg viewBox="0 0 24 24" width="30" height="30">
+          <defs>
+            <linearGradient id="cheeseGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#ffd700"/>
+              <stop offset="25%" style="stop-color:#ffed4a"/>
+              <stop offset="50%" style="stop-color:#ffd700"/>
+              <stop offset="75%" style="stop-color:#ffed4a"/>
+              <stop offset="100%" style="stop-color:#ffd700"/>
+            </linearGradient>
+            <filter id="cheeseShadow">
+              <feDropShadow dx="1" dy="1" stdDeviation="0.8" flood-color="#000000" flood-opacity="0.4"/>
+              <feGaussianBlur stdDeviation="0.5"/>
+            </filter>
+            <filter id="cheeseTexture">
+              <feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="3" seed="4"/>
+              <feDisplacementMap in="SourceGraphic" scale="2"/>
+            </filter>
+          </defs>
+          <path fill="url(#cheeseGradient)" filter="url(#cheeseShadow)" d="M4,8 L20,8 L18,18 L6,18 Z">
+            <animate attributeName="filter" values="url(#cheeseShadow);url(#cheeseShadow) brightness(1.2);url(#cheeseShadow)" dur="2s" repeatCount="indefinite"/>
+          </path>
+          <g filter="url(#cheeseTexture)">
+            <circle fill="#ffeb3b" cx="8" cy="11" r="1">
+              <animate attributeName="r" values="0.8;1.2;0.8" dur="2s" repeatCount="indefinite"/>
+            </circle>
+            <circle fill="#ffeb3b" cx="12" cy="14" r="1">
+              <animate attributeName="r" values="1.2;0.8;1.2" dur="2s" repeatCount="indefinite"/>
+            </circle>
+            <circle fill="#ffeb3b" cx="16" cy="12" r="1">
+              <animate attributeName="r" values="0.8;1.2;0.8" dur="2s" repeatCount="indefinite"/>
+            </circle>
+          </g>
+          <path fill="none" stroke="#ffd700" stroke-width="0.3" d="M6,13 Q12,11 18,13" opacity="0.5">
+            <animate attributeName="d" values="M6,13 Q12,11 18,13;M6,14 Q12,12 18,14;M6,13 Q12,11 18,13" dur="3s" repeatCount="indefinite"/>
+          </path>
+        </svg>
+        <span class="item-count">0</span>
+      </div>
+      <div class="hotbar-slot" data-item="angel-statue">
+        <svg viewBox="0 0 24 24" width="30" height="30">
+          <defs>
+            <linearGradient id="angelGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#ffffff"/>
+              <stop offset="25%" style="stop-color:#f0f0f0"/>
+              <stop offset="50%" style="stop-color:#ffffff"/>
+              <stop offset="75%" style="stop-color:#f0f0f0"/>
+              <stop offset="100%" style="stop-color:#ffffff"/>
+            </linearGradient>
+            <filter id="angelGlow">
+              <feGaussianBlur in="SourceGraphic" stdDeviation="1"/>
+              <feColorMatrix type="matrix" values="1 0 0 0 1   1 0 0 0 1   1 0 0 0 1  0 0 0 18 -7"/>
+            </filter>
+            <filter id="divineAura">
+              <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="5" seed="5"/>
+              <feDisplacementMap in="SourceGraphic" scale="3"/>
+            </filter>
+          </defs>
+          <path fill="url(#angelGradient)" filter="url(#angelGlow)" d="M12,2 L20,12 L16,22 H8 L4,12 Z">
+            <animate attributeName="filter" values="url(#angelGlow);url(#angelGlow) brightness(1.4);url(#angelGlow)" dur="2s" repeatCount="indefinite"/>
+          </path>
+          <path fill="none" stroke="#ffffff" stroke-width="0.5" d="M8,12 C8,8 12,6 12,6 C12,6 16,8 16,12" opacity="0.8" filter="url(#divineAura)">
+            <animate attributeName="opacity" values="0.5;1;0.5" dur="1.5s" repeatCount="indefinite"/>
+          </path>
+          <circle cx="12" cy="12" r="9" fill="none" stroke="#ffffff" stroke-width="0.2" opacity="0.4">
+            <animate attributeName="r" values="8;10;8" dur="3s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.2;0.5;0.2" dur="3s" repeatCount="indefinite"/>
+          </circle>
+        </svg>
+        <span class="item-count">0</span>
+      </div>
+    </div>
+    
+    <div id="respawn-screen" class="hidden">
+      <h2>Your Soul Has Been Claimed</h2>
+      <p>The darkness has momentarily ensnared your being, your consciousness scattered across the void. But within this ethereal prison, a flicker of hope remains. Your spirit, though weakened, refuses to surrender to the eternal night. Will you rise again to face the horrors that await?</p>
+      <button onclick="respawnPlayer()">Resurrect</button>
+    </div>
+  </div>
+  <script>
+    let titleMusic;
+    
+    window.onload = function() {
+      // Initialize and play title music
+      titleMusic = new Audio('[Official] Dove  - antihoney [ ezmp3.cc ].mp3');
+      titleMusic.loop = true;
+      titleMusic.volume = 0.4;
+      titleMusic.play().catch(err => console.log('Audio play error:', err));
+    }
+
+    function startGame() {
+      // Pause title music when starting game
+      if (titleMusic) {
+        titleMusic.pause();
+        titleMusic.currentTime = 0;
+      }
+      
+      document.getElementById('start-menu').classList.add('fade-out');
+      setTimeout(() => {
+        document.getElementById('start-menu').classList.add('hidden');
+        document.getElementById('game-container').classList.remove('hidden');
+        // Start the game loop when play is clicked
+        if (window.game) {
+          window.game.startGameLoop();
+        }
+      }, 1000);
+    }
+
+    function showCredits() {
+      document.getElementById('credits-overlay').classList.remove('hidden');
+    }
+
+    function hideCredits() {
+      document.getElementById('credits-overlay').classList.add('hidden');
+    }
+
+    function resumeGame() {
+      document.getElementById('esc-menu').classList.remove('active');
+      if (window.game) {
+        window.game.resumeGame();
+      }
+    }
+
+    function quitGame() {
+      document.getElementById('esc-menu').classList.add('hidden');
+      document.getElementById('game-container').classList.add('hidden');
+      document.getElementById('start-menu').classList.remove('hidden', 'fade-out');
+      if (window.game) {
+        window.game.reset();
+      }
+    }
+  </script>
+  <script src="game.js" type="module"></script>
+</body>
+</html>

