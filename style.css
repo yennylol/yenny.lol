@@ -176,7 +176,7 @@ section {
 
 .profile-container {
   background-color: rgba(0, 0, 0, 0.3);
-  padding: 10px; /* The last value was 10px, so I kept it */
+  padding: 10px;
   font-size: 30px;
   border-radius: 15px;
   box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
@@ -184,14 +184,25 @@ section {
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
   border: none;
+  position: relative; /* Ensure the container allows for absolute positioning of the view counter */
 }
+
 #view-count {
   position: absolute;
   bottom: 10px; /* Adjust distance from the bottom */
   left: 10px;  /* Adjust distance from the left */
-  color: white; /* Change text color to contrast the background */
+  color: white; /* Change text color to contrast with the background */
   font-size: 14px; /* Adjust font size */
+  display: flex;
+  align-items: center; /* Align the icon and text properly */
+  font-weight: bold; /* Make the view count text bold */
 }
+
+#view-count i {
+  margin-right: 5px; /* Space between the eye icon and the view count text */
+  font-size: 18px; /* Adjust the size of the icon */
+}
+
 
 /* Mobile Styles (smaller screens) */
 @media screen and (max-width: 768px) {
