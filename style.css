@@ -259,3 +259,36 @@ section {
   }
 }
 
+.weather-toggle-button {
+  position: fixed;
+  top: 70px;
+  left: 20px;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.weather-panel {
+  display: none;
+  position: fixed;
+  top: 110px;
+  left: 20px;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 10px;
+  border-radius: 5px;
+  z-index: 1000;
+}
+
+.weather-panel button {
+  display: block;
+  margin: 5px 0;
+  background: white;
+  color: black;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
