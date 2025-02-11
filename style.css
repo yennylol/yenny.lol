@@ -21,11 +21,11 @@ body {
   background-color: rgba(0, 0, 0, 0.5); /* Optional: dark background */
 }
 h1 {
-  font-size: 50px; /* Makes <h2> text bigger */
+  font-size: 35px; /* Makes <h2> text bigger */
 }
 
 p {
-  font-size: 20px; /* Makes paragraph text bigger */
+  font-size: 15px; /* Makes paragraph text bigger */
 }
 
 
