@@ -30,34 +30,45 @@
   <script src="snow.js" defer></script>
 
   <script type="module">
+    import { getDatabase, ref, set, get } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-database.js";
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
-    import { getDatabase, ref, get, set, onValue } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-database.js";
-  
+    
+    // Your Firebase config
     const firebaseConfig = {
       apiKey: "AIzaSyD7zpdvNHWJjkmsfXu-8JchR19Z5-H-xx8",
       authDomain: "yennydotlol.firebaseapp.com",
+      databaseURL: "https://yennydotlol-default-rtdb.firebaseio.com",
       projectId: "yennydotlol",
-      storageBucket: "yennydotlol.firebasestorage.app",
+      storageBucket: "yennydotlol.appspot.com",
       messagingSenderId: "204717283284",
       appId: "1:204717283284:web:9076be7bdff614cc586841",
       measurementId: "G-HXWK9VX0WK"
     };
-  
+    
+    // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
-    const viewCountRef = ref(db, 'viewCount');
-  
-    get(viewCountRef).then((snapshot) => {
-      let currentCount = snapshot.exists() ? snapshot.val() : 0;
-      currentCount += 1;
-      set(viewCountRef, currentCount);
-    });
-  
-    onValue(viewCountRef, (snapshot) => {
-      const viewCount = snapshot.val();
-      document.getElementById('view-count').textContent = `Views: ${viewCount}`;
-    });
+    
+    // Function to get and update view count
+    async function getAndUpdateViews() {
+      const viewCountRef = ref(db, 'views');
+      const snapshot = await get(viewCountRef);
+    
+      if (snapshot.exists()) {
+        let currentViews = snapshot.val();
+        currentViews++;
+        set(viewCountRef, currentViews);
+        document.getElementById("viewCounter").innerText = `Views: ${currentViews}`;
+      } else {
+        set(viewCountRef, 1); // First view
+        document.getElementById("viewCounter").innerText = "Views: 1";
+      }
+    }
+    
+    // Call the function to update the view counter on page load
+    getAndUpdateViews();
   </script>
+  
   
   
   <style>
@@ -183,7 +194,7 @@
             </a>
           </div>
         </div>
-        <div id="view-count">Loading views...</div>
+        <div id="viewCounter">Loading views...</div>
         <!-- Other profile content here -->
       </div>
       </section>
