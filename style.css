@@ -177,7 +177,7 @@ section {
 .profile-container {
   background-color: rgba(0, 0, 0, 0.3);
   padding: 10px;
-  font-size: 30px;
+  font-size: 30px; /* Keep this for other content */
   border-radius: 15px;
   box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
   display: inline-block;
@@ -192,14 +192,14 @@ section {
   bottom: 10px; /* Adjust distance from the bottom */
   left: 10px;  /* Adjust distance from the left */
   color: white; /* Change text color to contrast with the background */
-  font-size: 14px; /* Adjust font size */
+  font-size: 14px; /* Adjust font size for the view counter text */
   display: flex;
   align-items: center; /* Align the icon and text properly */
 }
 
 #viewCounter i {
   margin-right: 5px; /* Space between the eye icon and the view count text */
-  font-size: 12px; /* Adjust the size of the icon */
+  font-size: 14px; /* Adjust the size of the eye icon */
   vertical-align: middle; /* Ensure the icon is aligned with the text */
 }
 
