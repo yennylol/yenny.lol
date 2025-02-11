@@ -160,6 +160,7 @@ section {
   align-items: flex-end;
 }
 
+/* Default styles (for larger screens) */
 .profile-container {
   background-color: rgba(0, 0, 0, 0.3);
   padding: 20px;
@@ -170,6 +171,21 @@ section {
   -webkit-backdrop-filter: blur(15px);
   border: none;
 }
+
+/* Tablet screens (max-width: 768px) */
+@media (max-width: 768px) {
+  .profile-container {
+    padding: 15px;
+  }
+}
+
+/* Mobile screens (max-width: 480px) */
+@media (max-width: 480px) {
+  .profile-container {
+    padding: 10px;
+  }
+}
+
 
 /* Mobile Styles (smaller screens) */
 @media screen and (max-width: 768px) {
@@ -192,9 +208,6 @@ section {
     height: 120%;
   }
 
-  .profile-container {
-    padding: 15px;
-  }
 
   .mute-button {
     top: 15px;
@@ -224,9 +237,6 @@ section {
     height: 100%;
   }
 
-  .profile-container {
-    padding: 10px;
-  }
 
   .mute-button {
     top: 10px;
