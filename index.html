@@ -3,21 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
   <title id="tab-title">yenny</title>
-  <meta content="yenny.lol" property="og:title" />
-<meta content="yenny's profile page" property="og:description" />
-<meta content="https://yenny.lol" property="og:url" />
-<meta content="https://yenny.lol/images/glock.gif" property="og:image" />
-<meta content="#0a0a0a" data-react-helmet="true" name="theme-color" />
-  
-  <!-- Favicon with .ico format -->
-  <link rel="icon" type="image/x-icon" href="/images/frame1.ico">
 
+  <!-- Open Graph Metadata -->
+  <meta property="og:title" content="yenny.lol">
+  <meta property="og:description" content="yenny's profile page">
+  <meta property="og:url" content="https://yenny.lol">
+  <meta property="og:image" content="https://yenny.lol/images/glock.gif">
+  <meta name="theme-color" content="#0a0a0a">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="/images/frame1.ico">
+  
+  <!-- Stylesheets -->
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" crossorigin="anonymous">
+  
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
   <script src="script.js" defer></script>
   <script src="snow.js" defer></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   
   <style>
     body, html {
@@ -28,7 +33,6 @@
       overflow: hidden;
       font-family: Arial, sans-serif;
     }
-
     .mute-button {
       position: fixed;
       top: 20px;
@@ -41,7 +45,6 @@
       cursor: pointer;
       z-index: 1000;
     }
-
     .background-video {
       position: fixed;
       top: 50%;
@@ -52,8 +55,6 @@
       transform: translate(-50%, -50%);
       z-index: -1;
     }
-
-    /* New overlay styling */
     .overlay {
       position: absolute;
       top: 0;
@@ -70,8 +71,6 @@
       cursor: pointer;
       transition: opacity 0.5s ease-in-out;
     }
-
-    /* Apply blur to everything except the overlay */
     .blurred *:not(.overlay) {
       filter: blur(5px);
       pointer-events: none;
@@ -79,23 +78,20 @@
   </style>
   
   <script>
-    // Typewriter effect on the tab title
-    const titleText = "yenny";  // Set your desired title
-    let currentIndex = 0;
-    const speed = 150;  // Adjust speed of typing effect (milliseconds)
-
-    function typeWriterEffect() {
-      document.title = "";  // Clear previous title
-      if (currentIndex < titleText.length) {
-        document.title += titleText.charAt(currentIndex);
-        currentIndex++;
-        setTimeout(typeWriterEffect, speed); // Continue typing after delay
+    document.addEventListener("DOMContentLoaded", function () {
+      const titleText = "yenny";
+      let currentIndex = 0;
+      const speed = 150;
+      function typeWriterEffect() {
+        if (currentIndex < titleText.length) {
+          document.title = titleText.substring(0, currentIndex + 1);
+          currentIndex++;
+          setTimeout(typeWriterEffect, speed);
+        }
       }
-    }
-
-    typeWriterEffect();  // Start the effect as soon as the script loads
+      typeWriterEffect();
+    });
   </script>
-
 </head>
 <body>
   <button id="muteButton" class="mute-button">
@@ -109,51 +105,27 @@
   </video>
 
   <script>
-    const videos = [
-      "/videos/pizzatime.mp4",
-      "/videos/light.mp4",
-      "/videos/poison.mp4",
-      "/videos/freestyle.mp4",
-      "/videos/junkie.mp4",
-      "/videos/tellme.mp4",
-      "/videos/thewholeworldisfree.mp4",
-      "/videos/shitshow.mp4",
-      "/videos/iangoin.mp4",
-      "/videos/sayso.mp4",
-      "/videos/popstar.mp4",
-      "/videos/rolled1.mp4",
-      "/videos/feellikeuzi.mp4"
-    ];
-
-    function shuffleVideos() {
-      const randomIndex = Math.floor(Math.random() * videos.length);
+    document.addEventListener("DOMContentLoaded", function () {
+      const videos = [
+        "/videos/pizzatime.mp4", "/videos/light.mp4", "/videos/poison.mp4", "/videos/freestyle.mp4", "/videos/junkie.mp4",
+        "/videos/tellme.mp4", "/videos/thewholeworldisfree.mp4", "/videos/shitshow.mp4", "/videos/iangoin.mp4",
+        "/videos/sayso.mp4", "/videos/popstar.mp4", "/videos/rolled1.mp4", "/videos/feellikeuzi.mp4"
+      ];
       const videoElement = document.getElementById('background-video');
-      videoElement.src = videos[randomIndex];
+      videoElement.src = videos[Math.floor(Math.random() * videos.length)];
       videoElement.load();
       videoElement.play();
-    }
-
-    shuffleVideos();
-    const muteButton = document.getElementById('muteButton');
-    const muteIcon = document.getElementById('muteIcon');
-    const backgroundVideo = document.getElementById('background-video');
-
-    muteButton.addEventListener('click', function () {
-      if (backgroundVideo.muted) {
-        backgroundVideo.muted = false;
-        muteIcon.src = "/images/Sound_white.png"; // Unmuted icon
-      } else {
-        backgroundVideo.muted = true;
-        muteIcon.src = "/images/Sound_mute_white.png"; // Muted icon
-      }
+      
+      const muteButton = document.getElementById('muteButton');
+      const muteIcon = document.getElementById('muteIcon');
+      muteButton.addEventListener('click', function () {
+        videoElement.muted = !videoElement.muted;
+        muteIcon.src = videoElement.muted ? "/images/Sound_mute_white.png" : "/images/Sound_white.png";
+      });
     });
   </script>
 
-  <!-- "Click to enter" overlay -->
-  <div id="enterOverlay" class="overlay">
-    click to enter...
-  </div>
-
+  <div id="enterOverlay" class="overlay">click to enter...</div>
   <main>
     <div class="profile-container">
       <section id="profile">
@@ -178,20 +150,13 @@
       </section>
     </div>
   </main>
-
+  
   <script>
-    // Handle click to enter event
-    document.getElementById('enterOverlay').addEventListener('click', function() {
-      // Play the background video
-      const videoElement = document.getElementById('background-video');
-      videoElement.play();  // Ensure video starts playing if paused
-
-      // Remove the overlay and blur effect
-      document.getElementById('enterOverlay').style.display = 'none';
+    document.getElementById('enterOverlay').addEventListener('click', function () {
+      document.getElementById('background-video').play();
+      this.style.display = 'none';
       document.body.classList.remove('blurred');
     });
-
-    // Initially apply the blur effect to the body
     document.body.classList.add('blurred');
   </script>
 </body>
