@@ -8,6 +8,10 @@
 }
 
 /* Base styles */
+html {
+  font-size: 16px; /* Ensures rem values are predictable */
+}
+
 body {
   font-family: 'HKRequisite', Arial, sans-serif; /* Use the custom font */
   margin: 0;
@@ -20,15 +24,18 @@ body {
   overflow: hidden;
   background-color: rgba(0, 0, 0, 0.5); /* Optional: dark background */
 }
+
 h2 {
-  font-size: 40px !important; /* Makes <h2> text bigger */
+  font-size: 40px !important;
+  line-height: 1.2 !important;
+  transform: none !important;
 }
 
 p {
-  font-size: 20px !important; /* Makes paragraph text bigger */
+  font-size: 20px !important;
+  line-height: 1.5 !important;
+  transform: none !important;
 }
-
-
 
 .background-video {
   position: fixed;
@@ -203,12 +210,6 @@ section {
   .profile-container {
     padding: 15px;
   }
-
-  .mute-button {
-    top: 15px;
-    left: 15px;
-    padding: 8px 12px;
-  }
 }
 
 /* Extra small screens (phones) */
@@ -234,11 +235,5 @@ section {
 
   .profile-container {
     padding: 10px;
-  }
-
-  .mute-button {
-    top: 10px;
-    left: 10px;
-    padding: 6px 10px;
   }
 }
