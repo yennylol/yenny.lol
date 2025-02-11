@@ -184,7 +184,7 @@ section {
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
   border: none;
-  position: relative; /* Ensure the container allows for absolute positioning of the view counter */
+  position: relative; /* Allow absolute positioning inside */
 }
 
 #view-count {
@@ -195,12 +195,12 @@ section {
   font-size: 14px; /* Adjust font size */
   display: flex;
   align-items: center; /* Align the icon and text properly */
-  font-weight: bold; /* Make the view count text bold */
 }
 
 #view-count i {
   margin-right: 5px; /* Space between the eye icon and the view count text */
-  font-size: 18px; /* Adjust the size of the icon */
+  font-size: 12px; /* Adjust the size of the icon */
+  vertical-align: middle; /* Ensure the icon is aligned with the text */
 }
 
 
