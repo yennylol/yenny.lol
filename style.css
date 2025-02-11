@@ -20,7 +20,7 @@ body {
   overflow: hidden;
   background-color: rgba(0, 0, 0, 0.5); /* Optional: dark background */
 }
-h1 {
+h2 {
   font-size: 35px; /* Makes <h2> text bigger */
 }
 
