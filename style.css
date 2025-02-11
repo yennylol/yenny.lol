@@ -197,9 +197,16 @@ section {
     font-size: 1.5rem;
   }
 
+  .social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 15px; /* Adjust gap to prevent overlap */
+  }
+
   .social-icon {
     width: 80px;
     height: 80px;
+    flex-shrink: 0; /* Prevents shrinking */
   }
 
   .social-icon i, .social-icon svg {
@@ -223,6 +230,12 @@ section {
     font-size: 1.2rem;
   }
 
+  .social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 10px; /* Ensure spacing between icons */
+  }
+
   .social-icon {
     width: 60px;
     height: 60px;
@@ -237,3 +250,12 @@ section {
     padding: 10px;
   }
 }
+
+/* Extra small screens (very narrow phones) */
+@media screen and (max-width: 400px) {
+  .social-icons {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
