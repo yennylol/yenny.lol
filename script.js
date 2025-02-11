@@ -51,5 +51,4 @@ document.addEventListener('DOMContentLoaded', async () => {
       snowCanvas.style.display = "none";
       rainCanvas.style.display = "none";
     });
-  });
   
