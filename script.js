@@ -5,32 +5,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const rainCanvas = document.getElementById("rainCanvas");
   let currentWeather = "snow"; // Default weather is snow
 
-  // Toggle the weather control panel
-  weatherToggleButton.addEventListener("click", () => {
-    weatherPanel.style.display = weatherPanel.style.display === "none" || weatherPanel.style.display === "" ? "block" : "none";
-  });
-
-  // Snow weather functionality
-  document.getElementById("snowButton").addEventListener("click", () => {
-    currentWeather = "snow";
-    snowCanvas.style.display = "block";
-    rainCanvas.style.display = "none";
-  });
-
-  // Rain weather functionality
-  document.getElementById("rainButton").addEventListener("click", () => {
-    currentWeather = "rain";
-    snowCanvas.style.display = "none";
-    rainCanvas.style.display = "block";
-  });
-
-  // No weather functionality
-  document.getElementById("noWeatherButton").addEventListener("click", () => {
-    currentWeather = "none";
-    snowCanvas.style.display = "none";
-    rainCanvas.style.display = "none";
-  });
-
   // Initialize snow effect
   initSnow();
 });

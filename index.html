@@ -4,6 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title id="tab-title">yenny</title>
+  
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+
 
   <!-- Open Graph Metadata -->
   <meta property="og:title" content="yenny.lol">
@@ -23,6 +28,37 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
   <script src="script.js" defer></script>
   <script src="snow.js" defer></script>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
+    import { getDatabase, ref, get, set, onValue } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-database.js";
+  
+    const firebaseConfig = {
+      apiKey: "AIzaSyD7zpdvNHWJjkmsfXu-8JchR19Z5-H-xx8",
+      authDomain: "yennydotlol.firebaseapp.com",
+      projectId: "yennydotlol",
+      storageBucket: "yennydotlol.firebasestorage.app",
+      messagingSenderId: "204717283284",
+      appId: "1:204717283284:web:9076be7bdff614cc586841",
+      measurementId: "G-HXWK9VX0WK"
+    };
+  
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const viewCountRef = ref(db, 'viewCount');
+  
+    get(viewCountRef).then((snapshot) => {
+      let currentCount = snapshot.exists() ? snapshot.val() : 0;
+      currentCount += 1;
+      set(viewCountRef, currentCount);
+    });
+  
+    onValue(viewCountRef, (snapshot) => {
+      const viewCount = snapshot.val();
+      document.getElementById('view-count').textContent = `Views: ${viewCount}`;
+    });
+  </script>
+  
   
   <style>
     body, html {
@@ -129,6 +165,9 @@
   <main>
     <div class="profile-container">
       <section id="profile">
+        <div id="view-count">Loading views...</div>
+  <!-- Other profile content here -->
+</div>
         <div class="avatar">
           <img src="/images/scarface.gif" alt="Profile Picture" style="width: 200px; height: 200px; border-radius: 50%;">
         </div>

@@ -185,6 +185,13 @@ section {
   -webkit-backdrop-filter: blur(15px);
   border: none;
 }
+#view-count {
+  position: absolute;
+  bottom: 10px; /* Adjust distance from the bottom */
+  left: 10px;  /* Adjust distance from the left */
+  color: white; /* Change text color to contrast the background */
+  font-size: 14px; /* Adjust font size */
+}
 
 /* Mobile Styles (smaller screens) */
 @media screen and (max-width: 768px) {
@@ -257,38 +264,4 @@ section {
     flex-direction: column;
     align-items: center;
   }
-}
-
-.weather-toggle-button {
-  position: fixed;
-  top: 70px;
-  left: 20px;
-  background-color: rgba(0, 0, 0, 0.5);
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 5px;
-  cursor: pointer;
-  z-index: 1000;
-}
-
-.weather-panel {
-  display: none;
-  position: fixed;
-  top: 110px;
-  left: 20px;
-  background: rgba(0, 0, 0, 0.7);
-  padding: 10px;
-  border-radius: 5px;
-  z-index: 1000;
-}
-
-.weather-panel button {
-  display: block;
-  margin: 5px 0;
-  background: white;
-  color: black;
-  border: none;
-  padding: 5px 10px;
-  cursor: pointer;
 }
