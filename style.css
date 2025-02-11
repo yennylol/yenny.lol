@@ -12,6 +12,15 @@ body {
   background-color: rgba(0, 0, 0, 0.5);
 }
 
+@font-face {
+  font-family: 'YourCustomFont';
+  src: url('/HKRequisite-Medium.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+
 .background-video {
   position: fixed;
   top: 0;
