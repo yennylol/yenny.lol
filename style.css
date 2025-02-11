@@ -1,6 +1,15 @@
+/* Define the custom font with .woff/.woff2 */
+@font-face {
+  font-family: 'HKRequisite';
+  src: url('/fonts/HKRequisite-Medium.woff2') format('woff2'),
+       url('/fonts/HKRequisite-Medium.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
 /* Base styles */
 body {
-  font-family: 'HKRequisite-Medium', sans-serif;
+  font-family: 'HKRequisite', sans-serif; /* Use the custom font */
   margin: 0;
   padding: 0;
   color: #fff;
@@ -9,14 +18,7 @@ body {
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  background-color: rgba(0, 0, 0, 0.5);
-}
-
-@font-face {
-  font-family: 'YourCustomFont';
-  src: url('/HKRequisite-Medium.otf') format('opentype');
-  font-weight: normal;
-  font-style: normal;
+  background-color: rgba(0, 0, 0, 0.5); /* Optional: dark background */
 }
 
 
