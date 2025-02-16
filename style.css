@@ -37,28 +37,6 @@ p {
   transform: none !important;
 }
 
-/* Spotify Now Playing Container */
-.spotify-now-playing-container {
-  position: fixed;
-  top: 10px;
-  right: 10px;
-  z-index: 1000;
-  background-color: rgba(255, 255, 255, 0.9); /* Slightly opaque background */
-  padding: 10px;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  display: flex;
-  align-items: center;
-  max-width: 320px; /* adjust as needed */
-}
-
-/* Ensure the image scales properly */
-#spotify-now-playing {
-  width: 100%;
-  height: auto;
-  border-radius: 8px;
-  display: block;
-}
 
 .background-video {
   position: fixed;
