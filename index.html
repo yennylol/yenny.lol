@@ -198,7 +198,9 @@
   <div class="spotify-now-playing-container">
     <img id="spotify-now-playing" src="https://spotifyyenny.vercel.app/api" alt="Spotify Now Playing">
   </div>
+  
   <script>
+    // Refresh the image every 30 seconds by appending the current timestamp to the URL
     setInterval(function() {
       const img = document.getElementById('spotify-now-playing');
       // Cache bust the URL by appending the current timestamp
