@@ -23,19 +23,20 @@ body {
   align-items: center;
   overflow: hidden;
   background-color: rgba(0, 0, 0, 0.5); /* Optional: dark background */
+  flex-direction: column;  /* Ensure elements stack vertically */
 }
+
 /* Spotify Now Playing Container */
 #spotify-container {
   width: 100%;
-  max-width: 350px;  /* Adjusts the max width for better responsiveness */
+  max-width: 350px;
   margin: 20px auto;
+  position: fixed; /* Fix its position on the page */
+  top: 20px; /* Adjust top margin */
+  z-index: 1;  /* Keep it behind the profile container */
   text-align: center;
-  background-color: rgba(0, 0, 0, 0.7); /* Dark transparent background */
-  border-radius: 12px;
-  padding: 15px;
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
-  backdrop-filter: blur(10px); /* Adds a blur effect to the background */
 }
+
 
 /* Styling the Spotify iframe */
 #spotify-player {
@@ -218,7 +219,7 @@ section {
 .profile-container {
   background-color: rgba(0, 0, 0, 0.3);
   padding: 10px;
-  font-size: 30px; /* Keep this for other content */
+  font-size: 30px;
   border-radius: 15px;
   box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
   display: inline-block;
@@ -226,6 +227,7 @@ section {
   -webkit-backdrop-filter: blur(15px);
   border: none;
   position: relative; /* Allow absolute positioning inside */
+  z-index: 10; /* Ensures the profile container stays on top */
 }
 
 #viewCounter {
