@@ -24,47 +24,6 @@ body {
   overflow: hidden;
   background-color: rgba(0, 0, 0, 0.5); /* Optional: dark background */
 }
-/* Spotify Now Playing Container */
-#spotify-container {
-  width: 100%;
-  max-width: 350px;  /* Adjusts the max width for better responsiveness */
-  margin: 20px auto;
-  text-align: center;
-  background-color: rgba(0, 0, 0, 0.7); /* Dark transparent background */
-  border-radius: 12px;
-  padding: 15px;
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
-  backdrop-filter: blur(10px); /* Adds a blur effect to the background */
-}
-
-/* Styling the Spotify iframe */
-#spotify-player {
-  width: 100%;
-  height: 80px;
-  border-radius: 8px;  /* Rounded corners for the player */
-  border: none;
-  transition: transform 0.3s ease;
-}
-
-/* On hover, zoom in the Spotify player */
-#spotify-player:hover {
-  transform: scale(1.05);
-}
-
-/* Display message when no music is playing */
-#spotify-container p {
-  color: #fff;
-  font-size: 16px;
-  margin-top: 20px;
-  font-weight: 600;
-  text-align: center;
-  opacity: 0.8;
-}
-
-/* Optional: add some space between elements if there are other items next to the Spotify player */
-#spotify-container + * {
-  margin-top: 20px;
-}
 
 h2 {
   font-size: 40px !important;
