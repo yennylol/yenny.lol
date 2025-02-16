@@ -202,9 +202,10 @@
     setInterval(function() {
       const img = document.getElementById('spotify-now-playing');
       // Cache bust the URL by appending the current timestamp
-      img.src = img.src.split('?')[0] + '?' + new Date().getTime();
-    }, 30000); // refresh every 30 seconds
+      img.src = "https://spotifyyenny.vercel.app/api?" + new Date().getTime();
+    }, 30000); // Refresh every 30 seconds
   </script>
+  
   
   
   <button id="muteButton" class="mute-button">
