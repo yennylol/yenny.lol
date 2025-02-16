@@ -83,9 +83,9 @@ function initSnow() {
   animate();
 }
 // Store your refresh token securely (this should ideally be in your backend for security purposes)
-const refreshToken = "AQDS88uNfvPvipHTrigrfFz5Jbn2r3bf2tS0qiJ9dts9_cB06jCvMaodAiGZoHdDsEVVC_mXE8wdxpEqEXQzCNgnub0BkkvuQRw4P2RSUDD85E6RhVzpjD6GWyWRqH5BbjM"; // Replace with your actual refresh token
+const refreshToken = "BQBK_3GjoNQPa1W9IAITixvpwKpgUcP8BJy6WtI40YC62ltEbOO0I0wblAQBBpzOOkZb6zLq8bvnff26zNuTdeDplepYkPYtCc7d0vnjpqd7QLwXQJJWkNKBmYJOsU3bn5QeHkTIGTvygraDWhUEf05397UGv5m22mKHXSA6nh"; // Replace with your actual refresh token
 
-let accessToken = "BQBK_3GjoNQPa1W9IAITixvpwKpgUcP8BJy6WtI40YC62ltEbOO0I0wblAQBBpzOOkZb6zLq8bvnff26zNuTdeDplepYkPYtCc7d0vnjpqd7QLwXQJJWkNKBmYJOsU3bn5QeHkTIGTvygraDWhUEf05397UGv5m22mKHXSA6nh-_jDIcUV4ipxvs2e1kOhyxhqhwsl7wt-KgOj6LoBgje3kGraSFdWctqBdwKRJuMDADfg"; // Replace with your initial access token
+let accessToken = "AQDS88uNfvPvipHTrigrfFz5Jbn2r3bf2tS0qiJ9dts9_cB06jCvMaodAiGZoHdDsEVVC_mXE8wdxpEqEXQzCNgnub0BkkvuQRw4P2RSUDD85E6RhVzpjD6GWyWRqH5BbjM-_jDIcUV4ipxvs2e1kOhyxhqhwsl7wt-KgOj6LoBgje3kGraSFdWctqBdwKRJuMDADfg"; // Replace with your initial access token
 
 // Function to refresh the access token using the refresh token
 function refreshAccessToken() {
