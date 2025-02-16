@@ -82,17 +82,3 @@ function initSnow() {
   initParticles();
   animate();
 }
-window.onload = function() {
-  fetch('https://your-vercel-app-url.com') // Replace this with your actual Vercel app URL
-      .then(response => response.json())
-      .then(data => {
-          const songName = data.song;  // Adjust this based on how your Vercel app returns the song name
-          const albumCoverUrl = data.cover;  // Adjust based on the Vercel app's response for cover image URL
-
-          document.getElementById('spotify-song-name').innerText = songName;
-          document.getElementById('spotify-cover').src = albumCoverUrl;
-      })
-      .catch(err => {
-          console.log('Error fetching Spotify data:', err);
-      });
-};

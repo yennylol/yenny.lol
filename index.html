@@ -196,11 +196,17 @@
 </head>
 <body>
   <div class="spotify-now-playing-container">
-    <img id="spotify-cover" src="" alt="Album Cover" class="spotify-cover">
-    <div id="spotify-song-info" class="spotify-song-info">
-        <p id="spotify-song-name">Loading...</p>
-    </div>
-</div>
+    <img id="spotify-now-playing" src="https://spotifyyenny.vercel.app/api" alt="Spotify Now Playing">
+  </div>
+  <script>
+    setInterval(function() {
+      const img = document.getElementById('spotify-now-playing');
+      // Cache bust the URL by appending the current timestamp
+      img.src = img.src.split('?')[0] + '?' + new Date().getTime();
+    }, 30000); // refresh every 30 seconds
+  </script>
+  
+  
   <button id="muteButton" class="mute-button">
     <img id="muteIcon" src="/images/Sound_white.png" alt="Sound Icon" width="30" height="30">
   </button>
