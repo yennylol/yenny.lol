@@ -246,27 +246,41 @@
   </style>
   
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const titleText = "yenny";
-      let currentIndex = 0;
-      const speed = 150;
-      function typeWriterEffect() {
-        if (currentIndex < titleText.length) {
-          document.title = titleText.substring(0, currentIndex + 1);
-          currentIndex++;
-          setTimeout(typeWriterEffect, speed);
-        }
-      }
-      typeWriterEffect();
-    });
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+//from: https://stackoverflow.com/a/39914235/14251221
+
+var str = 'yenny';
+document.title = '';
+async function typewriteTitle() {
+  for (let i = 0; i < str.length; i++) {
+    document.title += str.charAt(i);
+    console.log(document.title); //debug only
+    await sleep(200);
+  }
+}
+typewriteTitle();
+      document.addEventListener("DOMContentLoaded", function () {
+  const video = document.getElementById("background-video");
+  const volumeSlider = document.getElementById("volume-slider");
+
+  volumeSlider.addEventListener("input", function () {
+    video.volume = volumeSlider.value;
+  });
+});
+
   </script>
 </head>
 <body>
   
   
-  <input type="range" id="volume-slider" min="0" max="1" step="0.1" value="1">
-
-
+  <div class="volume-container">
+    <label for="volume-slider">Volume</label>
+    <input type="range" id="volume-slider" min="0" max="1" step="0.1" value="1">
+  </div>
+  
   <canvas id="snowCanvas"></canvas>
   <video id="background-video" autoplay loop playsinline class="background-video">
     <source id="video-source" src="/videos/pizzatime.mp4" type="video/mp4">
@@ -287,13 +301,8 @@
       videoElement.load();
       videoElement.play();
       
-      const muteButton = document.getElementById('muteButton');
-      const muteIcon = document.getElementById('muteIcon');
-      muteButton.addEventListener('click', function () {
-        videoElement.muted = !videoElement.muted;
-        muteIcon.src = videoElement.muted ? "/images/Sound_mute_white.png" : "/images/Sound_white.png";
+
       });
-    });
   </script>
 
   <div id="enterOverlay" class="overlay">click to enter...</div>

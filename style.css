@@ -47,6 +47,25 @@ p {
   object-fit: cover;
   z-index: -1;
 }
+.volume-container {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  background: rgba(50, 50, 50, 0.5); /* Semi-transparent gray */
+  backdrop-filter: blur(10px); /* Blurry effect */
+  padding: 10px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 1000;
+}
+
+#volume-slider {
+  width: 100px;
+  cursor: pointer;
+}
+
 
 header {
   display: none;

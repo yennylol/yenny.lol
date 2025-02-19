@@ -1,6 +1,8 @@
-const video = document.querySelector("video"); // Select your background video
-const volumeSlider = document.getElementById("volume-slider");
+document.addEventListener("DOMContentLoaded", function () {
+  const video = document.getElementById("background-video");
+  const volumeSlider = document.getElementById("volume-slider");
 
-volumeSlider.addEventListener("input", () => {
+  volumeSlider.addEventListener("input", function () {
     video.volume = volumeSlider.value;
+  });
 });
