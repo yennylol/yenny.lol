@@ -3,11 +3,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const volumeSlider = document.getElementById("volume-slider");
 
   volumeSlider.addEventListener("input", function () {
-    video.volume = volumeSlider.value;
+    video.volume = parseFloat(volumeSlider.value); // Ensure it's a number
   });
-});
-document.addEventListener("DOMContentLoaded", () => {
-  const video = document.querySelector("video");
 
   // Pause the video initially
   video.pause();
