@@ -6,3 +6,14 @@ document.addEventListener("DOMContentLoaded", function () {
     video.volume = volumeSlider.value;
   });
 });
+document.addEventListener("DOMContentLoaded", () => {
+  const video = document.querySelector("video");
+
+  // Pause the video initially
+  video.pause();
+
+  // Wait for user interaction to play
+  document.addEventListener("click", () => {
+      video.play();
+  }, { once: true }); // Ensures it runs only once
+});
