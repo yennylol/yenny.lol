@@ -300,22 +300,27 @@ document.addEventListener("DOMContentLoaded", function () {
     const videoElement = document.getElementById('background-video');
 
     function getRandomVideo(exclude) {
-        let filteredVideos = videos.filter(video => video !== exclude);
-        return filteredVideos[Math.floor(Math.random() * filteredVideos.length)];
+        let availableVideos = videos.filter(video => video !== exclude);
+        return availableVideos[Math.floor(Math.random() * availableVideos.length)];
     }
 
     function playRandomVideo() {
         const nextVideo = getRandomVideo(videoElement.src);
         videoElement.src = nextVideo;
         videoElement.load();
-        videoElement.play();
+
+        // Ensure the video plays when it's ready
+        videoElement.addEventListener("canplaythrough", function startPlayback() {
+            videoElement.play().catch(error => console.warn("Autoplay failed:", error));
+            videoElement.removeEventListener("canplaythrough", startPlayback);
+        });
     }
 
-    // Play an initial random video
+    // Play first video
     playRandomVideo();
 
-    // When the video ends, play a different one
-    videoElement.addEventListener('ended', playRandomVideo);
+    // Change video when it ends
+    videoElement.addEventListener("ended", playRandomVideo);
 });
 
   </script>
