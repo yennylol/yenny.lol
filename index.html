@@ -288,21 +288,36 @@ typewriteTitle();
   </video>
 
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const videos = [
+document.addEventListener("DOMContentLoaded", function () {
+    const videos = [
         "/videos/pizzatime.mp4", "/videos/light.mp4", "/videos/poison.mp4", "/videos/freestyle.mp4", "/videos/junkie.mp4",
         "/videos/tellme.mp4", "/videos/thewholeworldisfree.mp4", "/videos/shitshow.mp4", "/videos/iangoin.mp4",
         "/videos/sayso.mp4", "/videos/popstar.mp4", "/videos/rolled1.mp4", "/videos/feellikeuzi.mp4",
         "/videos/callonme.mp4", "/videos/withdrawals.mp4", "/videos/whenimgone.mp4", "/videos/sparky.mp4",
         "/videos/2024freestyle.mp4", "/videos/nothinglikeuuu.mp4", "/videos/fuckswag.mp4"
-            ];
-      const videoElement = document.getElementById('background-video');
-      videoElement.src = videos[Math.floor(Math.random() * videos.length)];
-      videoElement.load();
-      videoElement.play();
-      
+    ];
 
-      });
+    const videoElement = document.getElementById('background-video');
+
+    function getRandomVideo(exclude) {
+        let filteredVideos = videos.filter(video => video !== exclude);
+        return filteredVideos[Math.floor(Math.random() * filteredVideos.length)];
+    }
+
+    function playRandomVideo() {
+        const nextVideo = getRandomVideo(videoElement.src);
+        videoElement.src = nextVideo;
+        videoElement.load();
+        videoElement.play();
+    }
+
+    // Play an initial random video
+    playRandomVideo();
+
+    // When the video ends, play a different one
+    videoElement.addEventListener('ended', playRandomVideo);
+});
+
   </script>
 
   <div id="enterOverlay" class="overlay">click to enter...</div>
