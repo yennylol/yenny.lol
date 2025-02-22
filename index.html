@@ -283,13 +283,13 @@ typewriteTitle();
   
   <canvas id="snowCanvas"></canvas>
   <video id="background-video" autoplay loop playsinline class="background-video">
-    <source id="video-source" type="video/mp4">
+    <source id="video-source" src="/videos/pizzatime.mp4" type="video/mp4">
     Your browser does not support HTML5 video.
   </video>
 
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-        const videos = [
+      const videos = [
             "/videos/pizzatime.mp4", "/videos/light.mp4", "/videos/poison.mp4", "/videos/freestyle.mp4", "/videos/junkie.mp4",
             "/videos/tellme.mp4", "/videos/thewholeworldisfree.mp4", "/videos/shitshow.mp4", "/videos/iangoin.mp4",
             "/videos/sayso.mp4", "/videos/popstar.mp4", "/videos/rolled1.mp4", "/videos/feellikeuzi.mp4",
@@ -297,35 +297,13 @@ typewriteTitle();
             "/videos/2024freestyle.mp4", "/videos/nothinglikeuuu.mp4", "/videos/fuckswag.mp4"
         ];
     
-        const videoElement = document.getElementById('background-video');
-        const blurScreen = document.getElementById('blur-screen'); // Assuming there's an overlay div with this ID
-    
-        function getRandomVideo(exclude) {
-            let availableVideos = videos.filter(video => video !== exclude);
-            return availableVideos[Math.floor(Math.random() * availableVideos.length)];
-        }
-    
-        function playRandomVideo() {
-            const nextVideo = getRandomVideo(videoElement.src);
-            videoElement.src = nextVideo;
-            videoElement.load();
-    
-            // Play video only after it can start playing
-            videoElement.addEventListener("canplaythrough", function startPlayback() {
-                videoElement.play().catch(error => console.warn("Autoplay failed:", error));
-                videoElement.removeEventListener("canplaythrough", startPlayback);
-            });
-        }
-    
-        // Wait for user interaction before playing
-        blurScreen.addEventListener("click", function () {
-            blurScreen.style.display = "none"; // Hide the blur screen
-            playRandomVideo();
-        });
-    
-        // Change video when it ends
-        videoElement.addEventListener("ended", playRandomVideo);
-    });
+      const videoElement = document.getElementById('background-video');
+      videoElement.src = videos[Math.floor(Math.random() * videos.length)];
+      videoElement.load();
+      videoElement.play();
+      
+
+      });
     </script>
     
 
