@@ -41,41 +41,54 @@ p {
   position: fixed;
   top: 10px;
   right: 10px;
-  background-color: rgba(0, 0, 0, 0.5);
-  border-radius: 15px;
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 10px;
   padding: 15px;
-  width: 300px;
+  width: 250px;
   color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   font-family: 'Arial', sans-serif;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  z-index: 1000;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
 }
 
-.widget-header {
+.lanyard-widget .widget-header {
   display: flex;
   align-items: center;
   margin-bottom: 10px;
 }
 
-.avatar {
-  width: 50px;
-  height: 50px;
+.lanyard-widget .avatar {
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   margin-right: 10px;
 }
 
-h2 {
-  font-size: 18px;
-  margin: 0;
+.lanyard-widget #discord-name {
+  font-weight: bold;
 }
 
 .activity-info {
-  font-size: 14px;
+  text-align: center;
+  margin-top: 10px;
 }
 
-#discord-activity {
-  font-weight: bold;
+#activity-image,
+#spotify-album-art {
+  width: 100px;
+  height: 100px;
+  border-radius: 10px;
+  margin-top: 10px;
 }
+
+#discord-activity,
+#discord-details {
+  font-size: 14px;
+  margin-top: 5px;
+}
+
 
 
 
