@@ -19,6 +19,8 @@ const userId = '1221362871649304626'; // Replace with your Discord ID
 fetch(`https://api.lanyard.rest/v1/users/${userId}`)
   .then(response => response.json())
   .then(data => {
+    console.log(data);  // Add this line to inspect the response
+
     const user = data.data.discord_user;
     const activity = data.data.activities[0];
     const discordStatus = data.data.discord_status;
@@ -48,7 +50,6 @@ fetch(`https://api.lanyard.rest/v1/users/${userId}`)
     }
 
     // Set Discord status (Optional, could display like 'Do Not Disturb')
-    // For example, you could update the color of the widget based on status:
     if (discordStatus === 'dnd') {
       document.querySelector('.lanyard-widget').style.borderColor = '#ff0000'; // Red for DND
     }
@@ -57,3 +58,4 @@ fetch(`https://api.lanyard.rest/v1/users/${userId}`)
     console.error('Error fetching Discord activity:', error);
     document.getElementById('discord-activity').textContent = 'Error loading activity.';
   });
+
