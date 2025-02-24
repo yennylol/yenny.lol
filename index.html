@@ -29,6 +29,9 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" crossorigin="anonymous">
   
   <!-- Scripts -->
+  <script src="lanyard.js"></script>
+  <script src="config.js"></script>
+  <script src="init.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
   <script src="script.js" defer></script>
   <script src="snow.js" defer></script>
@@ -334,57 +337,17 @@ typewriteTitle();
       });
     </script>
     
-    <div id="lanyard-container" class="blurry-box">
-      <p id="discord-status">Loading...</p>
-  </div>
-  
-  <script>
-      const userId = "1221362871649304626"; // Replace with your Discord ID
-      const ws = new WebSocket("wss://api.lanyard.rest/socket");
-  
-      ws.onopen = () => {
-          ws.send(JSON.stringify({ op: 2, d: { subscribe_to_id: userId } }));
-      };
-  
-      ws.onmessage = (event) => {
-          const data = JSON.parse(event.data);
-          if (data.t === "INIT_STATE" || data.t === "PRESENCE_UPDATE") {
-              updateLanyardUI(data.d);
-          }
-      };
-  
-      function updateLanyardUI(data) {
-          const statusText = document.getElementById("discord-status");
-          
-          if (data.discord_status) {
-              statusText.innerText = `Discord Status: ${data.discord_status.toUpperCase()}`;
-          }
-  
-          if (data.activities.length > 0) {
-              const activity = data.activities[0]; // First activity
-              statusText.innerText += `\nPlaying: ${activity.name}`;
-          }
-      }
-  </script>
-  
-  <style>
-      .blurry-box {
-          position: fixed;
-          top: 20px;
-          right: 20px;
-          background: rgba(0, 0, 0, 0.3);
-          backdrop-filter: blur(10px);
-          border-radius: 10px;
-          padding: 15px;
-          color: white;
-          width: 250px;
-          text-align: center;
-          font-family: Arial, sans-serif;
-          font-size: 14px;
-          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-          z-index: 1000;
-      }
-  </style>
+    <div class="display">
+      <div class="userinfo" id="margin">
+          <img id="avatar" draggable="false" alt="profile picture" width="64" height="64"
+              src="https://cdn.discordapp.com/embed/avatars/0.png" />
+          <span id="display"></span>
+          <span id="username"></span>
+          <span id="status"><img id="status-emoji" draggable="false" alt=" " height="16" /> <span id="status-text"></span></span>
+          <a id="viewuser" class="button" type="button">view user</a>
+      </div>
+      <div class="activities">
+      </div>
   
   <div id="enterOverlay" class="overlay">click to enter...</div>
   <main>

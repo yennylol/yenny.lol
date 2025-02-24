@@ -7,24 +7,39 @@
   font-style: normal;
 }
 
-/* Base styles */
-html {
-  font-size: 16px; /* Ensures rem values are predictable */
+/* Global Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
+/* Root Variables */
+:root {
+    --bg-clr: rgb(26, 26, 34);
+    --fg-clr: rgb(17, 17, 22);
+    --accent-clr: rgb(78, 46, 121);
+    --text-clr: white;
+    --hidden-text-clr: rgb(170, 170, 170);
+    --border-radius: 0.45rem;
+    --backdrop-url: url("");
+    
+    font-family: 'HKRequisite', Arial, sans-serif;
+    background: var(--bg-clr);
+    color: var(--text-clr);
+}
+
+/* Body Styles */
 body {
-  font-family: 'HKRequisite', Arial, sans-serif; /* Use the custom font */
-  margin: 0;
-  padding: 0;
-  color: #fff;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-  background-color: rgba(0, 0, 0, 0.5); /* Optional: dark background */
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background-color: rgba(0, 0, 0, 0.5); /* Optional: dark background */
 }
 
+/* Text Styles */
 h2 {
   font-size: 40px !important;
   line-height: 1.2 !important;
@@ -37,61 +52,7 @@ p {
   transform: none !important;
 }
 
-.lanyard-widget {
-  position: fixed;
-  top: 10px;
-  right: 10px;
-  background: rgba(0, 0, 0, 0.8);
-  border-radius: 10px;
-  padding: 15px;
-  width: 250px;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-family: 'Arial', sans-serif;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
-}
-
-.lanyard-widget .widget-header {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.lanyard-widget .avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  margin-right: 10px;
-}
-
-.lanyard-widget #discord-name {
-  font-weight: bold;
-}
-
-.activity-info {
-  text-align: center;
-  margin-top: 10px;
-}
-
-#activity-image,
-#spotify-album-art {
-  width: 100px;
-  height: 100px;
-  border-radius: 10px;
-  margin-top: 10px;
-}
-
-#discord-activity,
-#discord-details {
-  font-size: 14px;
-  margin-top: 5px;
-}
-
-
-
-
+/* Background Video */
 .background-video {
   position: fixed;
   top: 0;
@@ -101,12 +62,14 @@ p {
   object-fit: cover;
   z-index: -1;
 }
+
+/* Volume Container */
 .volume-container {
   position: fixed;
   top: 20px;
   left: 20px;
-  background: rgba(50, 50, 50, 0.5); /* Semi-transparent gray */
-  backdrop-filter: blur(10px); /* Blurry effect */
+  background: rgba(50, 50, 50, 0.5);
+  backdrop-filter: blur(10px);
   padding: 10px;
   border-radius: 10px;
   display: flex;
@@ -120,165 +83,160 @@ p {
   cursor: pointer;
 }
 
-
-header {
-  display: none;
+/* Profile Layout */
+.display {
+    min-width: 35vw;
+    padding: 1.75em;
+    background: var(--fg-clr);
+    border-radius: var(--border-radius);
 }
 
-main {
-  padding: 20px;
-  text-align: center;
+.userinfo {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), var(--backdrop-url);
+    background-size: cover;
+    background-position: 50% 50%;
+    border-radius: var(--border-radius);
+    padding: 1em;
+    display: grid;
+    grid-template-columns: min-content 1fr max-content;
+    gap: 0 12px;
+    align-items: center;
+    grid-template-areas:
+        "avatar display view"
+        "avatar username view"
+        "avatar status view";
 }
 
-section {
-  margin-bottom: 30px;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: none;
-  background-color: transparent;
+#avatar {
+    grid-area: avatar;
+    border-radius: 50%;
 }
 
-#profile {
-  display: block;
+#username {
+    color: var(--hidden-text-clr);
+    grid-area: username;
 }
 
-.avatar {
-  margin-right: 0;
-  margin-bottom: 20px;
-  display: flex;
-  justify-content: center;
+#display {
+    grid-area: display;
 }
 
-.avatar svg {
-  border-radius: 50%;
+#status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    grid-area: status;
 }
 
-.bio h2 {
-  margin-top: 0;
-  background: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: rainbow-animation 5s linear infinite;
-  background-size: 400% 100%;
+#viewuser {
+    grid-area: view;
 }
 
-@keyframes rainbow-animation {
-  0% {
-    background-position: 0% 50%;
-  }
-  100% {
-    background-position: 100% 50%;
-  }
+/* Activities Section */
+.activities {
+    display: grid;
+    gap: 16px 0;
 }
 
+.activity {
+    display: grid;
+    grid-template-columns: min-content 1fr;
+    grid-template-rows: min-content min-content min-content;
+    gap: 0px 12px;
+    align-items: center;
+    grid-template-areas: 
+        "images name"
+        "images details"
+        "images state";
+}
+
+.act-name {
+    font-weight: 700;
+    grid-area: name;
+}
+
+.act-details {
+    grid-area: details;
+}
+
+.act-state {
+    grid-area: state;
+}
+
+.act-images {
+    position: relative;
+    grid-area: images;
+}
+
+.largeimage {
+    border-radius: var(--border-radius);
+}
+
+.smallimage {
+    position: absolute;
+    bottom: -4px;
+    right: -4px;
+    border-radius: 50%;
+    border: 4px solid var(--fg-clr);
+}
+
+/* Profile Container */
+.profile-container {
+    background-color: rgba(0, 0, 0, 0.3);
+    padding: 10px;
+    font-size: 30px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+    display: inline-block;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: none;
+    position: relative;
+}
+
+/* Social Icons */
 .social-icons {
-  display: flex;
-  justify-content: center;
-  margin-top: 10px;
-  align-items: center;
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    align-items: center;
 }
 
 .social-icon {
-  width: 100px;
-  height: 100px;
-  margin: 0 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: transform 0.3s ease, filter 0.3s ease;
-  cursor: pointer;
-  font-size: 1.9em;
-  text-decoration: none;
-  border-radius: 0;
+    width: 100px;
+    height: 100px;
+    margin: 0 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.3s ease, filter 0.3s ease;
+    cursor: pointer;
+    font-size: 1.9em;
+    text-decoration: none;
 }
 
 .social-icon:hover {
-  transform: scale(1.2);
-  filter: drop-shadow(0 0 15px white);
-}
-
-.social-icon svg {
-  width: 160%;
-  height: 160%;
-  fill: white;
-  transition: filter 0.3s ease;
-}
-
-.social-icon:hover svg {
-  filter: drop-shadow(0 0 15px white);
-}
-
-.social-icon i {
-  color: white;
-  transition: filter 0.3s ease;
-}
-
-.social-icon:hover i {
-  filter: drop-shadow(0 0 15px white);
-}
-
-#skills, #projects, #contact, footer {
-  display: none;
-}
-
-#snowCanvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  pointer-events: none;
-  z-index: 9999;
-}
-
-.bio {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.bio > * {
-  margin-bottom: 10px;
-}
-
-.bio > div {
-  margin-bottom: 0;
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-}
-
-.profile-container {
-  background-color: rgba(0, 0, 0, 0.3);
-  padding: 10px;
-  font-size: 30px; /* Keep this for other content */
-  border-radius: 15px;
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
-  display: inline-block;
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  border: none;
-  position: relative; /* Allow absolute positioning inside */
+    transform: scale(1.2);
+    filter: drop-shadow(0 0 15px white);
 }
 
 #viewCounter {
-  position: absolute;
-  bottom: 10px; /* Adjust distance from the bottom */
-  left: 10px;  /* Adjust distance from the left */
-  color: white; /* Change text color to contrast with the background */
-  font-size: 14px; /* Adjust font size for the view counter text */
-  display: flex;
-  align-items: center; /* Align the icon and text properly */
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    color: white;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
 }
 
 #viewCounter i {
-  margin-right: 5px; /* Space between the eye icon and the view count text */
-  font-size: 14px; /* Adjust the size of the eye icon */
-  vertical-align: middle; /* Ensure the icon is aligned with the text */
+    margin-right: 5px;
+    font-size: 14px;
+    vertical-align: middle;
 }
 
-
-/* Mobile Styles (smaller screens) */
+/* Mobile Styles */
 @media screen and (max-width: 768px) {
   .avatar img {
     width: 150px;
@@ -290,28 +248,16 @@ section {
   }
 
   .social-icons {
-    display: flex;
-    justify-content: center;
-    gap: 15px; /* Adjust gap to prevent overlap */
+    gap: 15px;
   }
 
   .social-icon {
     width: 80px;
     height: 80px;
-    flex-shrink: 0; /* Prevents shrinking */
-  }
-
-  .social-icon i, .social-icon svg {
-    width: 120%;
-    height: 120%;
-  }
-
-  .profile-container {
-    padding: 15px;
   }
 }
 
-/* Extra small screens (phones) */
+/* Extra Small Screens */
 @media screen and (max-width: 480px) {
   .avatar img {
     width: 120px;
@@ -323,30 +269,11 @@ section {
   }
 
   .social-icons {
-    display: flex;
-    justify-content: center;
-    gap: 10px; /* Ensure spacing between icons */
+    gap: 10px;
   }
 
   .social-icon {
     width: 60px;
     height: 60px;
-  }
-
-  .social-icon i, .social-icon svg {
-    width: 100%;
-    height: 100%;
-  }
-
-  .profile-container {
-    padding: 10px;
-  }
-}
-
-/* Extra small screens (very narrow phones) */
-@media screen and (max-width: 400px) {
-  .social-icons {
-    flex-direction: column;
-    align-items: center;
   }
 }
