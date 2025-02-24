@@ -53,43 +53,6 @@ p {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
 }
 
-.lanyard-widget .widget-header {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.lanyard-widget .avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  margin-right: 10px;
-}
-
-.lanyard-widget #discord-name {
-  font-weight: bold;
-}
-
-.activity-info {
-  text-align: center;
-  margin-top: 10px;
-}
-
-#activity-image,
-#spotify-album-art {
-  width: 100px;
-  height: 100px;
-  border-radius: 10px;
-  margin-top: 10px;
-}
-
-#discord-activity,
-#discord-details {
-  font-size: 14px;
-  margin-top: 5px;
-}
-
-
 
 
 .background-video {
