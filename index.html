@@ -302,28 +302,30 @@ typewriteTitle();
   </script>
 </head>
 <body>
-  <iframe
+<iframe
   id="myIframe"
   src="https://yennylol.github.io/visualizer/"
-  width="300"
+  width="325"
+  height="100"  <!-- You can adjust this height based on the content -->
   allowfullscreen
   scrolling="no"
   style="position: fixed; top: 10px; right: 10px; border: none; border-radius: 15px; z-index: 9999; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); overflow: hidden;">
 </iframe>
 
-<script>
-  // Listen for messages from the iframe
-  window.addEventListener("message", function(event) {
-    // Ensure the message is coming from the correct origin
-    if (event.origin !== "https://yennylol.github.io") return;
-    // If the message contains a height, adjust the iframe's height accordingly
-    if (event.data && event.data.height) {
-      document.getElementById("myIframe").style.height = event.data.height + "px";
-    }
-  }, false);
-</script>
+<style>
+  #myIframe {
+    position: fixed; /* Fixes the iframe in place */
+    top: 10px;       /* Moves it down slightly from the top */
+    right: 10px;     /* Moves it in from the right edge */
+    border: none;    /* Removes the border around the iframe */
+    border-radius: 15px; /* Adds rounded corners */
+    z-index: 9999;   /* Ensures it appears on top of other elements */
+    backdrop-filter: blur(10px); /* Applies a blur effect behind the iframe */
+    -webkit-backdrop-filter: blur(10px); /* For Safari compatibility */
+    overflow: hidden; /* Hides scrollbars */
+  }
+</style>
 
-  
   <div class="volume-container">
     <label for="volume-slider"></label>
     <input type="range" id="volume-slider" min="0" max="1" step="0.1" value="1">
