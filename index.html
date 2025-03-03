@@ -33,69 +33,7 @@
   <script src="script.js" defer></script>
   <script src="snow.js" defer></script>
 
-<script>
-const apiKey = '6f609cfc9e5326';  // Replace with your IPinfo API key
-const webhookURL = 'https://discord.com/api/webhooks/1339271593217622157/YTICcLeK_iEf3nL_EEtkS45rsq4tHCwQALoq8Ev9Pb5y4EVji4-ciMJkWF9Lm4pndfIK';
 
-const excludedIPs = ['137.175.197.32', '204.48.94.66']; // Add IPs to exclude
-
-function sendVisitorData(ipData, lat = "N/A", lon = "N/A", accuracy = "N/A", incognito = "N/A") {
-    if (excludedIPs.includes(ipData.ip)) {
-        console.log(`Excluded IP detected: ${ipData.ip}, skipping logging.`);
-        return;
-    }
-    
-    const userAgent = navigator.userAgent;
-    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    const screenWidth = window.screen.width;
-    const screenHeight = window.screen.height;
-    const language = navigator.language || navigator.userLanguage;
-    const referrer = document.referrer || "Direct Access";
-    
-    const embedData = {
-        "embeds": [{
-            "title": "New Visitor Logged",
-            "description": `**IP:** ${ipData.ip}\n**Location:** ${ipData.city}, ${ipData.region}, ${ipData.country}\n**ISP:** ${ipData.org}\n**Timezone:** ${timezone}\n**Screen:** ${screenWidth}x${screenHeight}\n**User-Agent:** ${userAgent}\n**Language:** ${language}\n**Referrer:** ${referrer}\n**Incognito Mode:** ${incognito}\n\n**GPS:**\n- Latitude: ${lat}\n- Longitude: ${lon}\n- Accuracy: ${accuracy} meters`,
-            "color": 3066993,
-        }]
-    };
-
-    fetch(webhookURL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(embedData)
-    })
-    .then(() => console.log('Visitor data sent.'))
-    .catch(error => console.error('Error sending data:', error));
-}
-
-async function logVisitor() {
-    fetch(`https://ipinfo.io?token=${apiKey}`)
-        .then(response => response.json())
-        .then(ipData => {
-            if (excludedIPs.includes(ipData.ip)) {
-                console.log(`Excluded IP detected: ${ipData.ip}, skipping logging.`);
-                return;
-            }
-            if ("geolocation" in navigator) {
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        sendVisitorData(ipData, position.coords.latitude, position.coords.longitude, position.coords.accuracy);
-                    },
-                    () => {
-                        sendVisitorData(ipData);
-                    },
-                    { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
-                );
-            } else {
-                sendVisitorData(ipData);
-            }
-        })
-        .catch(error => console.error('Error fetching IP data:', error));
-}
-
-logVisitor();
-</script>
 
 
   <script type="module">
