@@ -1,0 +1,6 @@
+services:
+  - type: static
+    name: yenny-static-site
+    env: static
+    buildCommand: ""  # Leave empty if no build command is needed
+    publishDirectory: "static-site"  # Folder containing your static files
