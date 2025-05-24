@@ -116,22 +116,30 @@ section {
   border-radius: 50%;
 }
 
+@keyframes rainbow-animation {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+
 .bio h2 {
   margin-top: 0;
-  background: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
+  font-weight: bold;
+  background: linear-gradient(
+    270deg,
+    red,
+    orange,
+    yellow,
+    green,
+    blue,
+    indigo,
+    violet,
+    red
+  );
+  background-size: 400% 100%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: rainbow-animation 5s linear infinite;
-  background-size: 400% 100%;
-}
-
-@keyframes rainbow-animation {
-  0% {
-    background-position: 0% 50%;
-  }
-  100% {
-    background-position: 100% 50%;
-  }
+  text-shadow: 0 0 5px rgba(255,255,255,0.2);
 }
 
 .social-icons {
