@@ -7,16 +7,15 @@ html, body {
   font-family: Tahoma, sans-serif;
 }
 
-.background-video {
+/* Style the video: 100% width and height to cover the entire window */
+#myVideo {
   position: fixed;
-  top: 0;
-  left: 0;
-  min-width: 100vw;
-  min-height: 100vh;
-  object-fit: cover;
-  z-index: -1;
-  background: black;
+  right: 0;
+  bottom: 0;
+  min-width: 100%;
+  min-height: 100%;
 }
+
 
 
 
