@@ -1,57 +1,43 @@
-// --- AUDIO SETUP ---
-const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-const analyser = audioCtx.createAnalyser();
-analyser.fftSize = 128;
-
 const audio = new Audio();
-const source = audioCtx.createMediaElementSource(audio);
-source.connect(analyser);
-analyser.connect(audioCtx.destination);
-
-const playlist = [
-  { name: "Track 1", src: "audio/track1.mp3" },
-  { name: "Track 2", src: "audio/track2.mp3" }
-];
-
+let audioCtx, analyser, source;
+let playlist = [];
 let currentIndex = 0;
-let isLoop = false;
-let isShuffle = false;
 
+// DOM
 const playBtn = document.getElementById("play");
 const nextBtn = document.getElementById("next");
 const prevBtn = document.getElementById("prev");
-const loopBtn = document.getElementById("loop");
-const shuffleBtn = document.getElementById("shuffle");
 const trackName = document.getElementById("trackName");
 
+// Load playlist
+fetch("playlist.json")
+  .then(res => res.json())
+  .then(data => {
+    playlist = data;
+    loadTrack(0);
+  });
+
 function loadTrack(index) {
-  currentIndex = index;
-  audio.src = playlist[index].src;
-  trackName.textContent = "Track: " + playlist[index].name;
-  audio.play();
-  audioCtx.resume();
-  playBtn.textContent = "⏸";
+  if (playlist.length === 0) return;
+  currentIndex = index % playlist.length;
+  audio.src = playlist[currentIndex].src;
+  trackName.textContent = "Track: " + playlist[currentIndex].name;
 }
 
-function nextTrack() {
-  if (isShuffle) {
-    loadTrack(Math.floor(Math.random() * playlist.length));
-  } else {
-    loadTrack((currentIndex + 1) % playlist.length);
-  }
+// Init audio context
+function setupAudioContext() {
+  if (audioCtx) return;
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  source = audioCtx.createMediaElementSource(audio);
+  source.connect(audioCtx.destination);
 }
 
-audio.onended = () => {
-  if (isLoop) {
-    loadTrack(currentIndex);
-  } else {
-    nextTrack();
-  }
-};
-
+// Play/pause
 playBtn.onclick = () => {
+  setupAudioContext();
+  audioCtx.resume();
   if (audio.paused) {
-    audio.play(); audioCtx.resume();
+    audio.play().catch(err => console.error("Playback failed:", err));
     playBtn.textContent = "⏸";
   } else {
     audio.pause();
@@ -59,68 +45,65 @@ playBtn.onclick = () => {
   }
 };
 
-nextBtn.onclick = nextTrack;
+// Next
+nextBtn.onclick = () => {
+  const nextIndex = (currentIndex + 1) % playlist.length;
+  loadTrack(nextIndex);
+  audio.load();  // 🔥 This line is the fix
+  audio.play().catch(err => console.error("Playback error:", err));
+  playBtn.textContent = "⏸";
+};
+
+
+// Previous
 prevBtn.onclick = () => {
-  currentIndex = (currentIndex - 1 + playlist.length) % playlist.length;
-  loadTrack(currentIndex);
+  const prevIndex = (currentIndex - 1 + playlist.length) % playlist.length;
+  loadTrack(prevIndex);
+  audio.load();
+  audio.play().catch(err => console.error("Playback error:", err));
+  playBtn.textContent = "⏸";
 };
 
-loopBtn.onclick = () => {
-  isLoop = !isLoop;
-  loopBtn.style.background = isLoop ? "#8f8" : "";
+
+// On track end
+audio.onended = () => {
+  nextBtn.click();
 };
 
-shuffleBtn.onclick = () => {
-  isShuffle = !isShuffle;
-  shuffleBtn.style.background = isShuffle ? "#8f8" : "";
-};
-
-loadTrack(currentIndex);
-
-// --- VISUALIZER ---
-const canvas = document.getElementById("visualizer");
-const ctx = canvas.getContext("2d");
-const dataArray = new Uint8Array(analyser.frequencyBinCount);
-
-function resize() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-}
-window.onresize = resize;
-resize();
-
-function draw() {
-  requestAnimationFrame(draw);
-  analyser.getByteFrequencyData(dataArray);
-
-  ctx.fillStyle = 'rgba(0, 0, 0, 0.25)';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-  const barWidth = canvas.width / dataArray.length;
-  for (let i = 0; i < dataArray.length; i++) {
-    const h = dataArray[i] * 2;
-    ctx.fillStyle = `rgb(${h},${100 + i*2},${255 - i*2})`;
-    ctx.fillRect(i * barWidth, canvas.height - h, barWidth - 2, h);
-  }
-}
-
-draw();
-
-// --- DRAGGABLE WINDOW ---
+// Drag
 const player = document.getElementById("playerWindow");
 const titleBar = document.getElementById("titleBar");
-let offsetX = 0, offsetY = 0, isDragging = false;
+let offsetX, offsetY, isDragging = false;
 
-titleBar.addEventListener("mousedown", (e) => {
+titleBar.addEventListener("mousedown", e => {
   isDragging = true;
   offsetX = e.clientX - player.offsetLeft;
   offsetY = e.clientY - player.offsetTop;
 });
-
 document.addEventListener("mouseup", () => isDragging = false);
-document.addEventListener("mousemove", (e) => {
+document.addEventListener("mousemove", e => {
   if (isDragging) {
-    player.style.left = (e.clientX - offsetX) + "px";
-    player.style.top = (e.clientY - offsetY) + "px";
+    player.style.left = `${e.clientX - offsetX}px`;
+    player.style.top = `${e.clientY - offsetY}px`;
   }
 });
+
+// Window controls
+document.getElementById("btnMinimize").onclick = () => player.style.display = "none";
+document.getElementById("btnClose").onclick = () => {
+  audio.pause();
+  player.style.display = "none";
+};
+document.getElementById("btnMaximize").onclick = () => {
+  if (player.style.width !== "100vw") {
+    player.style.width = "100vw";
+    player.style.height = "100vh";
+    player.style.top = "0";
+    player.style.left = "0";
+  } else {
+    player.style.width = "320px";
+    player.style.height = "auto";
+    player.style.top = "100px";
+    player.style.left = "100px";
+  }
+};

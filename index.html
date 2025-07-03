@@ -1,23 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>XP Audio Player</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://unpkg.com/98.css" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-<canvas id="visualizer"></canvas>
+<video autoplay muted loop playsinline class="background-video" id="background-video">
+  <source src="video/bg.mp4" type="video/mp4" />
+</video>
 
-<div class="xp-player" id="playerWindow">
-  <div class="title-bar" id="titleBar">XP Audio Player</div>
-  <div class="track-name" id="trackName">Track: (None)</div>
-  <div class="controls">
-    <button id="prev">⏮</button>
-    <button id="play">▶️</button>
-    <button id="next">⏭</button>
-    <button id="loop">🔁</button>
-    <button id="shuffle">🔀</button>
+
+
+
+
+<!-- XP Window -->
+<div class="window" id="playerWindow">
+  <div class="title-bar" id="titleBar">
+    <span class="title-bar-text">Windows Media Player</span>
+    <div class="title-bar-controls">
+      <button aria-label="Minimize" id="btnMinimize"></button>
+      <button aria-label="Maximize" id="btnMaximize"></button>
+      <button aria-label="Close" id="btnClose"></button>
+    </div>
+  </div>
+  <div class="window-body">
+    <p id="trackName">Track: (None)</p>
+    <div class="field-row" style="justify-content: space-between;">
+      <button id="prev">⏮</button>
+      <button id="play">▶️</button>
+      <button id="next">⏭</button>
+    </div>
   </div>
 </div>
 

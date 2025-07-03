@@ -1,53 +1,70 @@
 html, body {
-  margin: 0; padding: 0;
+  margin: 0;
+  padding: 0;
   overflow: hidden;
   height: 100%;
   background: black;
+  font-family: Tahoma, sans-serif;
 }
 
-canvas {
+.background-video {
   position: fixed;
-  top: 0; left: 0;
-  width: 100vw;
-  height: 100vh;
+  top: 0;
+  left: 0;
+  min-width: 100vw;
+  min-height: 100vh;
+  object-fit: cover;
   z-index: -1;
   background: black;
 }
 
-.xp-player {
+
+
+
+.window {
+  width: 320px;
   position: absolute;
-  top: 100px; left: 100px;
-  width: 300px;
-  background: #e4e4e4;
-  border: 2px solid #000;
-  font-family: Tahoma, sans-serif;
-  box-shadow: 4px 4px rgba(0,0,0,0.5);
+  top: 100px;
+  left: 100px;
+  z-index: 10;
 }
 
 .title-bar {
-  background: linear-gradient(to right, #0a64ad, #1c87e4);
-  color: white;
-  padding: 4px 10px;
-  cursor: move;
-  font-weight: bold;
+  display: flex !important;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
+  padding-right: 4px;
+  box-sizing: border-box;
 }
 
-.controls {
-  padding: 10px;
+.title-bar-text {
+  flex-grow: 1;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.title-bar-controls {
   display: flex;
-  justify-content: space-around;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.title-bar-controls button {
+  width: 16px;
+  height: 14px;
+  flex: 0 0 auto;
+  padding: 0;
+  margin: 0;
+  box-sizing: content-box;
+}
+
+.window-body {
+  padding: 10px;
 }
 
 button {
-  font-size: 12px;
-  padding: 5px 10px;
-  border: 1px solid #999;
-  background: #ddd;
-  box-shadow: inset 1px 1px #fff, inset -1px -1px #aaa;
   cursor: pointer;
-}
-
-.track-name {
-  padding: 5px 10px;
-  font-size: 12px;
+  font-size: 14px;
 }
