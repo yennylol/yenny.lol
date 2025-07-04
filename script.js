@@ -1,210 +1,203 @@
-const audio = new Audio();
-let audioCtx, analyser, source;
-let playlist = [];
-let currentIndex = 0;
+document.addEventListener("DOMContentLoaded", () => {
+  // --- Audio Player Setup ---
+  const audio = new Audio();
+  const canvas = document.getElementById("canvas");
+  const ctx = canvas.getContext("2d");
+  const playBtn = document.getElementById("play");
+  const nextBtn = document.getElementById("next");
+  const prevBtn = document.getElementById("prev");
+  const trackName = document.getElementById("trackName");
+  let audioCtx, analyser, source;
+  let playlist = [];
+  let currentIndex = 0;
 
+  // Fetch playlist JSON
+  fetch("playlist.json")
+    .then(res => res.json())
+    .then(data => {
+      playlist = data;
+      loadTrack(0);
+    });
 
+  function setupAudioContext() {
+    if (audioCtx) return;
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    source = audioCtx.createMediaElementSource(audio);
+    source.connect(audioCtx.destination);
+  }
 
-// DOM
-const playBtn = document.getElementById("play");
-const nextBtn = document.getElementById("next");
-const prevBtn = document.getElementById("prev");
-const trackName = document.getElementById("trackName");
+  // Load track with safe index wrapping
+  function loadTrack(index) {
+    if (playlist.length === 0) return;
+    currentIndex = ((index % playlist.length) + playlist.length) % playlist.length;
+    audio.src = playlist[currentIndex].src;
+    trackName.textContent = "Track: " + playlist[currentIndex].name;
+  }
 
-// Load playlist
-fetch("playlist.json")
-  .then(res => res.json())
-  .then(data => {
-    playlist = data;
-    loadTrack(0);
+  playBtn.onclick = () => {
+    setupAudioContext();
+    audioCtx.resume();
+    if (audio.paused) {
+      audio.play().catch(console.error);
+      playBtn.textContent = "⏸";
+    } else {
+      audio.pause();
+      playBtn.textContent = "▶️";
+    }
+  };
+
+  nextBtn.onclick = () => {
+    loadTrack(currentIndex + 1);
+    audio.load();
+    audio.play().catch(console.error);
+    playBtn.textContent = "⏸";
+  };
+
+  prevBtn.onclick = () => {
+    loadTrack(currentIndex - 1);
+    audio.load();
+    audio.play().catch(console.error);
+    playBtn.textContent = "⏸";
+  };
+
+  audio.onended = () => nextBtn.click();
+
+  // Visualizer setup
+  function initVisualizer() {
+    setupAudioContext();
+    analyser = audioCtx.createAnalyser();
+    source.connect(analyser);
+    analyser.connect(audioCtx.destination);
+    analyser.fftSize = 256;
+
+    const bufferLength = analyser.frequencyBinCount;
+    const dataArray = new Uint8Array(bufferLength);
+
+    function renderFrame() {
+      requestAnimationFrame(renderFrame);
+      analyser.getByteFrequencyData(dataArray);
+      canvas.width = canvas.clientWidth;
+      canvas.height = canvas.clientHeight;
+      const barWidth = (canvas.width / bufferLength) * 2.5;
+      let x = 0;
+
+      ctx.fillStyle = "#000";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      for (let i = 0; i < bufferLength; i++) {
+        const barHeight = dataArray[i];
+        ctx.fillStyle = `rgb(${barHeight + 25}, ${250 * i / bufferLength}, 50)`;
+        ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
+        x += barWidth + 1;
+      }
+    }
+
+    renderFrame();
+  }
+
+  audio.addEventListener("play", () => {
+    if (!analyser) initVisualizer();
   });
 
-function loadTrack(index) {
-  if (playlist.length === 0) return;
-  currentIndex = index % playlist.length;
-  audio.src = playlist[currentIndex].src;
-  trackName.textContent = "Track: " + playlist[currentIndex].name;
-}
+  // --- Draggable Windows ---
+  function makeDraggable(windowEl, titleBarEl) {
+    let isDragging = false, offsetX, offsetY;
 
-// Init audio context
-function setupAudioContext() {
-  if (audioCtx) return;
-  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  source = audioCtx.createMediaElementSource(audio);
-  source.connect(audioCtx.destination);
-}
+    titleBarEl.addEventListener("mousedown", (e) => {
+      isDragging = true;
+      offsetX = e.clientX - windowEl.offsetLeft;
+      offsetY = e.clientY - windowEl.offsetTop;
+    });
 
-// Play/pause
-playBtn.onclick = () => {
-  setupAudioContext();
-  audioCtx.resume();
-  if (audio.paused) {
-    audio.play().catch(err => console.error("Playback failed:", err));
-    playBtn.textContent = "⏸";
-  } else {
-    audio.pause();
-    playBtn.textContent = "▶️";
+    document.addEventListener("mouseup", () => isDragging = false);
+
+    document.addEventListener("mousemove", (e) => {
+      if (isDragging) {
+        windowEl.style.left = `${e.clientX - offsetX}px`;
+        windowEl.style.top = `${e.clientY - offsetY}px`;
+      }
+    });
   }
-};
 
-// Next
-nextBtn.onclick = () => {
-  const nextIndex = (currentIndex + 1) % playlist.length;
-  loadTrack(nextIndex);
-  audio.load();  // 🔥 This line is the fix
-  audio.play().catch(err => console.error("Playback error:", err));
-  playBtn.textContent = "⏸";
-};
+  makeDraggable(document.getElementById("playerWindow"), document.getElementById("titleBar"));
+  makeDraggable(document.getElementById("profileWindow"), document.getElementById("profileTitleBar"));
+  makeDraggable(document.getElementById("videoWindow"), document.getElementById("videoTitleBar"));
 
+  // --- Window Controls ---
+  function setupWindowControls(windowEl, btnMin, btnMax, btnClose, defaultSize = { width: "320px", height: "auto", top: "100px", left: "100px", right: "unset", transform: "none" }) {
+    if (btnMin) btnMin.onclick = () => windowEl.style.display = "none";
+    if (btnClose) btnClose.onclick = () => windowEl.style.display = "none";
 
-// Previous
-prevBtn.onclick = () => {
-  const prevIndex = (currentIndex - 1 + playlist.length) % playlist.length;
-  loadTrack(prevIndex);
-  audio.load();
-  audio.play().catch(err => console.error("Playback error:", err));
-  playBtn.textContent = "⏸";
-};
-
-
-// On track end
-audio.onended = () => {
-  nextBtn.click();
-};
-
-// Drag
-const player = document.getElementById("playerWindow");
-const titleBar = document.getElementById("titleBar");
-let offsetX, offsetY, isDragging = false;
-
-titleBar.addEventListener("mousedown", e => {
-  isDragging = true;
-  offsetX = e.clientX - player.offsetLeft;
-  offsetY = e.clientY - player.offsetTop;
-});
-document.addEventListener("mouseup", () => isDragging = false);
-document.addEventListener("mousemove", e => {
-  if (isDragging) {
-    player.style.left = `${e.clientX - offsetX}px`;
-    player.style.top = `${e.clientY - offsetY}px`;
-  }
-});
-const profileTitleBar = document.getElementById("profileTitleBar");
-let pOffsetX, pOffsetY, pDragging = false;
-
-profileTitleBar.addEventListener("mousedown", e => {
-  pDragging = true;
-  const rect = profileWindow.getBoundingClientRect();
-  pOffsetX = e.clientX - rect.left;
-  pOffsetY = e.clientY - rect.top;
-});
-
-document.addEventListener("mouseup", () => pDragging = false);
-
-document.addEventListener("mousemove", e => {
-  if (pDragging) {
-    profileWindow.style.top = `${e.clientY - pOffsetY}px`;
-    profileWindow.style.left = `${e.clientX - pOffsetX}px`;
-    profileWindow.style.transform = "none";
-    profileWindow.style.position = "fixed";
-  }
-});
-
-
-// Window controls
-document.getElementById("btnMinimize").onclick = () => player.style.display = "none";
-document.getElementById("btnClose").onclick = () => {
-  audio.pause();
-  player.style.display = "none";
-};
-document.getElementById("btnMaximize").onclick = () => {
-  if (player.style.width !== "100vw") {
-    player.style.width = "100vw";
-    player.style.height = "100vh";
-    player.style.top = "0";
-    player.style.left = "0";
-  } else {
-    player.style.width = "320px";
-    player.style.height = "auto";
-    player.style.top = "100px";
-    player.style.left = "100px";
-  }
-};
-
-// Visualizer Setup
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
-
-canvas.width = canvas.clientWidth;
-canvas.height = canvas.clientHeight;
-
-
-window.addEventListener("resize", () => {
-canvas.width = canvas.clientWidth;
-canvas.height = canvas.clientHeight;
-});
-
-function initVisualizer() {
-  if (!audioCtx) setupAudioContext(); // reuse existing context
-
-  analyser = audioCtx.createAnalyser();
-  source.connect(analyser);
-  analyser.connect(audioCtx.destination);
-  analyser.fftSize = 256;
-
-  const bufferLength = analyser.frequencyBinCount;
-  const dataArray = new Uint8Array(bufferLength);
-
-  const WIDTH = canvas.width;
-  const HEIGHT = canvas.height;
-  const barWidth = (WIDTH / bufferLength) * 2.5;
-
-  function renderFrame() {
-    requestAnimationFrame(renderFrame);
-    analyser.getByteFrequencyData(dataArray);
-    ctx.fillStyle = "#000";
-    ctx.fillRect(0, 0, WIDTH, HEIGHT);
-
-    let x = 0;
-    for (let i = 0; i < bufferLength; i++) {
-      const barHeight = dataArray[i];
-      const r = barHeight + 25 * (i / bufferLength);
-      const g = 250 * (i / bufferLength);
-      const b = 50;
-      ctx.fillStyle = `rgb(${r},${g},${b})`;
-      ctx.fillRect(x, HEIGHT - barHeight, barWidth, barHeight);
-      x += barWidth + 1;
+    if (btnMax) {
+      btnMax.onclick = () => {
+        const isMaximized = windowEl.style.width === "100vw";
+        if (!isMaximized) {
+          windowEl.style.width = "100vw";
+          windowEl.style.height = "100vh";
+          windowEl.style.top = "0";
+          windowEl.style.left = "0";
+          windowEl.style.right = "0";
+          windowEl.style.transform = "none";
+        } else {
+          windowEl.style.width = defaultSize.width;
+          windowEl.style.height = defaultSize.height;
+          windowEl.style.top = defaultSize.top;
+          if (defaultSize.left !== undefined) {
+            windowEl.style.left = defaultSize.left;
+            windowEl.style.right = "unset";
+          }
+          if (defaultSize.right !== undefined) {
+            windowEl.style.right = defaultSize.right;
+            windowEl.style.left = "unset";
+          }
+          windowEl.style.transform = defaultSize.transform || "none";
+        }
+      };
     }
   }
 
-  renderFrame();
-}
+  setupWindowControls(
+    document.getElementById("playerWindow"),
+    document.getElementById("btnMinimize"),
+    document.getElementById("btnMaximize"),
+    document.getElementById("btnClose"),
+    { width: "320px", height: "auto", top: "0", left: "unset", right: "0", transform: "none" }
+  );
 
-// Start visualizer on first play
-audio.addEventListener("play", () => {
-  if (!analyser) initVisualizer();
-});
+  setupWindowControls(
+    document.getElementById("profileWindow"),
+    document.getElementById("profileMinimize"),
+    document.getElementById("profileMaximize"),
+    document.getElementById("profileClose"),
+    { width: "400px", height: "auto", top: "50%", left: "50%", transform: "translate(-50%, -50%)" }
+  );
 
-const profileWindow = document.getElementById("profileWindow");
-const profileMinimize = document.getElementById("profileMinimize");
-const profileMaximize = document.getElementById("profileMaximize");
-const profileClose = document.getElementById("profileClose");
+  setupWindowControls(
+    document.getElementById("videoWindow"),
+    null,
+    null,
+    document.getElementById("videoCloseBtn"),
+    { width: "360px", height: "auto", top: "0", left: "0", transform: "none" }
+  );
 
-profileMinimize.onclick = () => profileWindow.style.display = "none";
-profileClose.onclick = () => profileWindow.style.display = "none";
+  // --- Video Player ---
+  const videoPlayer = document.getElementById("videoPlayer");
+  const totalClips = 28;
+  let currentClip = Math.floor(Math.random() * totalClips) + 1;
 
-profileMaximize.onclick = () => {
-  if (profileWindow.style.width !== "100vw") {
-    profileWindow.style.width = "100vw";
-    profileWindow.style.height = "100vh";
-    profileWindow.style.top = "0";
-    profileWindow.style.left = "0";
-    profileWindow.style.transform = "none";
-  } else {
-    profileWindow.style.width = "400px";
-    profileWindow.style.height = "auto";
-    profileWindow.style.top = "50%";
-    profileWindow.style.left = "50%";
-    profileWindow.style.transform = "translate(-50%, -50%)";
+  function loadClip(index) {
+    currentClip = ((index - 1 + totalClips) % totalClips) + 1;
+    videoPlayer.src = `video/clip (${currentClip}).mp4`;
+    videoPlayer.load();
+    videoPlayer.play().catch(e => console.warn("Autoplay blocked:", e.message));
   }
-};
+
+  videoPlayer.muted = true;
+  videoPlayer.autoplay = true;
+  videoPlayer.playsInline = true;
+
+  loadClip(currentClip);
+
+  document.getElementById("nextClip").onclick = () => loadClip(currentClip + 1);
+  document.getElementById("prevClip").onclick = () => loadClip(currentClip - 1);
+});

@@ -7,7 +7,7 @@ html, body {
   font-family: Tahoma, sans-serif;
 }
 
-/* Style the video: 100% width and height to cover the entire window */
+/* Background video */
 #myVideo {
   position: fixed;
   right: 0;
@@ -16,18 +16,44 @@ html, body {
   min-height: 100%;
 }
 
-
-
-
-
+/* Common window styles */
 .window {
-  width: 320px;
-  position: absolute;
-  top: 100px;
-  left: 100px;
+  box-sizing: border-box;
+  position: fixed;
   z-index: 10;
+  border: 2px outset #c0c0c0;
+  background: #fff;
+  width: 320px;
 }
 
+/* Media Player - top right */
+#playerWindow {
+  top: 0;
+  right: 0;
+  width: 320px;
+  z-index: 30;
+}
+
+/* Yen profile page - centered */
+#profileWindow {
+  width: 400px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 20;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+/* Video Player - top left */
+#videoWindow {
+  width: 360px;
+  top: 0;
+  left: 0;
+  z-index: 25;
+}
+
+/* Title bar */
 .title-bar {
   display: flex !important;
   justify-content: space-between;
@@ -35,6 +61,12 @@ html, body {
   overflow: hidden;
   padding-right: 4px;
   box-sizing: border-box;
+  background: #000080;
+  color: white;
+  font-weight: bold;
+  user-select: none;
+  height: 24px;
+  line-height: 24px;
 }
 
 .title-bar-text {
@@ -42,6 +74,7 @@ html, body {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  padding-left: 6px;
 }
 
 .title-bar-controls {
@@ -57,22 +90,22 @@ html, body {
   padding: 0;
   margin: 0;
   box-sizing: content-box;
-}
-
-.window-body {
-  padding: 10px;
-}
-
-button {
+  background: #c0c0c0;
+  border: 1px solid #000;
   cursor: pointer;
-  font-size: 14px;
 }
 
+/* Window body */
 .window-body {
   padding: 10px;
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+
+button {
+  cursor: pointer;
+  font-size: 14px;
 }
 
 #canvas {
@@ -81,7 +114,28 @@ button {
   background: black;
   border: 2px inset #808080;
 }
+
+#logoContainer {
+  margin-top: 20px;
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+#logoContainer img {
+  width: 32px;
+  height: 32px;
+  filter: grayscale(100%);
+  cursor: pointer;
+}
+
 #logoContainer img:hover {
   filter: none;
   transition: filter 0.3s ease;
+}
+
+video#videoPlayer {
+  width: 100%;
+  border: 2px inset #808080;
+  background: black;
 }

@@ -18,6 +18,20 @@
    { "name": "talk2me2", "src": "audio/talk2me2.mp3" },
    { "name": "tragic", "src": "audio/tragic.mp3" },
      { "name": "unlucky", "src": "audio/unlucky.mp3" },
+
+       { "name": "touchthesun", "src": "audio/touchthesun.mp3" },
+       { "name": "father", "src": "audio/father.mp3" },
+       { "name": "doublewhammy", "src": "audio/doublewhammy.mp3" },
+       { "name": "lovehate", "src": "audio/lovehate.mp3" },
+       { "name": "whatzittooya", "src": "audio/whatzittooya.mp3" },
+       { "name": "broke", "src": "audio/broke.mp3" },
+       { "name": "takemylife", "src": "audio/takemylife.mp3" },
+       { "name": "prettygirl", "src": "audio/prettygirl.mp3" },
+       { "name": "megalodon", "src": "audio/megalodon.mp3" },
+       { "name": "gonmakit", "src": "audio/gonmakit.mp3" },
+       { "name": "fatman", "src": "audio/fatman.mp3" },
+       { "name": "demonhome", "src": "audio/demonhome.mp3" },
+       { "name": "bologna2", "src": "audio/bologna2.mp3" },
   
   { "name": "untitled", "src": "audio/untitled.mp3" }
 ]
