@@ -11,6 +11,44 @@ document.addEventListener("DOMContentLoaded", () => {
   let playlist = [];
   let currentIndex = 0;
 
+// TASKBAR FUNCTIONALITY
+
+const taskbarButtons = document.querySelectorAll(".taskbar-btn");
+const volumeSlider = document.getElementById("volumeSlider");
+const taskbarTime = document.getElementById("taskbar-time");
+
+// Update time every second
+function updateTime() {
+  const now = new Date();
+  const hours = now.getHours().toString().padStart(2,"0");
+  const minutes = now.getMinutes().toString().padStart(2,"0");
+  taskbarTime.textContent = `${hours}:${minutes}`;
+}
+updateTime();
+setInterval(updateTime, 1000);
+
+// Volume slider controls the audio volume
+volumeSlider.value = audio.volume; // initialize slider to current audio volume
+volumeSlider.addEventListener("input", () => {
+  audio.volume = volumeSlider.value;
+});
+
+// Toggle windows open/close when clicking taskbar icons
+taskbarButtons.forEach(btn => {
+  btn.addEventListener("click", () => {
+    const winId = btn.getAttribute("data-window");
+    const win = document.getElementById(winId);
+    if (!win) return;
+    if (win.style.display === "none" || getComputedStyle(win).display === "none") {
+      win.style.display = "block";
+      win.style.zIndex = 100; // bring to front
+    } else {
+      win.style.display = "none";
+    }
+  });
+});
+
+
   // Fetch playlist JSON
   fetch("playlist.json")
     .then(res => res.json())

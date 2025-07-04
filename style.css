@@ -1,6 +1,6 @@
 html, body {
   margin: 0;
-  padding: 0;
+  padding: 40;
   overflow: hidden;
   height: 100%;
   background: black;
@@ -138,4 +138,47 @@ video#videoPlayer {
   width: 100%;
   border: 2px inset #808080;
   background: black;
+}
+#taskbar {
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  height: 36px;
+  background: #c0c0c0;
+  border-top: 2px solid #fff;
+  border-bottom: 2px solid #808080;
+  box-sizing: border-box;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+
+.taskbar-btn {
+  width: 28px;
+  height: 28px;
+  font-size: 18px;
+  line-height: 28px;
+  margin-right: 8px;
+}
+
+/* Push volume slider + clock to the right */
+#volumeSlider {
+  margin-left: auto;
+  height: 18px;
+  width: 130px;
+  margin-right: 12px;
+}
+
+#volumeSlider::-webkit-slider-thumb {
+  width: 16px;
+  height: 16px;
+  margin-top: -2px;
+}
+
+#taskbar-time {
+  font-size: 15px;
+  min-width: 70px;
 }
