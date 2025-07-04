@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let audioCtx, analyser, source;
   let playlist = [];
   let currentIndex = 0;
+  
 
   // TASKBAR FUNCTIONALITY
 
@@ -282,4 +283,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.getElementById("nextClip").onclick = () => loadClip(currentClip + 1);
   document.getElementById("prevClip").onclick = () => loadClip(currentClip - 1);
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const overlay = document.getElementById("overlay");
+  const playBtn = document.getElementById("play");
+
+  overlay.addEventListener("click", () => {
+    if (playBtn) playBtn.click();
+
+    overlay.classList.add("hidden");
+
+    setTimeout(() => {
+      overlay.remove();
+    }, 800);
+  });
 });

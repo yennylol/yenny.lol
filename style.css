@@ -182,3 +182,33 @@ video#videoPlayer {
   font-size: 15px;
   min-width: 70px;
 }
+
+#overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.3); /* Slight dark overlay */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 10000;
+  cursor: pointer;
+  transition: opacity 0.8s ease;
+
+  /* Center content with flexbox */
+  display: flex;
+  justify-content: center;  /* horizontal center */
+  align-items: center;      /* vertical center */
+}
+
+#overlay.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#overlayText {
+  color: white;
+  font-family: Tahoma, sans-serif;
+  font-size: 1.5rem;
+  user-select: none;
+  text-shadow: 0 0 5px black;
+  text-align: center;
+}
