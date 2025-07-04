@@ -53,12 +53,21 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Fetch playlist JSON
-  fetch("playlist.json")
-    .then((res) => res.json())
-    .then((data) => {
-      playlist = data;
-      loadTrack(0);
-    });
+fetch("playlist.json")
+  .then(res => res.json())
+  .then(data => {
+    playlist = shuffleArray(data);
+    loadTrack(0);
+  });
+
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
 
   function setupAudioContext() {
     if (audioCtx) return;
