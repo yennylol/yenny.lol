@@ -1,104 +1,150 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>yen's profile page</title>
-  <link rel="stylesheet" href="https://unpkg.com/98.css" />
-  <link rel="stylesheet" href="style.css" />
-  <link rel="icon" type="image/x-icon" href="logos/frame1.ico" />
-  <meta property="og:title" content="yenny.lol" />
-  <meta property="og:description" content="yen's profile page" />
-  <meta property="og:url" content="https://yenny.lol" />
-  <meta property="og:image" content="https://yenny.lol/archive/images/glock.gif" />
-  <meta name="theme-color" content="#0a0a0a" />
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>yen's profile page</title>
+    <link rel="stylesheet" href="https://unpkg.com/98.css" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/x-icon" href="logos/frame1.ico" />
+    <meta property="og:title" content="yenny.lol" />
+    <meta property="og:description" content="yen's profile page" />
+    <meta property="og:url" content="https://yenny.lol" />
+    <meta
+      property="og:image"
+      content="https://yenny.lol/archive/images/glock.gif"
+    />
+    <meta name="theme-color" content="#0a0a0a" />
+  </head>
+  <body>
+    <video autoplay muted loop id="myVideo">
+      <source src="video/bg.mp4" type="video/mp4" />
+    </video>
 
-  <video autoplay muted loop id="myVideo">
-    <source src="video/bg.mp4" type="video/mp4" />
-  </video>
-
-  <!-- Windows Media Player Window -->
-  <div class="window" id="playerWindow">
-    <div class="title-bar" id="titleBar">
-      <span class="title-bar-text">Windows Media Player</span>
-      <div class="title-bar-controls">
-        <button aria-label="Minimize" id="btnMinimize"></button>
-        <button aria-label="Maximize" id="btnMaximize"></button>
-        <button aria-label="Close" id="btnClose"></button>
+    <!-- Windows Media Player Window -->
+    <div class="window" id="playerWindow">
+      <div class="title-bar" id="titleBar">
+        <span class="title-bar-text">Windows Media Player</span>
+        <div class="title-bar-controls">
+          <button aria-label="Minimize" id="btnMinimize"></button>
+          <button aria-label="Maximize" id="btnMaximize"></button>
+          <button aria-label="Close" id="btnClose"></button>
+        </div>
+      </div>
+      <div class="window-body">
+        <p id="trackName">Track: (None)</p>
+        <canvas id="canvas"></canvas>
+        <div class="field-row" style="justify-content: space-between">
+          <button id="prev">⏮</button>
+          <button id="play">▶️</button>
+          <button id="next">⏭</button>
+        </div>
       </div>
     </div>
-    <div class="window-body">
-      <p id="trackName">Track: (None)</p>
-      <canvas id="canvas"></canvas>
-      <div class="field-row" style="justify-content: space-between;">
-        <button id="prev">⏮</button>
-        <button id="play">▶️</button>
-        <button id="next">⏭</button>
+
+    <!-- Profile Window -->
+    <div class="window" id="profileWindow">
+      <div class="title-bar" id="profileTitleBar">
+        <span class="title-bar-text">yen profile page</span>
+        <div class="title-bar-controls">
+          <button aria-label="Minimize" id="profileMinimize"></button>
+          <button aria-label="Maximize" id="profileMaximize"></button>
+          <button aria-label="Close" id="profileClose"></button>
+        </div>
+      </div>
+      <div class="window-body">
+        <h2>yen</h2>
+        <p>
+          new profile page i made, if u wanna check the old one go to
+          <a
+            href="https://yenny.lol/archive/"
+            target="_blank"
+            rel="noopener noreferrer"
+            >https://yenny.lol/archive/</a
+          >
+          but its broken
+        </p>
+
+        <div id="logoContainer">
+          <a
+            href="https://github.com/yennylol/yenny.lol"
+            target="_blank"
+            rel="noopener"
+          >
+            <img src="logos/github.png" alt="GitHub" />
+          </a>
+          <a
+            href="https://discordapp.com/users/876315545098653716"
+            target="_blank"
+            rel="noopener"
+          >
+            <img src="logos/discord.png" alt="Discord" />
+          </a>
+          <a href="https://tiktok.com/@yenuno" target="_blank" rel="noopener">
+            <img src="logos/tiktok.png" alt="TikTok" />
+          </a>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- Profile Window -->
-  <div class="window" id="profileWindow">
-    <div class="title-bar" id="profileTitleBar">
-      <span class="title-bar-text">yen profile page</span>
-      <div class="title-bar-controls">
-        <button aria-label="Minimize" id="profileMinimize"></button>
-        <button aria-label="Maximize" id="profileMaximize"></button>
-        <button aria-label="Close" id="profileClose"></button>
+    <!-- Video Player Window -->
+    <div class="window" id="videoWindow">
+      <div class="title-bar" id="videoTitleBar">
+        <span class="title-bar-text">Windows Video Player</span>
+        <div class="title-bar-controls">
+          <button aria-label="Close" id="videoCloseBtn"></button>
+        </div>
+      </div>
+      <div class="window-body">
+        <video id="videoPlayer" muted autoplay playsinline loop>
+          <source src="video/clip (1).mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+
+        <div
+          class="field-row"
+          style="justify-content: space-between; margin-top: 6px"
+        >
+          <button id="prevClip">⏮ Previous</button>
+          <button id="nextClip">Next ⏭</button>
+        </div>
       </div>
     </div>
-    <div class="window-body">
-      <h2>yen</h2>
-      <p>new profile page i made, if u wanna check the old one go to <a href="https://yenny.lol/archive/" target="_blank" rel="noopener noreferrer">https://yenny.lol/archive/</a> but its broken</p>
 
-      <div id="logoContainer">
-        <a href="https://github.com/yennylol/yenny.lol" target="_blank" rel="noopener">
-          <img src="logos/github.png" alt="GitHub" />
-        </a>
-        <a href="https://discordapp.com/users/876315545098653716" target="_blank" rel="noopener">
-          <img src="logos/discord.png" alt="Discord" />
-        </a>
-        <a href="https://tiktok.com/@yenuno" target="_blank" rel="noopener">
-          <img src="logos/tiktok.png" alt="TikTok" />
-        </a>
+    <script src="script.js"></script>
+    <!-- Windows 98 Taskbar -->
+    <div id="taskbar">
+      <div class="taskbar-apps">
+        <button
+          class="taskbar-btn"
+          data-window="playerWindow"
+          title="Windows Media Player"
+        >
+          🎵
+        </button>
+        <button
+          class="taskbar-btn"
+          data-window="videoWindow"
+          title="Windows Video Player"
+        >
+          🎬
+        </button>
+        <button
+          class="taskbar-btn"
+          data-window="profileWindow"
+          title="Profile Page"
+        >
+          👤
+        </button>
       </div>
+      <input
+        type="range"
+        id="volumeSlider"
+        min="0"
+        max="1"
+        step="0.01"
+        title="Volume"
+      />
+      <div id="taskbar-time"></div>
     </div>
-  </div>
-
-  <!-- Video Player Window -->
-  <div class="window" id="videoWindow">
-    <div class="title-bar" id="videoTitleBar">
-      <span class="title-bar-text">Windows Video Player</span>
-      <div class="title-bar-controls">
-        <button aria-label="Close" id="videoCloseBtn"></button>
-      </div>
-    </div>
-    <div class="window-body">
-      <video id="videoPlayer" muted autoplay playsinline loop>
-        <source src="video/clip (1).mp4" type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
-
-      <div class="field-row" style="justify-content: space-between; margin-top: 6px;">
-        <button id="prevClip">⏮ Previous</button>
-        <button id="nextClip">Next ⏭</button>
-      </div>
-    </div>
-  </div>
-
-  <script src="script.js"></script>
-  <!-- Windows 98 Taskbar -->
-<div id="taskbar">
-  <div class="taskbar-apps">
-    <button class="taskbar-btn" data-window="playerWindow" title="Windows Media Player">🎵</button>
-    <button class="taskbar-btn" data-window="videoWindow" title="Windows Video Player">🎬</button>
-    <button class="taskbar-btn" data-window="profileWindow" title="Profile Page">👤</button>
-  </div>
-  <input type="range" id="volumeSlider" min="0" max="1" step="0.01" title="Volume" />
-  <div id="taskbar-time"></div>
-</div>
-
-</body>
+  </body>
 </html>

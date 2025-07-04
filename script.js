@@ -11,48 +11,50 @@ document.addEventListener("DOMContentLoaded", () => {
   let playlist = [];
   let currentIndex = 0;
 
-// TASKBAR FUNCTIONALITY
+  // TASKBAR FUNCTIONALITY
 
-const taskbarButtons = document.querySelectorAll(".taskbar-btn");
-const volumeSlider = document.getElementById("volumeSlider");
-const taskbarTime = document.getElementById("taskbar-time");
+  const taskbarButtons = document.querySelectorAll(".taskbar-btn");
+  const volumeSlider = document.getElementById("volumeSlider");
+  const taskbarTime = document.getElementById("taskbar-time");
 
-// Update time every second
-function updateTime() {
-  const now = new Date();
-  const hours = now.getHours().toString().padStart(2,"0");
-  const minutes = now.getMinutes().toString().padStart(2,"0");
-  taskbarTime.textContent = `${hours}:${minutes}`;
-}
-updateTime();
-setInterval(updateTime, 1000);
+  // Update time every second
+  function updateTime() {
+    const now = new Date();
+    const hours = now.getHours().toString().padStart(2, "0");
+    const minutes = now.getMinutes().toString().padStart(2, "0");
+    taskbarTime.textContent = `${hours}:${minutes}`;
+  }
+  updateTime();
+  setInterval(updateTime, 1000);
 
-// Volume slider controls the audio volume
-volumeSlider.value = audio.volume; // initialize slider to current audio volume
-volumeSlider.addEventListener("input", () => {
-  audio.volume = volumeSlider.value;
-});
-
-// Toggle windows open/close when clicking taskbar icons
-taskbarButtons.forEach(btn => {
-  btn.addEventListener("click", () => {
-    const winId = btn.getAttribute("data-window");
-    const win = document.getElementById(winId);
-    if (!win) return;
-    if (win.style.display === "none" || getComputedStyle(win).display === "none") {
-      win.style.display = "block";
-      win.style.zIndex = 100; // bring to front
-    } else {
-      win.style.display = "none";
-    }
+  // Volume slider controls the audio volume
+  volumeSlider.value = audio.volume; // initialize slider to current audio volume
+  volumeSlider.addEventListener("input", () => {
+    audio.volume = volumeSlider.value;
   });
-});
 
+  // Toggle windows open/close when clicking taskbar icons
+  taskbarButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const winId = btn.getAttribute("data-window");
+      const win = document.getElementById(winId);
+      if (!win) return;
+      if (
+        win.style.display === "none" ||
+        getComputedStyle(win).display === "none"
+      ) {
+        win.style.display = "block";
+        win.style.zIndex = 100; // bring to front
+      } else {
+        win.style.display = "none";
+      }
+    });
+  });
 
   // Fetch playlist JSON
   fetch("playlist.json")
-    .then(res => res.json())
-    .then(data => {
+    .then((res) => res.json())
+    .then((data) => {
       playlist = data;
       loadTrack(0);
     });
@@ -67,7 +69,8 @@ taskbarButtons.forEach(btn => {
   // Load track with safe index wrapping
   function loadTrack(index) {
     if (playlist.length === 0) return;
-    currentIndex = ((index % playlist.length) + playlist.length) % playlist.length;
+    currentIndex =
+      ((index % playlist.length) + playlist.length) % playlist.length;
     audio.src = playlist[currentIndex].src;
     trackName.textContent = "Track: " + playlist[currentIndex].name;
   }
@@ -124,7 +127,9 @@ taskbarButtons.forEach(btn => {
 
       for (let i = 0; i < bufferLength; i++) {
         const barHeight = dataArray[i];
-        ctx.fillStyle = `rgb(${barHeight + 25}, ${250 * i / bufferLength}, 50)`;
+        ctx.fillStyle = `rgb(${barHeight + 25}, ${
+          (250 * i) / bufferLength
+        }, 50)`;
         ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
         x += barWidth + 1;
       }
@@ -139,7 +144,9 @@ taskbarButtons.forEach(btn => {
 
   // --- Draggable Windows ---
   function makeDraggable(windowEl, titleBarEl) {
-    let isDragging = false, offsetX, offsetY;
+    let isDragging = false,
+      offsetX,
+      offsetY;
 
     titleBarEl.addEventListener("mousedown", (e) => {
       isDragging = true;
@@ -147,7 +154,7 @@ taskbarButtons.forEach(btn => {
       offsetY = e.clientY - windowEl.offsetTop;
     });
 
-    document.addEventListener("mouseup", () => isDragging = false);
+    document.addEventListener("mouseup", () => (isDragging = false));
 
     document.addEventListener("mousemove", (e) => {
       if (isDragging) {
@@ -157,14 +164,36 @@ taskbarButtons.forEach(btn => {
     });
   }
 
-  makeDraggable(document.getElementById("playerWindow"), document.getElementById("titleBar"));
-  makeDraggable(document.getElementById("profileWindow"), document.getElementById("profileTitleBar"));
-  makeDraggable(document.getElementById("videoWindow"), document.getElementById("videoTitleBar"));
+  makeDraggable(
+    document.getElementById("playerWindow"),
+    document.getElementById("titleBar")
+  );
+  makeDraggable(
+    document.getElementById("profileWindow"),
+    document.getElementById("profileTitleBar")
+  );
+  makeDraggable(
+    document.getElementById("videoWindow"),
+    document.getElementById("videoTitleBar")
+  );
 
   // --- Window Controls ---
-  function setupWindowControls(windowEl, btnMin, btnMax, btnClose, defaultSize = { width: "320px", height: "auto", top: "100px", left: "100px", right: "unset", transform: "none" }) {
-    if (btnMin) btnMin.onclick = () => windowEl.style.display = "none";
-    if (btnClose) btnClose.onclick = () => windowEl.style.display = "none";
+  function setupWindowControls(
+    windowEl,
+    btnMin,
+    btnMax,
+    btnClose,
+    defaultSize = {
+      width: "320px",
+      height: "auto",
+      top: "100px",
+      left: "100px",
+      right: "unset",
+      transform: "none",
+    }
+  ) {
+    if (btnMin) btnMin.onclick = () => (windowEl.style.display = "none");
+    if (btnClose) btnClose.onclick = () => (windowEl.style.display = "none");
 
     if (btnMax) {
       btnMax.onclick = () => {
@@ -199,7 +228,14 @@ taskbarButtons.forEach(btn => {
     document.getElementById("btnMinimize"),
     document.getElementById("btnMaximize"),
     document.getElementById("btnClose"),
-    { width: "320px", height: "auto", top: "0", left: "unset", right: "0", transform: "none" }
+    {
+      width: "320px",
+      height: "auto",
+      top: "0",
+      left: "unset",
+      right: "0",
+      transform: "none",
+    }
   );
 
   setupWindowControls(
@@ -207,7 +243,13 @@ taskbarButtons.forEach(btn => {
     document.getElementById("profileMinimize"),
     document.getElementById("profileMaximize"),
     document.getElementById("profileClose"),
-    { width: "400px", height: "auto", top: "50%", left: "50%", transform: "translate(-50%, -50%)" }
+    {
+      width: "400px",
+      height: "auto",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+    }
   );
 
   setupWindowControls(
@@ -227,7 +269,9 @@ taskbarButtons.forEach(btn => {
     currentClip = ((index - 1 + totalClips) % totalClips) + 1;
     videoPlayer.src = `video/clip (${currentClip}).mp4`;
     videoPlayer.load();
-    videoPlayer.play().catch(e => console.warn("Autoplay blocked:", e.message));
+    videoPlayer
+      .play()
+      .catch((e) => console.warn("Autoplay blocked:", e.message));
   }
 
   videoPlayer.muted = true;
