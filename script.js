@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentIndex = 0;
   let currentClip = Math.floor(Math.random() * 28) + 1;
 
-    // --- Internet Explorer Fake Browser ---
+  // --- Internet Explorer Fake Browser ---
   const browserWindow = document.getElementById("browserWindow");
   const browserFrame = document.getElementById("browserFrame");
   const urlInput = document.getElementById("urlInput");
@@ -59,35 +59,140 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  browserCloseBtn.onclick = () => browserWindow.style.display = "none";
+  browserCloseBtn.onclick = () => (browserWindow.style.display = "none");
 
-  makeDraggable(browserWindow, document.getElementById("browserTitleBar"));
+  // --- Drag and Drop Fix with minimize handling ---
+  function makeDraggable(windowEl, titleBarEl) {
+    let isDragging = false,
+      offsetX,
+      offsetY;
 
+    titleBarEl.addEventListener("mousedown", (e) => {
+      if (getComputedStyle(windowEl).display === "none") return;
 
-  function updateTime() {
-    const now = new Date();
-    taskbarTime.textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      if (
+        windowEl.style.width === "0px" ||
+        windowEl.style.height === "0px" ||
+        windowEl.style.opacity === "0"
+      ) {
+        windowEl.style.width = windowEl.dataset.defaultWidth || "320px";
+        windowEl.style.height = windowEl.dataset.defaultHeight || "auto";
+        windowEl.style.opacity = "1";
+      }
+
+      isDragging = true;
+      offsetX = e.clientX - windowEl.offsetLeft;
+      offsetY = e.clientY - windowEl.offsetTop;
+
+      e.preventDefault();
+      windowEl.style.zIndex = 100;
+    });
+
+    document.addEventListener("mouseup", () => {
+      isDragging = false;
+    });
+
+    document.addEventListener("mousemove", (e) => {
+      if (isDragging) {
+        let newLeft = e.clientX - offsetX;
+        let newTop = e.clientY - offsetY;
+
+        // Clamp within viewport
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
+        const rect = windowEl.getBoundingClientRect();
+
+        if (newLeft < 0) newLeft = 0;
+        else if (newLeft + rect.width > vw) newLeft = vw - rect.width;
+
+        if (newTop < 0) newTop = 0;
+        else if (newTop + rect.height > vh) newTop = vh - rect.height;
+
+        windowEl.style.left = newLeft + "px";
+        windowEl.style.top = newTop + "px";
+
+        // Remove bottom/right styles to avoid positioning conflicts
+        windowEl.style.bottom = "auto";
+        windowEl.style.right = "auto";
+      }
+    });
   }
-  updateTime();
-  setInterval(updateTime, 1000);
+
+  function setupWindowControls(win, minBtn, maxBtn, closeBtn, defaultSize) {
+    // Store default size for restore after minimize
+    if (!win.dataset.defaultWidth) win.dataset.defaultWidth = defaultSize.width;
+    if (!win.dataset.defaultHeight) win.dataset.defaultHeight = defaultSize.height;
+
+    if (minBtn) {
+      minBtn.onclick = () => {
+        // Minimize by shrinking and hiding visually
+        win.style.width = "0px";
+        win.style.height = "0px";
+        win.style.opacity = "0";
+      };
+    }
+
+    if (closeBtn) closeBtn.onclick = () => (win.style.display = "none");
+
+    if (maxBtn) {
+      maxBtn.onclick = () => {
+        const isMax = win.style.width === "100vw";
+        if (!isMax) {
+          win.style.width = "100vw";
+          win.style.height = "100vh";
+          win.style.top = "0";
+          win.style.left = "0";
+          win.style.right = "0";
+          win.style.bottom = "0";
+          win.style.transform = "none";
+          win.style.opacity = "1";
+        } else {
+          // Restore default size and position
+          Object.assign(win.style, defaultSize);
+          win.style.opacity = "1";
+
+          // Clean up conflicting styles that cause sticking
+          win.style.bottom = "auto";
+          win.style.right = "auto";
+        }
+      };
+    }
+  }
+
+  // Taskbar buttons toggle windows and bring to front
+  taskbarButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const win = document.getElementById(btn.dataset.window);
+      if (!win) return;
+
+      if (win.style.display === "none" || getComputedStyle(win).display === "none") {
+        win.style.display = "block";
+        win.style.zIndex = 100;
+        // Restore if minimized
+        if (
+          win.style.width === "0px" ||
+          win.style.height === "0px" ||
+          win.style.opacity === "0"
+        ) {
+          win.style.width = win.dataset.defaultWidth || "320px";
+          win.style.height = win.dataset.defaultHeight || "auto";
+          win.style.opacity = "1";
+        }
+      } else {
+        win.style.display = "none";
+      }
+    });
+  });
 
   volumeSlider.value = audio.volume;
   volumeSlider.addEventListener("input", () => {
     audio.volume = volumeSlider.value;
   });
 
-  taskbarButtons.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const win = document.getElementById(btn.dataset.window);
-      if (!win) return;
-      win.style.display = win.style.display === "none" ? "block" : "none";
-      win.style.zIndex = 100;
-    });
-  });
-
+  // Audio playlist
   fetch("playlist.json")
-    .then(res => res.json())
-    .then(data => {
+    .then((res) => res.json())
+    .then((data) => {
       playlist = shuffleArray(data);
       loadTrack(0);
     });
@@ -140,6 +245,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   audio.onended = () => nextBtn.click();
 
+  // Visualizer
   function initVisualizer() {
     setupAudioContext();
     analyser = audioCtx.createAnalyser();
@@ -176,46 +282,13 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!analyser) initVisualizer();
   });
 
-  function makeDraggable(windowEl, titleBarEl) {
-    let isDragging = false, offsetX, offsetY;
-    titleBarEl.addEventListener("mousedown", (e) => {
-      isDragging = true;
-      offsetX = e.clientX - windowEl.offsetLeft;
-      offsetY = e.clientY - windowEl.offsetTop;
-    });
-    document.addEventListener("mouseup", () => isDragging = false);
-    document.addEventListener("mousemove", (e) => {
-      if (isDragging) {
-        windowEl.style.left = `${e.clientX - offsetX}px`;
-        windowEl.style.top = `${e.clientY - offsetY}px`;
-      }
-    });
-  }
-
-  function setupWindowControls(win, minBtn, maxBtn, closeBtn, defaultSize) {
-    if (minBtn) minBtn.onclick = () => win.style.display = "none";
-    if (closeBtn) closeBtn.onclick = () => win.style.display = "none";
-    if (maxBtn) {
-      maxBtn.onclick = () => {
-        const isMax = win.style.width === "100vw";
-        if (!isMax) {
-          win.style.width = "100vw";
-          win.style.height = "100vh";
-          win.style.top = "0";
-          win.style.left = "0";
-          win.style.right = "0";
-          win.style.transform = "none";
-        } else {
-          Object.assign(win.style, defaultSize);
-        }
-      };
-    }
-  }
-
+  // Make windows draggable
   makeDraggable(document.getElementById("playerWindow"), document.getElementById("titleBar"));
   makeDraggable(document.getElementById("profileWindow"), document.getElementById("profileTitleBar"));
   makeDraggable(document.getElementById("videoWindow"), document.getElementById("videoTitleBar"));
+  makeDraggable(document.getElementById("browserWindow"), document.getElementById("browserTitleBar"));
 
+  // Setup window controls with defaults
   setupWindowControls(
     document.getElementById("playerWindow"),
     document.getElementById("btnMinimize"),
@@ -239,23 +312,16 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("videoCloseBtn"),
     { width: "360px", height: "auto", top: "0", left: "0", transform: "none" }
   );
+
   setupWindowControls(
-  document.getElementById("browserWindow"),
-  document.getElementById("browserMinimize"),
-  document.getElementById("browserMaximize"),
-  document.getElementById("browserCloseBtn"),
-  {
-    width: "480px",
-    height: "auto",
-    top: "unset",
-    bottom: "40px",
-    left: "0",
-    transform: "none",
-  }
-);
+    document.getElementById("browserWindow"),
+    document.getElementById("browserMinimize"),
+    document.getElementById("browserMaximize"),
+    document.getElementById("browserCloseBtn"),
+    { width: "480px", height: "auto", top: "unset", bottom: "40px", left: "0", transform: "none" }
+  );
 
-
-  // Video Player Logic
+  // Video player logic
   function loadClip(index) {
     currentClip = ((index - 1 + 28) % 28) + 1;
     videoPlayer.src = `video/clip (${currentClip}).mp4`;
@@ -280,4 +346,10 @@ document.addEventListener("DOMContentLoaded", () => {
     overlay.classList.add("hidden");
     setTimeout(() => overlay.remove(), 800);
   });
+
+  // Initialize with first audio track loaded
+  loadTrack(0);
+
+  // Initialize browser to a default URL for convenience
+  navigateTo("https://yenny.lol");
 });

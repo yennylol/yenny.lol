@@ -212,3 +212,16 @@ video#videoPlayer {
   text-shadow: 0 0 5px black;
   text-align: center;
 }
+#browserWindow .window-body {
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 28px); /* subtract title bar height */
+  padding: 0;
+  overflow: hidden;
+}
+
+#browserWindow iframe {
+  flex-grow: 1;
+  width: 100%;
+  border: none;
+}
