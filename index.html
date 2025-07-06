@@ -20,7 +20,7 @@
       <source src="video/bg.mp4" type="video/mp4" />
     </video>
 
-    <!-- Windows Media Player Window -->
+    <!-- Media Player -->
     <div class="window" id="playerWindow">
       <div class="title-bar" id="titleBar">
         <span class="title-bar-text">Windows Media Player</span>
@@ -41,9 +41,10 @@
       </div>
     </div>
 
-<div id="overlay">
-  <span id="overlayText">click to access...</span>
-</div>
+    <!-- Overlay -->
+    <div id="overlay">
+      <span id="overlayText">click to access...</span>
+    </div>
 
     <!-- Profile Window -->
     <div class="window" id="profileWindow">
@@ -59,35 +60,13 @@
         <h2>yen</h2>
         <p>
           new profile page i made, if u wanna check the old one go to
-          <a
-            href="https://yenny.lol/archive/"
-            target="_blank"
-            rel="noopener noreferrer"
-            >https://yenny.lol/archive/</a
-          >
+          <a href="https://yenny.lol/archive/" target="_blank" rel="noopener noreferrer">https://yenny.lol/archive/</a>
         </p>
-
         <div id="logoContainer">
-          <a
-            href="https://github.com/yennylol/yenny.lol"
-            target="_blank"
-            rel="noopener"
-          >
-            <img src="logos/github.png" alt="GitHub" />
-          </a>
-          <a
-            href="https://discordapp.com/users/1239730899910660158"
-            target="_blank"
-            rel="noopener"
-          >
-            <img src="logos/discord.png" alt="Discord" />
-          </a>
-          <a href="https://tiktok.com/@yenuno" target="_blank" rel="noopener">
-            <img src="logos/tiktok.png" alt="TikTok" />
-          </a>
-           <a href="https://www.pekora.zip/users/8322/profile" target="_blank" rel="noopener">
-            <img src="logos/projectx.png" alt="Pekora" />
-          </a>
+          <a href="https://github.com/yennylol/yenny.lol" target="_blank"><img src="logos/github.png" alt="GitHub" /></a>
+          <a href="https://discordapp.com/users/1239730899910660158" target="_blank"><img src="logos/discord.png" alt="Discord" /></a>
+          <a href="https://tiktok.com/@yenuno" target="_blank"><img src="logos/tiktok.png" alt="TikTok" /></a>
+          <a href="https://www.pekora.zip/users/8322/profile" target="_blank"><img src="logos/projectx.png" alt="Pekora" /></a>
         </div>
       </div>
     </div>
@@ -103,54 +82,48 @@
       <div class="window-body">
         <video id="videoPlayer" muted autoplay playsinline loop>
           <source src="video/clip (1).mp4" type="video/mp4" />
-          Your browser does not support the video tag.
         </video>
-
-        <div
-          class="field-row"
-          style="justify-content: space-between; margin-top: 6px"
-        >
+        <div class="field-row" style="justify-content: space-between; margin-top: 6px">
           <button id="prevClip">⏮ Previous</button>
+          <button id="muteVideoBtn">🔇</button>
           <button id="nextClip">Next ⏭</button>
         </div>
       </div>
     </div>
 
-    <script src="script.js"></script>
-    <!-- Windows 98 Taskbar -->
+<!-- Browser Window (Fake IE4) -->
+<div class="window" id="browserWindow" style="width: 480px; height: 400px; top: unset; bottom: 40px; left: 0;">
+  <div class="title-bar" id="browserTitleBar">
+    <span class="title-bar-text">Internet Explorer</span>
+    <div class="title-bar-controls">
+      <button aria-label="Minimize" id="browserMinimize"></button>
+      <button aria-label="Maximize" id="browserMaximize"></button>
+      <button aria-label="Close" id="browserCloseBtn"></button>
+    </div>
+  </div>
+  <div class="window-body" style="height: calc(100% - 30px); display: flex; flex-direction: column;">
+    <div class="field-row" style="margin-bottom: 4px;">
+      <button id="backBtn">←</button>
+      <button id="forwardBtn">→</button>
+      <input id="urlInput" type="text" placeholder="Enter URL..." style="flex: 1" />
+      <button id="goBtn">Go</button>
+    </div>
+    <iframe id="browserFrame" style="flex: 1; border: none;" src="https://example.com"></iframe>
+  </div>
+</div>
+
+    <!-- Taskbar -->
     <div id="taskbar">
       <div class="taskbar-apps">
-        <button
-          class="taskbar-btn"
-          data-window="playerWindow"
-          title="Windows Media Player"
-        >
-          🎵
-        </button>
-        <button
-          class="taskbar-btn"
-          data-window="videoWindow"
-          title="Windows Video Player"
-        >
-          🎬
-        </button>
-        <button
-          class="taskbar-btn"
-          data-window="profileWindow"
-          title="Profile Page"
-        >
-          👤
-        </button>
+        <button class="taskbar-btn" data-window="playerWindow" title="Windows Media Player">🎵</button>
+        <button class="taskbar-btn" data-window="videoWindow" title="Windows Video Player">🎬</button>
+        <button class="taskbar-btn" data-window="profileWindow" title="Profile Page">👤</button>
+        <button class="taskbar-btn" data-window="browserWindow" title="Internet Explorer">🌐</button>
       </div>
-      <input
-        type="range"
-        id="volumeSlider"
-        min="0"
-        max="1"
-        step="0.01"
-        title="Volume"
-      />
+      <input type="range" id="volumeSlider" min="0" max="1" step="0.01" title="Volume" />
       <div id="taskbar-time"></div>
     </div>
+
+    <script src="script.js"></script>
   </body>
 </html>
