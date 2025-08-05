@@ -91,35 +91,12 @@
       </div>
     </div>
 
-<!-- Browser Window (Fake IE4) -->
-<div class="window" id="browserWindow" style="width: 480px; height: 400px; bottom: 40px; left: 0; display: flex; flex-direction: column; position: absolute;">
-  <div class="title-bar" id="browserTitleBar">
-    <span class="title-bar-text">Internet Explorer</span>
-    <div class="title-bar-controls">
-      <button aria-label="Minimize" id="browserMinimize"></button>
-      <button aria-label="Maximize" id="browserMaximize"></button>
-      <button aria-label="Close" id="browserCloseBtn"></button>
-    </div>
-  </div>
-  <div class="window-body" style="flex: 1; display: flex; flex-direction: column;">
-    <div class="field-row" style="margin-bottom: 4px;">
-      <button id="backBtn">←</button>
-      <button id="forwardBtn">→</button>
-      <input id="urlInput" type="text" placeholder="Enter URL..." style="flex: 1" />
-      <button id="goBtn">Go</button>
-    </div>
-    <iframe id="browserFrame" style="flex: 1; border: none;"></iframe>
-  </div>
-</div>
-
-
     <!-- Taskbar -->
     <div id="taskbar">
       <div class="taskbar-apps">
         <button class="taskbar-btn" data-window="playerWindow" title="Windows Media Player">🎵</button>
         <button class="taskbar-btn" data-window="videoWindow" title="Windows Video Player">🎬</button>
         <button class="taskbar-btn" data-window="profileWindow" title="Profile Page">👤</button>
-        <button class="taskbar-btn" data-window="browserWindow" title="Internet Explorer">🌐</button>
       </div>
       <input type="range" id="volumeSlider" min="0" max="1" step="0.01" title="Volume" />
       <div id="taskbar-time"></div>

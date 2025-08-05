@@ -17,50 +17,6 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentIndex = 0;
   let currentClip = Math.floor(Math.random() * 28) + 1;
 
-  // --- Internet Explorer Fake Browser ---
-  const browserWindow = document.getElementById("browserWindow");
-  const browserFrame = document.getElementById("browserFrame");
-  const urlInput = document.getElementById("urlInput");
-  const goBtn = document.getElementById("goBtn");
-  const backBtn = document.getElementById("backBtn");
-  const forwardBtn = document.getElementById("forwardBtn");
-  const browserCloseBtn = document.getElementById("browserCloseBtn");
-
-  let historyStack = [];
-  let currentHistoryIndex = -1;
-
-  function navigateTo(url) {
-    if (!url.startsWith("http")) url = "https://" + url;
-    browserFrame.src = url;
-    historyStack = historyStack.slice(0, currentHistoryIndex + 1);
-    historyStack.push(url);
-    currentHistoryIndex++;
-    urlInput.value = url;
-  }
-
-  goBtn.onclick = () => navigateTo(urlInput.value);
-  urlInput.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") goBtn.click();
-  });
-
-  backBtn.onclick = () => {
-    if (currentHistoryIndex > 0) {
-      currentHistoryIndex--;
-      browserFrame.src = historyStack[currentHistoryIndex];
-      urlInput.value = historyStack[currentHistoryIndex];
-    }
-  };
-
-  forwardBtn.onclick = () => {
-    if (currentHistoryIndex < historyStack.length - 1) {
-      currentHistoryIndex++;
-      browserFrame.src = historyStack[currentHistoryIndex];
-      urlInput.value = historyStack[currentHistoryIndex];
-    }
-  };
-
-  browserCloseBtn.onclick = () => (browserWindow.style.display = "none");
-
   // --- Drag and Drop Fix with minimize handling ---
   function makeDraggable(windowEl, titleBarEl) {
     let isDragging = false,
@@ -286,7 +242,6 @@ document.addEventListener("DOMContentLoaded", () => {
   makeDraggable(document.getElementById("playerWindow"), document.getElementById("titleBar"));
   makeDraggable(document.getElementById("profileWindow"), document.getElementById("profileTitleBar"));
   makeDraggable(document.getElementById("videoWindow"), document.getElementById("videoTitleBar"));
-  makeDraggable(document.getElementById("browserWindow"), document.getElementById("browserTitleBar"));
 
   // Setup window controls with defaults
   setupWindowControls(
@@ -311,14 +266,6 @@ document.addEventListener("DOMContentLoaded", () => {
     null,
     document.getElementById("videoCloseBtn"),
     { width: "360px", height: "auto", top: "0", left: "0", transform: "none" }
-  );
-
-  setupWindowControls(
-    document.getElementById("browserWindow"),
-    document.getElementById("browserMinimize"),
-    document.getElementById("browserMaximize"),
-    document.getElementById("browserCloseBtn"),
-    { width: "480px", height: "auto", top: "unset", bottom: "40px", left: "0", transform: "none" }
   );
 
   // Video player logic
@@ -350,6 +297,15 @@ document.addEventListener("DOMContentLoaded", () => {
   // Initialize with first audio track loaded
   loadTrack(0);
 
-  // Initialize browser to a default URL for convenience
+  // Video player setup
   navigateTo("https://yenny.lol");
 });
+// Make a GET request to the Cloudflare Worker
+fetch('https://thatsadoublewhammy-rapid-band-4f2e.mrwalkemdowntohellhawktuah.workers.dev/')  // Replace with your actual worker URL
+  .then(response => response.text())    // Use .json() if you expect JSON response
+  .then(data => {
+    console.log('Worker Response:', data);
+  })
+  .catch(error => {
+    console.error('Error fetching from worker:', error);
+  });
